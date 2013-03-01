@@ -1,6 +1,7 @@
 var mongo = require('mongodb');
 var Tumblr = require('tumblrwks');
- 
+var csv = require('csv');
+
 var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
@@ -31,12 +32,38 @@ var tumblr = new Tumblr(
   // specify the blog url now or the time you want to use
 );
 
+
+
+function createCSV(s){
+	csv()
+		.from( s )
+		.to.path(__dirname+'/spreadsheet.csv');
+		// Output:
+		// 1,2,3,4
+		// a,b,c,d
+}
+
+var MAX_TAGS = 10;
+
 tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 	console.log('*************');
 	console.log('*************');
 	console.log('*************');
 	console.log('*************');
-	console.log(json.posts);
+	//console.log(json.posts);
+
+	var components = [];
+
+	var components_array = [];
+	components_array.push( 'id' );
+	components_array.push( 'post_url' );
+	components_array.push( 'type' );
+	components_array.push( 'date' );
+	components_array.push( 'note_count' );
+	components_array.push( 'title' );
+	components_array.push( 'body' );
+	components_array.push( 'caption' );
+	components_array.push( 'timestamp' );
 
 	for(var i = 0; i < json.posts.length; i++){
 
@@ -62,6 +89,32 @@ tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 	            }
 	        });
 		});
+
+		var components_array = [];
+		components_array.push( json.posts[i].id );
+		components_array.push( json.posts[i].post_url );
+		components_array.push( json.posts[i].type );
+		components_array.push( json.posts[i].date );
+		components_array.push( json.posts[i].note_count );
+		components_array.push( json.posts[i].title );
+		components_array.push( json.posts[i].body );
+		components_array.push( json.posts[i].caption );
+		components_array.push( json.posts[i].timestamp );
+		
+		for(var j = 0; j < MAX_TAGS; j++){
+			if(json.posts[i].tags[j] != undefined){
+				components_array.push( json.posts[i].tags[j] );
+			}else{
+				components_array.push( '' );
+			}
+		}
+
+		components[i] = components_array.join(',');
+
 	}
+
+	var components_string = components.join('\n');
+
+	createCSV(components_string);
 
 });
