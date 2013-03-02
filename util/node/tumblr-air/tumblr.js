@@ -1,6 +1,19 @@
 var mongo = require('mongodb');
 var Tumblr = require('tumblrwks');
 var csv = require('csv');
+var request = require('request');
+var _  = require('underscore');
+var fs = require('fs');
+
+// Import Underscore.string to separate object, because there are conflict functions (include, reverse, contains)
+_.str = require('underscore.string');
+
+// Mix in non-conflict functions to Underscore namespace if you want
+_.mixin(_.str.exports());
+
+// All functions, include conflict, will be available through _.str object
+_.str.include('Underscore.string', 'string'); // => true
+
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -34,6 +47,50 @@ var tumblr = new Tumblr(
 
 
 
+function populateArrayPhoto(a,url){
+
+	if(url != null){
+
+		var filename = url;
+		filename = filename.split('/').pop();
+		var pathname = __dirname + '/photos/' + filename;
+		request( url ).pipe(fs.createWriteStream( pathname ));
+
+		a.push( filename );
+	}else{
+		console.log('url is: '+url);
+		a.push(' ');
+	}
+	return a;
+}
+
+
+
+
+function populateArray(a,value,htmlValues){
+	htmlValues = htmlValues || false;
+
+	var vStr = '' + value;
+
+	if(value != null){
+
+		if(htmlValues){
+			vStr = _(vStr).stripTags();
+		}
+
+		vStr = vStr.replace(/,/g, '');//replace all commas with empty string
+		vStr = vStr.replace(/\n/g, ' ');//replace all commas with empty string
+
+		vStr = _(vStr).prune(500);//trim to 500 characters without cutting words in half
+
+		a.push( vStr );
+	}else{
+		console.log('value is: '+value);
+		a.push(' ');
+	}
+	return a;
+}
+
 function createCSV(s){
 	csv()
 		.from( s )
@@ -43,7 +100,8 @@ function createCSV(s){
 		// a,b,c,d
 }
 
-var MAX_TAGS = 10;
+var MAX_TAGS = 3;
+var MAX_PHOTOS = 2;
 
 tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 	console.log('*************');
@@ -58,12 +116,28 @@ tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 	components_array.push( 'id' );
 	components_array.push( 'post_url' );
 	components_array.push( 'type' );
-	components_array.push( 'date' );
-	components_array.push( 'note_count' );
+	//components_array.push( 'date' );
+	//components_array.push( 'note_count' );
 	components_array.push( 'title' );
 	components_array.push( 'body' );
 	components_array.push( 'caption' );
-	components_array.push( 'timestamp' );
+
+	//components_array.push( 'timestamp' );
+
+	
+	for(var t = 0; t < MAX_TAGS; t++){
+		components_array.push( 'tag' + t );
+	}
+	
+
+	
+	for(var p = 0; p < MAX_PHOTOS; p++){
+		components_array.push( 'photo' + p );
+	}
+	
+
+
+	components[0] = components_array.join(',');
 
 	for(var i = 0; i < json.posts.length; i++){
 
@@ -91,25 +165,50 @@ tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 		});
 
 		var components_array = [];
-		components_array.push( json.posts[i].id );
-		components_array.push( json.posts[i].post_url );
-		components_array.push( json.posts[i].type );
-		components_array.push( json.posts[i].date );
-		components_array.push( json.posts[i].note_count );
-		components_array.push( json.posts[i].title );
-		components_array.push( json.posts[i].body );
-		components_array.push( json.posts[i].caption );
-		components_array.push( json.posts[i].timestamp );
+
+		components_array = populateArray(components_array, json.posts[i].id);
+		components_array = populateArray(components_array, json.posts[i].post_url);
+		components_array = populateArray(components_array, json.posts[i].type);
+		//components_array = populateArray(components_array, json.posts[i].date);
+		//components_array = populateArray(components_array, json.posts[i].note_count);
+		components_array = populateArray(components_array, json.posts[i].title);
+		components_array = populateArray(components_array, json.posts[i].body, true);
+		components_array = populateArray(components_array, json.posts[i].caption, true);
+		//components_array = populateArray(components_array, json.posts[i].timestamp);
+
+		var tags_length = (json.posts[i].tags.length < MAX_TAGS) ? json.posts[i].tags.length : MAX_TAGS;
 		
-		for(var j = 0; j < MAX_TAGS; j++){
-			if(json.posts[i].tags[j] != undefined){
-				components_array.push( json.posts[i].tags[j] );
+		for(var k = 0; k < MAX_TAGS; k++){
+			if(k < tags_length){
+				populateArray(components_array, json.posts[i].tags[k]);
 			}else{
-				components_array.push( '' );
+				populateArray(components_array, null);
 			}
 		}
 
-		components[i] = components_array.join(',');
+
+
+		
+		if(json.posts[i].type == 'photo'){
+			var photos_length = (json.posts[i].photos.length < MAX_PHOTOS) ? json.posts[i].photos.length : MAX_PHOTOS;
+		
+			for(var x = 0; x < MAX_PHOTOS; x++){
+				if(x < photos_length){
+					populateArrayPhoto(components_array, json.posts[i].photos[x].alt_sizes[0].url);
+				}else{
+					populateArray(components_array, null);
+				}
+			}
+		}else{//if not photo post, fill with empty strings
+			for(var k = 0; k < MAX_PHOTOS; k++){
+				components_array.push( 'none' );
+			}
+		}
+		
+
+		
+
+		components[i+1] = components_array.join(',');
 
 	}
 
