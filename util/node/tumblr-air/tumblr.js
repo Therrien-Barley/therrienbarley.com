@@ -56,7 +56,7 @@ function populateArrayPhoto(a,url){
 		var pathname = __dirname + '/photos/' + filename;
 		request( url ).pipe(fs.createWriteStream( pathname ));
 
-		a.push( filename );
+		a.push( 'Users:troytherrien:Insync:info@th-ey.co:GIT:therrienbarley.com:util:node:tumblr-air:photos:'+filename );
 	}else{
 		console.log('url is: '+url);
 		a.push(' ');
@@ -132,7 +132,7 @@ tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com'}, function(json){
 
 	
 	for(var p = 0; p < MAX_PHOTOS; p++){
-		components_array.push( 'photo' + p );
+		components_array.push( '@photo' + p );
 	}
 	
 
