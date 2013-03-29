@@ -1,0 +1,27 @@
+
+
+
+ <%
+var _rowCounter = 1;
+function getRowClass() {
+  var klass = _rowCounter % 2 ? "odd" : "even";
+  _rowCounter += 1;
+  return klass;
+}
+
+console.log('locals');
+console.dir(locals);
+%>
+
+   
+    
+<div class="span8 projects-project <%=getRowClass()%>">
+	<a href="<%= url %>" >
+	    <img class="project-mono-image" border="0" src="/images/projects/mono/<%= monoimage %>" alt="">
+	    <h3 class="project-title"><a class="standard" href="<%= url %>" ><%= title %></a></h3>
+	    <div class="project-summary"><%= summary %></div>
+
+	</a>
+</div><!-- /.span6 -->
+
+

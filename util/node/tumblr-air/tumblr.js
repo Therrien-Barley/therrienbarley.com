@@ -2,6 +2,9 @@ var mongo = require('mongodb');
 var Tumblr = require('tumblrwks');
 var csv = require('csv');
 var request = require('request');
+
+process.setMaxListeners(0);
+
 var _  = require('underscore');
 var fs = require('fs');
 var $ = require('jquery');
@@ -54,6 +57,12 @@ function populateArrayPhoto(a,url){
 	if(url != null){
 		var filename = url;
 		filename = filename.split('/').pop();
+
+		if(filename.length > 100){
+			filename = 'randomFilename_' + Math.floor(Math.random()*1000000000000000);
+			console.log('** filename: '+ filename);
+		}
+
 		var pathname = __dirname + '/photos/' + filename;
 		request( url ).pipe(fs.createWriteStream( pathname ));
 
@@ -73,14 +82,23 @@ function populateInlineImages(html){
 
 	var $html = $(html);
 	$html.find('img').each(function(i){
+		console.log('^^^ adding image with src: '+ $(this).attr('src'));
 		temp_array.push( $(this).attr('src') );
+	});
+
+	$html.find('img').remove();
+
+	//add ------- to the beginning of each blockquote
+	$html.find('blockquote').each(function(){
+		var text = $(this).text();
+		$(this).text('-------' + text );
 	});
 
 	if(temp_array.length > 0){
 		inline_images.push( temp_array );
 	}
 
-	return true;
+	return $html;
 
 }
 
@@ -118,20 +136,99 @@ function populateArray(a,value,htmlValues){
 	return a;
 }
 
+
+function populateBodyCaption(a,value,field){
+	console.log('populateBodyCaption()');
+
+	var valueStr = '' + value;
+	if(value != null){//get rid of the IFTTT tags
+
+		valueStr = ent.decode( valueStr );
+
+		var $html = populateInlineImages(valueStr);//strips out all images and populates the image array, returns html string without img tags
+		var html_text = $html.text();
+
+
+		var paras = html_text.split('\n');
+
+		//remove any empty elements from the array
+		for(var j = 0; j < paras.length; j++){
+			if((paras[j] == '') || (paras[j].length < 3)){
+				paras.splice(j, 1);
+			}
+		}
+
+		//vStr = _(vStr).prune(500);//trim to 500 characters without cutting words in half
+
+		for(var t = 0; t < MAX_BODY_PARAGRAPHS; t++){
+			if(paras[t] != undefined){
+
+				//vStr = _(vStr).stripTags();	
+				
+				paras[t] = paras[t].replace(/,/g, '');//replace all commas with empty string
+				paras[t] = paras[t].replace(/,/g, '');//replace all commas with empty string
+				paras[t] = paras[t].replace(/—/g, '-');//replace all commas with empty string
+				paras[t] = paras[t].replace(/—/g, '-');//replace all commas with empty string
+				paras[t] = paras[t].replace(/“/g, '"');//replace all commas with empty string
+				paras[t] = paras[t].replace(/”/g, '"');//replace all commas with empty string
+				paras[t] = paras[t].replace(/’/g, "'");//replace all commas with empty string
+				paras[t] = paras[t].replace(/‘/g, "'");//replace all commas with empty string
+
+				paras[t] = paras[t].replace(/</g, '');//replace all commas with empty string
+				paras[t] = paras[t].replace(/>/g, '');//replace all commas with empty string
+				paras[t] = paras[t].replace(/&nbsp;/g, ' ');//replace all commas with empty string
+
+				paras[t] = paras[t].replace(/í/g, 'i');//replace all commas with empty string
+				paras[t] = paras[t].replace(/•/g, '-');//replace all commas with empty string
+				paras[t] = paras[t].replace(/»/g, '');//replace all commas with empty string
+
+				
+
+
+
+				//paras[t] = ent.decode( paras[t] );
+
+				a.push( paras[t] );
+			}else{
+				a.push(' ');
+			}
+		}
+	}else{
+		//console.log('value is: '+value);
+		for(var t = 0; t < MAX_BODY_PARAGRAPHS; t++){
+			a.push(' ');
+		}
+	}
+	return a;
+}
+
+
 function createCSV(s){
+	/*
 	csv()
 		.from( s )
 		.to.path(__dirname+'/spreadsheet.csv');
 		// Output:
 		// 1,2,3,4
 		// a,b,c,d
+		*/
+
+
+	fs.writeFile(__dirname+'/spreadsheet.csv', s, { encoding: 'utf8'}, function(err) {
+	    if(err) {
+	        console.log(err);
+	    } else {
+	        console.log("The file was saved!");
+	    }
+	}); 
 }
 
 var MAX_TAGS = 15;
 var MAX_PHOTOS = 3;
 var MAX_INLINE_PHOTOS = 20;
+var MAX_BODY_PARAGRAPHS = 25;
 
-
+var itemNumber = 1;
 var post_offset = 0;
 var post_limit = 20;
 var posts_gotten = 0;
@@ -140,6 +237,7 @@ var iter = 0;
 var comp_array = [];
 
 var components_array = [];
+components_array.push( 'item' );
 components_array.push( 'id' );
 components_array.push( 'date' );
 components_array.push( 'post_url' );
@@ -147,10 +245,24 @@ components_array.push( 'type' );
 
 //components_array.push( 'note_count' );
 components_array.push( 'title' );
-components_array.push( 'body' );
-components_array.push( 'caption' );
+//components_array.push( 'body' );
+//components_array.push( 'caption' );
+
+/*
+components_array.push( 'word count' );
+components_array.push( 'image count' );
+components_array.push( 'link count' );
+*/
 
 //components_array.push( 'timestamp' );
+
+for(var t = 0; t < MAX_BODY_PARAGRAPHS; t++){
+	components_array.push( 'body' + t );
+}
+
+for(var t = 0; t < MAX_BODY_PARAGRAPHS; t++){
+	components_array.push( 'caption' + t );
+}
 
 
 for(var t = 0; t < MAX_TAGS; t++){
@@ -202,14 +314,16 @@ function getTumblrPosts(){
 
 			var components_array = [];
 
+			components_array = populateArray(components_array, itemNumber);
+			itemNumber++;
 			components_array = populateArray(components_array, json.posts[i].id);
 			components_array = populateArray(components_array, json.posts[i].date);
 			components_array = populateArray(components_array, json.posts[i].post_url);
 			components_array = populateArray(components_array, json.posts[i].type);
 			//components_array = populateArray(components_array, json.posts[i].note_count);
 			components_array = populateArray(components_array, json.posts[i].title);
-			components_array = populateArray(components_array, json.posts[i].body, true);
-			components_array = populateArray(components_array, json.posts[i].caption, true);
+			components_array = populateBodyCaption(components_array, json.posts[i].body, 'body');
+			components_array = populateBodyCaption(components_array, json.posts[i].caption, 'caption');
 			//components_array = populateArray(components_array, json.posts[i].timestamp);
 
 			var tags_length = (json.posts[i].tags.length < MAX_TAGS) ? json.posts[i].tags.length : MAX_TAGS;
@@ -269,7 +383,7 @@ function getTumblrPosts(){
 		console.log('json.total_posts: '+ json.total_posts);
 		
 
-		if( json.total_posts > posts_gotten ){
+		if( json.total_posts > posts_gotten){
 			iter++;
 			getTumblrPosts();
 		}else{

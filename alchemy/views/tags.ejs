@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
+  </head>
+  <body>
+    <h1>Tags: <%= title %></h1>
+    <p>Welcome to <%= title %> with <%= tags.length %> post</p>
+
+
+    
+
+    <div id="tagsbar" style="height: 550px;"></div>
+    <div id="tagsdonut" style="height: 550px;"></div>
+
+    <script>
+	    new Morris.Bar({
+			// ID of the element in which to draw the chart.
+			element: 'tagsbar',
+			stacked: true,
+			// Chart data records -- each entry in this array corresponds to a point on
+			// the chart.
+			data: [
+			<% var i = 0; %>
+			<% for(var tag in tags){ %>
+				<% if(tags[tag].instances > 10){ %>
+			    	<% if(i == tags.length -1){ %>
+			    		{label: "<%= tags[tag].tag %>", value: <%= tags[tag].instances %>},
+			    	<% }else{ %>
+			    		{label: "<%= tags[tag].tag %>", value: <%= tags[tag].instances %>},
+			    	<% } %>
+			    	<% i++; %>	
+			    <% } %>
+			<% 	} %>
+			],
+			// The name of the data record attribute that contains x-values.
+			xkey: 'label',
+			// A list of names of data record attributes that contain y-values.
+			ykeys: ['value'],
+			// Labels for the ykeys -- will be displayed when you hover over the
+			// chart.
+			labels: ['Instances']
+		});
+
+		new Morris.Donut({
+			// ID of the element in which to draw the chart.
+			element: 'tagsdonut',
+			// Chart data records -- each entry in this array corresponds to a point on
+			// the chart.
+			data: [
+			<% var i = 0; %>
+			<% for(var tag in tags){ %>
+				<% if(tags[tag].instances > 10){ %>
+			    	<% if(i == tags.length -1){ %>
+			    		{label: "<%= tags[tag].tag %>", value: <%= tags[tag].instances %>},
+			    	<% }else{ %>
+			    		{label: "<%= tags[tag].tag %>", value: <%= tags[tag].instances %>},
+			    	<% } %>
+			    	<% i++; %>	
+			    <% } %>
+			<% 	} %>
+			],
+			colors: [
+				'#ff0000',
+				'#f00000',
+				'#f0f0f0'
+			]
+		});
+    </script>
+
+  </body>
+</html>

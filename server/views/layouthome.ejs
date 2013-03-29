@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<!-- styles -->
+	<%-stylesheets%>
+		
+	
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Apercu font served by fontdeck.com -->
+    <script type="text/javascript">
+		WebFontConfig = { fontdeck: { id: '26531' } };
+
+		(function() {
+		  var wf = document.createElement('script');
+		  wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		  '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		  wf.type = 'text/javascript';
+		  wf.async = 'true';
+		  var s = document.getElementsByTagName('script')[0];
+		  s.parentNode.insertBefore(wf, s);
+		})();
+	</script>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">    
+  </head>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+
+	<div class="wrapper">
+				
+		<%- partial('navigation') %>
+
+		<div id="home" class="container">
+			<div class="jumbotron section">
+				<div class="row-fluid">
+					<div class="span14 offset1">
+						<h1>Therrien–Barley<br>is a research &amp; design office.</h1>
+					</div>
+				</div>
+				<div class="row-fluid standard">
+					<div class="span14 offset1">
+						<h3>Part think-tank, part creative agency, we are designers, producers, curators and consultants. We work with academic and cultural institutions as well as brands and industry on digital, physical, and conceptual projects.</h3>
+					</div><!-- /.span10 -->
+				</div><!-- /.row -->
+			</div><!-- /.jumbotron -->
+		</div><!-- /.container -->
+		
+		<div id="projects"></div>
+
+		<div class="section">
+			<h3 class="section-heading">Selected Projects</h3>
+			<div class="container">
+				<div class="row-fluid projects standard">
+					<div class="span16">
+						<% var projects = ['projectyap', 'projectyap']; %>
+					</div><!-- /.span12 -->
+				</div><!-- /.projects -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<div id="people"></div>
+		<div class="section">
+			<h3 class="section-heading">People</h3>
+			<div class="container">
+				<div class="row-fluid contact standard">
+					<div class="span6 offset1 contact-profile">
+						<h3>Troy Conrad Therrien</h3>
+						<div class="contact-profile-header">
+							<img class="contact-profile-image" src="/images/people/troy.jpg" alt="">
+							<div class="contact-profile-caption">
+								<a href="http://www.twitter.com/troytherrien" target="_blank">@troytherrien</a><br>
+								<a href="mailto:troy@th-ey.co" target="_blank">troy@th-ey.co</a><br>
+								<a href="http://www.troyconradtherrien.com" target="_blank">troyconradtherrien.com</a><br>
+								<br>
+								<a href="http://www.facebook.com/troyth" target="_blank">Facebook</a>
+							</div><!-- /.contact-profile-caption -->
+						</div><!-- /.contact-profile-header -->
+						<div class="contact-profile-bio">
+							Originally trained in computer engineering and later in architecture design, history and theory, Troy has worked as an architectural designer, a critic, a research fellow in human computer interaction, and a creative technologist. He is currently an adjunct professor and heads an experimental digital communication group at Columbia University. He holds a MA degree from the Architectural Association and a Master of Architecture from Columbia where he received the American Institute of Architects highest medal and certificate of merit, the Goodman fellowship and a William Kinne traveling prize with Christopher Barley. He has been widely published in print and online, and has designed and curated exhibitions around the world. His research has been supported by the Canadian Council for the Arts, and he currently sits on the board of the Columbia GSAPP Alumni Association.
+						</div>
+						
+					</div><!-- /.span4 offset2 -->
+					<div class="span6 offset2 contact-profile">
+						<h3>Christopher P. Barley</h3>
+						<div class="contact-profile-header">
+							<img class="contact-profile-image" src="/images/people/chris.jpg" alt="">
+							<div class="contact-profile-caption">
+								<a href="http://www.twitter.com/chrispbarley" target="_blank">@chrispbarley</a><br>
+								<a href="mailto:troy@th-ey.co" target="_blank">chris@th-ey.co</a><br>
+								<br>
+								<a href="http://www.facebook.com/troyth" target="_blank">Facebook</a>
+							</div><!-- /.contact-profile-caption -->
+						</div><!-- /.contact-profile-header -->
+						<div class="contact-profile-bio">
+							Chris studied architecture, anthropology, and psychology at Carnegie Mellon University with a special focus on the role of emotion in creativity and decision making processes. He worked at the Center for Arts in Society and for Dr. Jennifer Lerner’s Emotion and Decision Sciences Lab. He completed with studies with a Master of Architecture degree from Columbia University where upon graduation he received the William Kinne prize for research on Libya’s cultural and natural resources with Troy Conrad Therrien. Christopher has previously worked at OMA*AMO on the Hermitage Master Plan 2014 and Skidmore, Owings &amp; Merill in the Education Lab on projects in the US and abroad.
+						</div>
+					</div><!-- /.span4 offset2 -->
+				</div><!-- /.projects -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<div id="clients"></div>
+		<div class="section clients">
+			<h3 class="section-heading">Clients and Collaborators</h3>
+			<div class="container">
+				<div class="row-fluid profile">
+					<div class="span3 offset3 client-logo">
+						<img src="/images/client-logos/moma-ps1-logo.png">
+					</div><!-- /.span3 -->
+					<div class="span4 client-logo">
+						<img src="/images/client-logos/columbia.png">
+					</div><!-- /.span3 -->
+					<div class="span3 client-logo">
+						<img src="/images/client-logos/new-museum-white.png">
+					</div><!-- /.span3 -->
+				</div><!-- /.row-fluid -->
+				<div class="row-fluid profile">
+					<div class="span3 offset3 client-logo">
+						<img src="/images/client-logos/deste.png">
+					</div><!-- /.span3 -->
+					<div class="span4 client-logo">
+						<img src="/images/client-logos/audi.png">
+					</div><!-- /.span3 -->
+					<div class="span3 client-logo">
+						<img src="/images/client-logos/stylepark.png">
+					</div><!-- /.span3 -->
+				</div><!-- /.row-fluid -->
+				<div class="row-fluid profile">
+					<div class="span3 offset3 client-logo">
+						<img src="/images/client-logos/architizer-white.png">
+					</div><!-- /.span3 -->
+					<div class="span4 client-logo">
+						<img src="/images/client-logos/project-projects-white.png">
+					</div><!-- /.span3 -->
+					<div class="span3 client-logo">
+						<img src="/images/client-logos/swoon-nyc-white.png">
+					</div><!-- /.span3 -->
+				</div><!-- /.row-fluid -->
+				<div class="row-fluid profile">
+					<div class="span3 offset3 client-logo">
+						<img src="/images/client-logos/nbny.png">
+					</div><!-- /.span3 -->
+					<div class="span4 client-logo">
+						<img src="/images/client-logos/story-white.png">
+					</div><!-- /.span3 -->
+				</div><!-- /.row-fluid -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<div id="contact"></div>
+		<div class="section">
+			<h3 class="section-heading">Contact</h3>
+			<div class="container">
+				<div class="row-fluid contact standard">
+					<div class="span8 offset4">
+						<div class="contact-content">
+							281 Fifth Avenue<br>
+							3rd Floor<br>
+							New York, NY 10016<br>
+							United States
+						</div>
+						<div class="contact-content">
+							<a href="mailto:info@th-ey.co">info@th-ey.co</a>
+						</div>
+					</div><!-- /.span12 -->
+				</div><!-- /.projects -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<%- partial('footer') %>
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%-scripts%>
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-29830549-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+  </body>
+</html>
