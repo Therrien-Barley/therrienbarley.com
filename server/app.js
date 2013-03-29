@@ -8,7 +8,8 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , tumblr = require('./routes/tumblr');
 
 var app = express();
 
@@ -32,8 +33,18 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+app.get('/posts/:collection', tumblr.posts);
+app.get('/fetch/:collection', tumblr.fetchTumblrPosts);
+app.get('/info/:collection', tumblr.info);
+app.get('/clear/:collection', tumblr.clearDatabase);
+
+app.get('/alchemy/:collection/categories', tumblr.categories);
+
 app.get('/', routes.index);
 app.get('/projects/yap', routes.projectyap);
+
+app.get('/alchemy', routes.alchemy);
+
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){

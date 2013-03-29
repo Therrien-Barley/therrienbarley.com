@@ -1,0 +1,24 @@
+#header{
+	text-align: center;
+}
+
+#header h6{
+  font-size:11px;
+  margin:20px auto;
+}
+
+#wrapper{
+	width:100%;
+}
+
+.button{
+	height:27px;
+	width:100% !important;
+}
+
+#reset{
+	position:fixed;
+	top:20px;
+	right:20px;
+	z-index:2;
+}

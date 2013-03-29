@@ -8,15 +8,15 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('ifthisthenth-eydb', server, {safe:false});
+db = new Db('audiinnovationresearch', server, {safe:false});
 
 db.open(function(err, db) {
-	console.log('opening DB ifthisthenth-eydb');
+	console.log('opening DB audiinnovationresearch');
     if(!err) {
-        console.log("Connected to 'ifthisthenth-eydb' database");
-        db.collection('posts', {safe:true}, function(err, collection) {
+        console.log("Connected to audiinnovationresearch database");
+        db.collection('tumblrposts', {safe:true}, function(err, collection) {
             if (err) {
-                console.log("Error trying to open posts collection with error: " + err);
+                console.log("Error trying to open tumblrposts collection with error: " + err);
             }
         });
     }
@@ -60,62 +60,70 @@ var done = true;
 
 
 function getTumblrPosts(){
-
-
 	post_offset = iter*post_limit;
-
 
 	tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com', offset: post_offset, limit: post_limit}, function(json){
 
-
 		for(var i = 0; i < json.posts.length; i++){
 
-			json.posts[i].bson_id = json.posts[i].id
-
-			var id_str = '' + json.posts[i].id;
-
-			var sb = '';
-			for(var j = 0; j < (24 - id_str.length); j++){
-				sb = sb + '0';
-			}
-
-			json.posts[i].bson_id = sb + id_str;
-
-			if(done == true){
-				done = false;
-				//console.dir(json.posts[i]);
-				console.log(json.posts[i].id);
-			}
-
-
-            db.collection('posts', function(err, collection) {
-                collection.update({_id:new BSON.ObjectID(json.posts[i].id_bson)}, {"$set": json.posts[i]}, {safe:true, upsert:true}, function(err, result) {
-                    if (err) {
-                        console.log('error: An error has occurred in trying to upsert into the DB posts collection');
+            db.collection('tumblrposts', function(err, collection) {
+                collection.find({ id: json.posts[i].id }).toArray(function(err, items){
+                    if(err){
+                        console.log('Error: trying to find item in tumblrposts collection with id '+ json.posts[i].id);
                         console.log(err);
-                    } else {
-                        var g = posts_gotten + i;
-                        console.log('Success: added to posts collection, number: '+ g);
-                        //res.send(result[0]);
+                    }else{
+                        if(items.length == 1){
+                            //element already in the collection so update it
+                            collection.update({ id : json.posts[i].id }, {"$set": json.posts[i]}, {safe:true}, function(err, result) {
+                                    if (err) {
+                                        console.log('Error: An error has occurred in trying to update an element in tumblrposts collection with id '+json.posts[i].id);
+                                        console.log(err);
+                                    } else {
+                                        console.log('Success: updated element in tumblrposts collection with id '+json.posts[i].id);
+                                        console.dir(result);
+                                    }
+                                });
+                        }else if(items.length > 1){
+                            //more than one element in the collection with this ID so abort
+                            //@todo: clean out the db and insert the new one only (ie. de-dupe)
+                            console.log('Error: more than 1 item in tumblrposts collection matched id '+ json.posts[i].id);
+                            console.log('aborting');
+                        }else{
+                            //element not in collection so insert it
+                            json.posts[i].bson_id = json.posts[i].id;
+                            var id_str = '' + json.posts[i].id;
+
+                            var sb = '';
+                            for(var j = 0; j < (24 - id_str.length); j++){
+                                sb = sb + '0';
+                            }
+
+                            json.posts[i].bson_id = sb + id_str;
+                            json.posts[i]._id = new BSON.ObjectID(json.posts[i].id_bson);
+
+
+                            collection.insert( json.posts[i], {safe:true}, function(err, result) {
+                                if (err) {
+                                    console.log('error: An error has occurred in trying to insert an element into the tumblrposts collection with _id '+ json.posts[i].bson_id);
+                                    console.log(err);
+                                } else {
+                                    console.log('Success: inserted an element into the tumblrposts collection with _id ' + json.posts[i].bson_id);
+                                    console.dir(result);
+                                }
+                            });
+                        }
                     }
-                });
-            });
-
+                });//end find
+            });//end db.collection
 		}
-
 
 		posts_gotten = posts_gotten + json.posts.length;
 		
-
 		if( json.total_posts > posts_gotten){
 			iter++;
 			getTumblrPosts();
 		}
-
 	});
-
-
-
 }
 
 getTumblrPosts();
