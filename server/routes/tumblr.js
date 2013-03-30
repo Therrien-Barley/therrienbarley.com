@@ -308,6 +308,12 @@ function returnCategoriesPost(returnObject, req, res){
                             $(this).remove();
                         });
 
+                        $caption.find('object').each(function(i){
+                            var outerHTML = getOuterHTML($(this).get(0), true);//fit to 100% width
+                            post_photos.push( outerHTML );
+                            $(this).remove();
+                        });
+
                         $caption.find('img').each(function(i){
                             post_photos.push( '<img src="' + $(this).attr('src') + '" width="500px" height="auto">' );
                             $(this).remove();
@@ -319,9 +325,10 @@ function returnCategoriesPost(returnObject, req, res){
                         $caption.each(function(i){
                             if($(this).html() != undefined){
                                 if(i == 0){
-                                    post_text = post_text + '<div id="overlay-post-url"><a href="'+ post.post_url +'" target="_blank">Original post →</a></div><br>';
+                                    
 
-                                    post_text = post_text + '<h2 class="bold">' + $(this).text() + '</h2><br><br>';
+                                    post_text = post_text + '<h1 class="bold">' + $(this).text() + '</h1>';
+                                    post_text = post_text + '<div id="overlay-post-url"><a href="'+ post.post_url +'" target="_blank">Original post →</a></div><br><br><br>';
 
                                     if(post.tags.length > 0){
                                         var tags_text = [];
@@ -335,7 +342,7 @@ function returnCategoriesPost(returnObject, req, res){
                                             }
                                         }
 
-                                        tags_text.push('</div><br><br>');
+                                        tags_text.push('</div><br>');
 
                                         post_text = post_text + tags_text.join('');
                                     }
@@ -378,9 +385,165 @@ exports.categoriesPost = function(req, res){
 }
 
 
+exports.glossaryTerms = function(req, res){
+    var col = req.params.collection;
+
+    var terms = [];
+
+    db.collection(col, function(err, collection) {
+        collection.find().toArray(function(err, items){
+            for(var i = 0; i < items.length; i++){
+                for(var j = 0; j < items[i].tags.length; j++){
+                    var tag = items[i].tags[j];
+                    //don't print out categories
+                    if(tag.toLowerCase() != 'architecture' && 
+                        tag.toLowerCase() != 'fashion' && 
+                        tag.toLowerCase() != 'tech' && 
+                        tag.toLowerCase() != 'design' && 
+                        tag.toLowerCase() != 'women'){
+                        if(terms[tag] != undefined){
+                            terms[ tag ].value++;
+                        }else{
+                            terms[ tag ] = {
+                                tag: tag,
+                                value: 1
+                            };
+                        }
+                    }
+                }    
+            }
+
+            var sorted_terms = [];
+            for(var t in terms){
+                sorted_terms.push(terms[t]);
+            }
+            
+            sorted_terms.sort(function(a,b) { return b.value - a.value } );
+            
+
+            res.render('glossaryterms', {
+                    title: 'Glossary',
+                    terms: sorted_terms
+                });
+
+
+        });
+    });
+}
 
 
 
+exports.quotes = function(req, res){
+    var col = req.params.collection;
 
+    var terms = [];
 
+    db.collection(col, function(err, collection) {
+        collection.find().toArray(function(err, items){
+            for(var i = 0; i < items.length; i++){
+                for(var j = 0; j < items[i].tags.length; j++){
+                    var tag = items[i].tags[j];
+                    //don't print out categories
+                    if(tag.toLowerCase() != 'architecture' && 
+                        tag.toLowerCase() != 'fashion' && 
+                        tag.toLowerCase() != 'tech' && 
+                        tag.toLowerCase() != 'design' && 
+                        tag.toLowerCase() != 'women'){
+                        if(terms[tag] != undefined){
+                            terms[ tag ].value++;
+                        }else{
+                            terms[ tag ] = {
+                                tag: tag,
+                                value: 1
+                            };
+                        }
+                    }
+                }    
+            }
+
+            var sorted_terms = [];
+            for(var t in terms){
+                sorted_terms.push(terms[t]);
+            }
+            
+            sorted_terms.sort(function(a,b) { return b.value - a.value } );
+
+            terms = [];
+
+            for(var s = 0; s < sorted_terms.length; s++){
+                if(sorted_terms[s].value > 7){
+                    terms.push(sorted_terms[s]);
+                }
+            }
+            
+
+            res.render('glossaryquotes', {
+                    title: 'Glossary',
+                    terms: terms
+                });
+        });
+    });
+}
+
+exports.quotesQuote = function(req, res){
+    var col = req.params.collection;
+    var search_term = req.params.term.replace(/-/g," ");
+
+    var terms = [];
+
+    db.collection(col, function(err, collection) {
+        collection.find().toArray(function(err, items){
+            for(var i = 0; i < items.length; i++){
+                for(var j = 0; j < items[i].tags.length; j++){
+                    var tag = items[i].tags[j];
+                    //don't print out categories
+                    if(tag.toLowerCase() != 'architecture' && 
+                        tag.toLowerCase() != 'fashion' && 
+                        tag.toLowerCase() != 'tech' && 
+                        tag.toLowerCase() != 'design' && 
+                        tag.toLowerCase() != 'women'){
+                        if(terms[tag] != undefined){
+                            terms[ tag ].value++;
+                        }else{
+                            terms[ tag ] = {
+                                tag: tag,
+                                value: 1
+                            };
+                        }
+                    }
+                }    
+            }
+
+            var sorted_terms = [];
+            for(var t in terms){
+                sorted_terms.push(terms[t]);
+            }
+            
+            sorted_terms.sort(function(a,b) { return b.value - a.value } );
+
+            terms = [];
+
+            for(var s = 0; s < sorted_terms.length; s++){
+                if(sorted_terms[s].value > 7){
+                    terms.push(sorted_terms[s]);
+                }
+            }
+
+            db.collection(col, function(err, collection) {
+                collection.find({ tags: search_term}).toArray(function(err, items){
+
+                    res.render('glossaryquotesquote', {
+                        title: 'Glossary',
+                        terms: terms,
+                        quotes: items
+                    });
+                });
+            });
+
+            
+
+            
+        });
+    });
+}
 

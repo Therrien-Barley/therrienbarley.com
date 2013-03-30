@@ -1,5 +1,7 @@
 body{
 	font-family:"Apercu Regular", Calibri, sans-serif; font-size-adjust:0.508; font-weight:normal; font-style:normal;
+	font-size:15px;
+	line-height: 21px;
 }
 
 .bold{
@@ -70,7 +72,7 @@ h1{
 
 #nav{
 	text-align: center;
-	height:210px;
+	height:260px;
 	z-index:2;
 	position: relative;
 }
@@ -261,6 +263,13 @@ h1{
 	margin-top:70px;
 }
 
+#overlay-post h1{
+	font-size:42px;
+	letter-spacing: 1px;
+	line-height: 1em;
+	color:white;
+}
+
 #overlay .post-left img{
 	margin-bottom:7px;
 }
@@ -270,4 +279,50 @@ h1{
 	font-family:Monaco, monospace;
 	font-size:11px;
 }
+
+#overlay-post-url a{
+	border:none !important;
+}
+
+#overlay-post a{
+	border-bottom:1px dotted;
+	text-decoration: none;
+}
+
+#overlay-post a:hover{
+	text-decoration: none;
+	border:none;
+}
+
+
+.glossaryterms .term,
+.glossaryquotes .term{
+	margin-right:48px;
+	font-size:30px;
+	line-height: 60px;
+}
+
+.glossaryquotes .terms{
+	text-align: center;
+}
+
+.glossaryterms .term a:hover,
+.glossaryquotes .term a:hover{
+	text-decoration: none;
+	border-bottom:2px dotted;
+}
+
+.glossaryterms .total-posts,
+.glossaryquotes .total-posts{
+	text-align: center;
+	margin: 27px 0;
+	color:black;
+}
+
+.glossaryterms .total-posts .number,
+.glossaryquotes .total-posts .number{
+	font-size:90px;
+	line-height: 1;
+}
+
 

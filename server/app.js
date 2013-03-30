@@ -9,7 +9,8 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
-  , tumblr = require('./routes/tumblr');
+  , tumblr = require('./routes/tumblr')
+  , fetchtumblr = require('./routes/fetchtumblr');
 
 var app = express();
 
@@ -38,9 +39,18 @@ app.get('/fetch/:collection', tumblr.fetchTumblrPosts);
 app.get('/info/:collection', tumblr.info);
 app.get('/clear/:collection', tumblr.clearDatabase);
 
+//CATEGORIES
 app.get('/alchemy/:collection/categories/io', tumblr.categoriesIO);
 app.get('/alchemy/:collection/categories/posts', tumblr.categoriesPosts);
 app.get('/alchemy/:collection/categories/posts/post/:id', tumblr.categoriesPost);
+
+//GLOSSARY
+app.get('/alchemy/:collection/glossary/terms', tumblr.glossaryTerms);
+app.get('/alchemy/:collection/glossary/quotes', tumblr.quotes);
+app.get('/alchemy/:collection/glossary/quotes/quote/:term', tumblr.quotesQuote);
+
+//FETCH
+app.get('/alchemy/:collection/refresh', fetchtumblr.refreshTumblr);
 
 
 app.get('/', routes.index);

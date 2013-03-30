@@ -41,13 +41,13 @@
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="/favicon.ico">
   </head>
-<body data-spy="scroll" data-target=".subnav" data-offset="50">
+<body data-spy="scroll" data-target=".subnav" data-offset="50" class="glossaryquotes">
 
 	<div class="wrapper">
 		<header id="header">
 			<h6><a href="/alchemy">Alchemy 0.1</a></h6>
 		</header>	
-		<div id="reset"><a href="/fetch/tumblrposts">Reset!</a></div>	
+		<div id="reset"><a href="/alchemy/tumblrposts/refresh">Reset!</a></div>	
 		
 		
 		<div id="nav" class="row-fluid bold">
@@ -57,7 +57,7 @@
 				<li class="menu-option" value="categories-posts"><a href="/alchemy/tumblrposts/categories/posts">Posts</a></li>
 			</ul>
 
-			<ul id="categories-nav" class="menu span3 offset2">
+			<ul id="glossary-nav" class="menu span3 offset2 active-trail">
 				<li class="menu-header">Glossary</li>
 				<li class="menu-option" value="glossary-terms">
 					<a href="/alchemy/tumblrposts/glossary/terms">Terms</a>
@@ -69,7 +69,7 @@
 					<a href="/alchemy/tumblrposts/glossary/headlines">Headlines</a>
 				</li>
 				<li class="menu-option" value="glossary-quotes">
-					<a href="/alchemy/tumblrposts/glossary/quotes">Quotes</a>
+					<a href="/alchemy/tumblrposts/glossary/quotes" class="active">Quotes</a>
 				</li>
 				<li class="menu-option" value="glossary-collages">
 					<a href="/alchemy/tumblrposts/glossary/collages">Collages</a>
@@ -80,8 +80,15 @@
 		
 
 		<div id="main" class="row-fluid">
-			<div class="span12 offset2">
-				<h1 class="bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alchemy is an experimental web app developed by Therrien–Barley for transforming base data into noble insights. It vacuums information we have logged in tumblr, flickr, twitter and elsewhere into a persistent database to be sorted, filtered, analyzed, re-presented and re-mixed.</h1>
+			<div class="span12 offset2 total-posts">
+				<h6>Total Terms</h6>
+				<div class="number bold"><%= terms.length %></div>
+			</div>
+
+			<div class="span12 offset2 terms">
+				<% for(var tag in terms){ %>
+					<div class="term"><a href="/alchemy/tumblrposts/glossary/quotes/quote/<%= terms[ tag ].tag.replace(/ /g,"-") %>" target="_blank"><%= terms[ tag ].tag %></a></div>
+				<% } %>
 			</div>
 		</div><!-- /#main -->
 
