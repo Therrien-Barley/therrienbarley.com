@@ -25,7 +25,7 @@ $(document).ready(function() {
 	});
 
 	if($('#overlay').length > 0){
-		$('#overlaybg').css('opacity', 0.7);
+		$('#overlaybg').css('opacity', 0.77);
 		$('#overlay-close').bind('click', function(){
 			$('#overlay').hide();
 		});

@@ -35,6 +35,29 @@ var tumblr = new Tumblr(
   // specify the blog url now or the time you want to use
 );
 
+//HELPER FUNCTION
+//returns html of the element itself
+function getOuterHTML(el, fit){   
+    var fit = fit || false;
+    var wrapper = '';
+
+    if(el){
+        var inner = el.innerHTML;
+        var wrapper = '<' + el.tagName;
+
+        for( var i = 0; i < el.attributes.length; i++ ){
+            wrapper += ' ' + el.attributes[i].nodeName + '="';
+            //fit to 100% width if fit flag set
+            if(el.attributes[i].nodeName == 'width' && fit){
+                wrapper += '100%' + '"';
+            }else{
+                wrapper += el.attributes[i].nodeValue + '"';
+            }
+        }
+        wrapper += '>' + inner + '</' + el.tagName + '>';
+    }
+    return wrapper;
+}
 
 
 
@@ -251,11 +274,12 @@ exports.categoriesPosts = function(req, res){
     getCategories(req, res, returnObject, returnCategoriesPosts);
 }
 
+
+
+
 function returnCategoriesPost(returnObject, req, res){
     if(returnObject.flags >= 6){
         var id = parseInt( req.params.id );
-
-        console.log('id: '+ id);
 
         var col = req.params.collection;
 
@@ -263,8 +287,6 @@ function returnCategoriesPost(returnObject, req, res){
 
         db.collection(col, function(err, collection) {
             collection.find({ id : id }).toArray(function(err, items){
-                console.dir(items);
-
                 var post = items[0];
 
                 var post_text = '';
@@ -272,26 +294,35 @@ function returnCategoriesPost(returnObject, req, res){
 
                 switch(post.type){
                     case 'photo':
+                        
                         for(var i in post.photos){
                             post_photos.push('<img src="' + post.photos[i].alt_sizes[1].url + '" width="' + post.photos[i].alt_sizes[1].width + 'px" height="' + post.photos[i].alt_sizes[1].height + 'px">');
                         }
 
+                        //strip all media out of caption and insert into post_photos
                         var $caption = $(post.caption);
+
+                        $caption.find('iframe').each(function(i){
+                            var outerHTML = getOuterHTML($(this).get(0), true);//fit to 100% width
+                            post_photos.push( outerHTML );
+                            $(this).remove();
+                        });
+
                         $caption.find('img').each(function(i){
-                            console.log('');
-                            console.log('img #'+ i);
-                            console.log( $(this).attr('src') );
                             post_photos.push( '<img src="' + $(this).attr('src') + '" width="500px" height="auto">' );
                             $(this).remove();
                         });
 
+                        
+
 
                         $caption.each(function(i){
-                            console.log('$$$$ '+ i);
                             if($(this).html() != undefined){
                                 if(i == 0){
-                                    post_text = post_text + '<h2 class="bold">' + $(this).html() + '</h2><br><br>';
-                                    
+                                    post_text = post_text + '<div id="overlay-post-url"><a href="'+ post.post_url +'" target="_blank">Original post →</a></div><br>';
+
+                                    post_text = post_text + '<h2 class="bold">' + $(this).text() + '</h2><br><br>';
+
                                     if(post.tags.length > 0){
                                         var tags_text = [];
                                         tags_text.push('<div class="post-tags">');
@@ -310,17 +341,10 @@ function returnCategoriesPost(returnObject, req, res){
                                     }
                                         
                                 }else{
-                                    post_text = post_text + $(this).html();
+                                    post_text = post_text + getOuterHTML($(this).get(0));
                                 }
                             }
                         });
-
-                        console.log('the caption: ');
-                        console.log(post.caption);
-
-                        console.log('the text: ');
-                        console.log(post_text);
-
                         
                         break;
                     case 'text':
