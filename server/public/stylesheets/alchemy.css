@@ -65,6 +65,7 @@ h1{
 
 #wrapper{
 	width:100%;
+	margin-bottom:100px;
 }
 
 #nav{
@@ -156,6 +157,26 @@ h1{
 .women{
 	color:#00FF00;
 }
+
+
+
+.categoriesio #chart{
+	width:500px;
+	height:500px;
+	position: relative;
+}
+
+.categoriesio #chart #total-posts-in-chart{
+	position: absolute;
+	text-align: center;
+	height:36px;
+	width:200px;
+	margin-top:-18px;
+	margin-left:-100px;
+	top:50%;
+	left:50%;
+}
+
 
 #categories-io-i{
 	text-align: center;
