@@ -1,5 +1,28 @@
+body{
+	font-family:"Apercu Regular", Calibri, sans-serif; font-size-adjust:0.508; font-weight:normal; font-style:normal;
+}
+
+.bold{
+	font-family:"Apercu Bold", Calibri, sans-serif; font-size-adjust:0.508; font-weight:bold; font-style:normal;
+}
+
+h6{
+	font-family: Monaco, monospace;
+	letter-spacing:3px;
+	font-size:11px;
+	margin:0;
+	padding:0;
+}
+
 #header{
 	text-align: center;
+}
+
+h1{
+	font-size:36px;
+	letter-spacing: 1px;
+	line-height: 1.25em;
+	color:black;
 }
 
 #header h6{
@@ -7,8 +30,95 @@
   margin:20px auto;
 }
 
+#footer{
+	position:fixed;
+	bottom: 340px;
+	left: -270px;
+}
+
+#footer div{
+	font-family: Monaco, monospace;
+	font-size:11px;
+	margin:0;
+	padding:0;
+	text-align: left;
+	width:320px;
+	height:40px;
+	
+	transform-origin:100% 100%;
+	-webkit-transform-origin: 100% 100%;
+	-ms-transform-origin:100% 100%; /* IE 9 */
+	-moz-transform-origin:100% 100%; /* Firefox */
+	-o-transform-origin:100% 100%; /* Opera */
+
+	transform:rotate(-90deg);
+	-ms-transform:rotate(-90deg); /* IE 9 */
+	-moz-transform:rotate(-90deg); /* Firefox */
+	-webkit-transform:rotate(-90deg); /* Safari and Chrome */
+	-o-transform:rotate(-90deg); /* Opera */
+}
+
 #wrapper{
 	width:100%;
+}
+
+#nav{
+	text-align: center;
+	height:210px;
+	z-index:2;
+	position: relative;
+}
+
+#nav ul{
+	list-style: none;
+}
+
+#nav li{
+	font-size:24px;
+	line-height: 1.25em !important;
+	color:black;
+}
+
+#nav .menu{
+	padding:20px;
+}
+
+#nav .menu .menu-option{
+	display: none;
+}
+
+#nav .menu.open .menu-option,
+#nav .menu.active-trail .menu-option{
+	display: block;
+}
+
+#nav .menu .menu-option a,
+#nav .menu .menu-option a:visited,
+#nav .menu .menu-option a:active{
+	color:blue;
+	text-decoration: none;
+	border:none;
+}
+
+#nav .menu .menu-option a:hover,
+#nav .menu .menu-option a.active{
+	cursor:pointer;
+	color:red;
+	text-decoration: none;
+	border:none;
+}
+
+#nav .menu.open,
+#nav .menu.active-trail{
+	background-color:white;
+	-moz-box-shadow: 10px 10px 0px #f00;
+	-webkit-box-shadow: 10px 10px 0px #f00;
+	box-shadow: 10px 10px 0px #f00;
+}
+
+
+#nav .menu-header{
+	margin-bottom:7px;
 }
 
 .button{
@@ -22,3 +132,115 @@
 	right:20px;
 	z-index:2;
 }
+
+.architecture{
+	color:#ff00ff;
+}
+
+.fashion{
+	color:#FFFF00;
+}
+.tech{
+	color:#00FFFF;
+}
+
+.design{
+	color:#FF7F7F;
+}
+
+.women{
+	color:#00FF00;
+}
+
+#categories-io-i{
+	text-align: center;
+}
+
+.categories-io-item{
+	margin-bottom:7px;
+	clear:both;
+}
+
+
+
+.categories-io-value{
+	font-size:90px;
+	line-height: 1;
+}
+
+.categories-icons{
+	float:left;
+	margin:17px 0 27px;
+}
+
+.categories-icon{
+	font-size:18px;
+	float:left;
+	margin:0 7px 7px 0;
+	position: relative;
+}
+
+.categories-icon img{
+	display: none;
+	position: absolute;
+	width:auto;
+	height:auto;
+	z-index:1;
+}
+
+.categories-icon a:hover{
+	cursor:pointer;
+	position:relative;
+	z-index:2;
+}
+
+
+#overlay{
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:10;
+	overflow:scroll;
+	background:transparent;
+	overflow:hidden;
+}
+
+#overlaybg{
+	position:fixed;
+	min-height:100%;
+	min-width:100%;
+	top:0;
+	left:0;
+	z-index:9;
+	background-color:blue;
+}
+
+#overlay-close{
+	position:fixed;
+	top:40px;
+	right:40px;
+	color:red;
+	z-index:11;
+	font-size:24px;
+}
+
+#overlay-close:hover{
+	cursor:pointer;
+	color:white;
+}
+
+#overlay-post{
+	position:relative;
+	z-index:10;
+	margin-top:70px;
+}
+
+#overlay .post-left img{
+	margin-bottom:7px;
+}
+
+#overlay .post-tags{
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+

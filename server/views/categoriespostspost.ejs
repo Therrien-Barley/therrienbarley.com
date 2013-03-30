@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	<!-- styles -->
+	<link rel="stylesheet" href="/stylesheets/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+	<link rel="stylesheet" href="/stylesheets/elusive-webfont.css">
+	<link rel="stylesheet" href="/stylesheets/select2.css" />
+	<link rel="stylesheet" href="/stylesheets/alchemy.css" />
+	<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.1.min.css">
+
+		
+	
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!--[if lte IE 7]><script src="assets/elusive-font/lte-ie7.js"></script><![endif]-->
+
+    <!-- Apercu font served by fontdeck.com -->
+    <script type="text/javascript">
+		WebFontConfig = { fontdeck: { id: '26531' } };
+
+		(function() {
+		  var wf = document.createElement('script');
+		  wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		  '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		  wf.type = 'text/javascript';
+		  wf.async = 'true';
+		  var s = document.getElementsByTagName('script')[0];
+		  s.parentNode.insertBefore(wf, s);
+		})();
+	</script>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/favicon.ico">
+  </head>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+
+	<div id="overlay">
+		<div id="overlay-close" class="bold">Close</div>
+		<div id="overlaybg"></div>
+		<div id="overlay-post" class="row-fluid">
+			<div class="post-left span6 offset1">
+				<% for(var i in post_photos){ %>
+					<%- post_photos[i] %>
+				<% } %>
+			</div>
+			<div class="post-right span6 offset2">
+				<%- post_text %>
+				<div id="overlay-post-url"><a href="<%= post_url %>">Original post →</a></div>
+			</div>	
+			
+		</div><!-- /#overlay-post -->
+	</div><!-- /#overlay -->
+
+	<div class="wrapper">
+		<header id="header">
+			<h6>Alchemy 0.1</h6>
+		</header>	
+		<div id="reset"><a href="/fetch/tumblrposts">Reset!</a></div>	
+		
+		
+		<div id="nav" class="row-fluid bold">
+			<ul id="categories-nav" class="menu span3 offset4 active-trail">
+				<li class="menu-header">Categories</li>
+				<li class="menu-option" value="categories-io"><a href="/alchemy/tumblrposts/categories/io">I / O</a></li>
+				<li class="menu-option" value="categories-posts"><a href="/alchemy/tumblrposts/categories/posts" class="active">Posts</a></li>
+			</ul>
+
+			<ul id="categories-nav" class="menu span3 offset2">
+				<li class="menu-header">Glossary</li>
+				<li class="menu-option" value="glossary-definitions">
+					<a href="/alchemy/tumblrposts/glossary/definitions">Definitions</a>
+				</li>
+				<li class="menu-option" value="glossary-headlines">
+					<a href="/alchemy/tumblrposts/glossary/headlines">Headlines</a>
+				</li>
+				<li class="menu-option" value="glossary-quotes">
+					<a href="/alchemy/tumblrposts/glossary/quotes">Quotes</a>
+				</li>
+				<li class="menu-option" value="glossary-collages">
+					<a href="/alchemy/tumblrposts/glossary/collages">Collages</a>
+				</li>
+			</ul>
+		</div><!-- /#nav -->
+
+		
+
+		<div id="main">
+
+			<div id="categories-io" class="row-fluid">
+				<div id="categories-io-i" class="span6 offset5">
+					<% if(architecture != undefined){ %>
+						<div class="categories-io-item">
+							<h6>Architecture</h6>
+							<div class="architecture categories-io-value bold"><%= architecture.length %></div>
+							<div class="architecture tumblr-posts bold"><a href="/" class="architecture">tumblr posts →</a></div>
+						
+							<div class="categories-icons">
+								<% for(var i in architecture){ %>
+									<div class="categories-icon">
+										<a href="/alchemy/tumblrposts/categories/posts/post/<%= architecture[i].id %>" class="architecture"><i class="icon-tumblr architecture"></i></a>
+										<% if(architecture[i].type == 'photo'){ %>
+											<img src="<%= architecture[i].photos[0].alt_sizes[1].url %>" width="<%= architecture[i].photos[0].alt_sizes[1].width %>px" height="<%= architecture[i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(architecture[i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(architecture[i].photos[0].alt_sizes[1].width/2) %>px;">
+										<% } %>
+									</div><!-- /.categories-icon -->
+								<% } %>
+							</div>
+						</div>
+					<% } %>
+
+					<% if(fashion != undefined){ %>
+						<div class="categories-io-item">
+							<h6>Fashion</h6>
+							<div class="fashion categories-io-value bold"><%= fashion.length %></div>
+							<div class="fashion tumblr-posts bold"><a href="/" class="fashion">tumblr posts →</a></div>
+						
+							<div class="categories-icons">
+								<% for(var i in fashion){ %>
+									<div class="fashion categories-icon">
+										<a href="/alchemy/tumblrposts/categories/posts/post/<%= fashion[i].id %>" class="fashion"><i class="icon-tumblr fashion"></i></a>
+										<% if(fashion[i].type == 'photo'){ %>
+											<img src="<%= fashion[i].photos[0].alt_sizes[1].url %>" width="<%= fashion[i].photos[0].alt_sizes[1].width %>px" height="<%= fashion[i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(fashion[i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(fashion[i].photos[0].alt_sizes[1].width/2) %>px;">
+										<% } %>
+									</div><!-- /.categories-icon -->
+								<% } %>
+							</div>
+						</div>
+					<% } %>
+
+					<% if(tech != undefined){ %>
+						<div class="categories-io-item">
+							<h6>Tech</h6>
+							<div class="tech categories-io-value bold"><%= tech.length %></div>
+							<div class="tech tumblr-posts bold"><a href="/" class="tech">tumblr posts →</a></div>
+						
+							<div class="categories-icons">
+								<% for(var i in tech){ %>
+									<div class="tech categories-icon">
+										<a href="/alchemy/tumblrposts/categories/posts/post/<%= tech[i].id %>" class="tech"><i class="icon-tumblr tech"></i></a>
+										<% if(tech[i].type == 'photo'){ %>
+											<img src="<%= tech[i].photos[0].alt_sizes[1].url %>" width="<%= tech[i].photos[0].alt_sizes[1].width %>px" height="<%= tech[i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(tech[i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(tech[i].photos[0].alt_sizes[1].width/2) %>px;">
+										<% } %>
+									</div><!-- /.categories-icon -->
+								<% } %>
+							</div>
+						</div>
+					<% } %>
+
+					<% if(design != undefined){ %>
+						<div class="categories-io-item">
+							<h6>Design</h6>
+							<div class="design categories-io-value bold"><%= design.length %></div>
+							<div class="design tumblr-posts bold"><a href="/" class="design">tumblr posts →</a></div>
+						
+							<div class="categories-icons">
+								<% for(var i in design){ %>
+									<div class="design categories-icon">
+										<a href="/alchemy/tumblrposts/categories/posts/post/<%= design[i].id %>" class="design"><i class="icon-tumblr design"></i></a>
+										<% if(design[i].type == 'photo'){ %>
+											<img src="<%= design[i].photos[0].alt_sizes[1].url %>" width="<%= design[i].photos[0].alt_sizes[1].width %>px" height="<%= design[i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(design[i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(design[i].photos[0].alt_sizes[1].width/2) %>px;">
+										<% } %>
+									</div><!-- /.categories-icon -->
+								<% } %>
+							</div>
+						</div>
+					<% } %>
+
+					<% if(women != undefined){ %>
+						<div class="categories-io-item">
+							<h6>Women</h6>
+							<div class="women categories-io-value bold"><%= women.length %></div>
+							<div class="women tumblr-posts bold"><a href="/" class="women">tumblr posts →</a></div>
+						
+							<div class="categories-icons">
+								<% for(var i in women){ %>
+									<div class="women categories-icon">
+										<a href="/alchemy/tumblrposts/categories/posts/post/<%= women[i].id %>" class="women"><i class="icon-tumblr women"></i></a>
+										<% if(women[i].type == 'photo'){ %>
+											<img src="<%= women[i].photos[0].alt_sizes[1].url %>" width="<%= women[i].photos[0].alt_sizes[1].width %>px" height="<%= women[i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(women[i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(women[i].photos[0].alt_sizes[1].width/2) %>px;">
+										<% } %>
+									</div><!-- /.categories-icon -->
+								<% } %>
+							</div>
+						</div>
+					<% } %>
+
+					<hr>
+					<% if(typeof(total_posts) != undefined){ %>
+						<h6>Total Posts</h6>
+						<%= total_posts %>
+					<% } %>
+				</div><!-- /.categories-io-i -->
+			</div><!-- /.categories-io -->
+		</div><!-- /#main -->
+
+
+		<footer id="footer">
+			<div>
+				© 2013 Therrien-Barley, all rights reserved<br>
+				<a href="mailto:info@th-ey.co">info@th-ey.co</a>
+			</div>
+		</footer>
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
+	<script src="/javascripts/select2.min.js"></script>
+	<script src="/javascripts/alchemy.js"></script>
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-29830549-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

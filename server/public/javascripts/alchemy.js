@@ -2,16 +2,33 @@ $(document).ready(function() {
 
 	console.log('blah');
 
-	$("#select-source").select2({
-		placeholder: "select source"
+	$('#nav .menu').hover(function(){
+		if(!$(this).hasClass('active-menu')){
+			$(this).addClass('open');
+		}
+	}, function(){
+		if(!$(this).hasClass('active-menu')){
+			$(this).removeClass('open');
+		}
 	});
 
-	$("#select-view").select2({
-		placeholder: "select view"
+	$('.categories-icon i').hover(function(){
+		var $img = $(this).closest('.categories-icon').find('img');
+		$img.show();
+		console.log('$img.height() '+ $img.attr('width'));
+		$img.height( $img.attr('height') );
+		$img.css( 'maxHeight', $img.attr('height') );
+		$img.width( $img.attr('width') );
+		$img.css( 'maxWidth', $img.attr('width') );
+	}, function(){
+		$(this).closest('.categories-icon').find('img').hide();
 	});
 
-	$("#select-filter").select2({
-		placeholder: "select filter"
-	});
+	if($('#overlay').length > 0){
+		$('#overlaybg').css('opacity', 0.7);
+		$('#overlay-close').bind('click', function(){
+			$('#overlay').hide();
+		});
+	}
 
 });

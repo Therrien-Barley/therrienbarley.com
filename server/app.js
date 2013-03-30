@@ -38,7 +38,10 @@ app.get('/fetch/:collection', tumblr.fetchTumblrPosts);
 app.get('/info/:collection', tumblr.info);
 app.get('/clear/:collection', tumblr.clearDatabase);
 
-app.get('/alchemy/:collection/categories', tumblr.categories);
+app.get('/alchemy/:collection/categories/io', tumblr.categoriesIO);
+app.get('/alchemy/:collection/categories/posts', tumblr.categoriesPosts);
+app.get('/alchemy/:collection/categories/posts/post/:id', tumblr.categoriesPost);
+
 
 app.get('/', routes.index);
 app.get('/projects/yap', routes.projectyap);
