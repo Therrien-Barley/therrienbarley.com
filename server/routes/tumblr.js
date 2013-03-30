@@ -118,7 +118,7 @@ function getTumblrPosts(col){
 
 
             db.collection(col, function(err, collection) {
-                collection.update({_id:new BSON.ObjectID(json.posts[i].id_bson)}, {"$set": json.posts[i]}, {safe:true, upsert:true}, function(err, result) {
+                collection.update({_id:new BSON.ObjectID(json.posts[i].bson_id)}, {"$set": json.posts[i]}, {safe:true, upsert:true}, function(err, result) {
                     if (err) {
                         console.log('error: An error has occurred in trying to upsert into the DB posts collection');
                         console.log(err);

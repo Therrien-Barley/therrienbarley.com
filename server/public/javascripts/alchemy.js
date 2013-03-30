@@ -31,4 +31,27 @@ $(document).ready(function() {
 		});
 	}
 
+	$('#mechanics .image').bind('click', function(){
+		$(this).toggleClass('open');
+		$('#mechanics .menu').toggle();
+	});
+
+/*
+	$('#mechanics .menu a').click(function(event){
+		console.log('clicked');
+		event.preventDefault();
+		degree = 360;
+
+		$('i', this).animate({
+            '-webkit-transform': 'rotate(' + degree + 'deg)',
+            '-moz-transform': 'rotate(' + degree + 'deg)',
+            '-ms-transform': 'rotate(' + degree + 'deg)',
+            '-o-transform': 'rotate(' + degree + 'deg)',
+            'transform': 'rotate(' + degree + 'deg)',
+            'zoom': 1
+        }, 500 );
+	});
+*/
+
+
 });

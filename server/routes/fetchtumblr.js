@@ -420,10 +420,95 @@ function getTumblrPosts(res){
 
 }
 
-exports.refreshTumblr = function(req, res){
+exports.download = function(req, res){
 	getTumblrPosts(res);
 }
 
 
+
+exports.sync = function(req, res){
+	fetchTumblr(20, 0, req, res);
+}
+
+var fetched_total_posts = 0;
+
+function fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts){
+	fetched_total_posts++;
+	//if fetched everything, finish by sending 205 status
+	if(fetched_total_posts >= total_posts){
+		console.log('finished fetching, returning 205');
+		fetched_total_posts = 0;//reset for the next sync
+		res.send(205);//status 205 = Reset Content
+	}else{
+		//if not fetched everything, check to see if inserted everything in present fetch
+		//and call fetch again
+		if(inserted_posts >= fetched_posts){
+			fetchTumblr(limit, fetched_total_posts, req, res);
+		}
+	}
+}
+
+function fetchTumblr(limit, offset, req, res){
+	console.log('fetchTumblr() with offset: '+ offset);
+	var col = req.params.collection;
+
+	tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com', offset: offset, limit: limit}, function(json){
+
+		var inserted_posts = 0;
+
+		var total_posts = json.total_posts;
+		var fetched_posts = json.posts.length;
+
+		//cycle through all the posts returned
+		for(var i = 0; i < fetched_posts; i++){
+
+			var post = json.posts[i];
+
+			//align _id with tumblr id
+			json.posts[i].bson_id = json.posts[i].id
+			var id_str = '' + json.posts[i].id;
+			var sb = '';
+			for(var j = 0; j < (24 - id_str.length); j++){
+				sb = sb + '0';
+			}
+			json.posts[i].bson_id = sb + id_str;
+
+			//sanitize tags
+			for(var t = 0; t < json.posts[i].tags.length; t++){
+                json.posts[i].tags[t] = json.posts[i].tags[t].toLowerCase();
+                //convert all instances of 'technology' to 'tech'
+                if(json.posts[i].tags[t] == 'technology'){
+                	json.posts[i].tags[t] = 'tech';
+                }
+                //remove all IFTTT and t tags
+                if(json.posts[i].tags[t] == 'ifttt' || json.posts[i].tags[t] == 't'){
+                	json.posts[i].tags.splice(t, 1);
+                }
+            }
+
+
+            db.collection(col, function(err, collection) {
+                collection.update({ id: json.posts[i].id }, {"$set": json.posts[i]}, {safe:true, upsert:true}, function(err, result) {
+                    if (err) {
+                        console.log('error: An error has occurred in trying to upsert into the DB '+col+' collection');
+                        console.log(err);
+                    } else {
+                        console.log('Success: added a post to to '+col+' collection with id '+ post.id);
+                    	inserted_posts++;
+                    	fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts);
+                    }
+                });
+            });
+
+		}//end for loop over all posts
+	});
+}
+
+
+exports.clear = function(){
+    db.collection('tumblrposts', function(err, collection) {
+        collection.remove({}, 0);
+    });
+}
 
 

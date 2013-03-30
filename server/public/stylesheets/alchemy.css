@@ -21,6 +21,63 @@ h6 a:hover{
 	border:none;
 }
 
+#mechanics{
+	position:fixed;
+	top:0;
+	left:0;
+	z-index: 4;
+}
+
+#mechanics .image{
+	position:absolute;
+	top:-3;
+	left:0;
+	z-index:8;
+	width:58px;
+	height:70px;
+	background:transparent url('/images/alchemyMechanics.png') no-repeat 0 0;
+}
+
+#mechanics .menu{
+	display: none;
+	position:absolute;
+	top:0;
+	left:0;
+	width:40px;
+	padding:77px 12px 12px 12px;
+	margin:0;
+	background-color:#9999ff;
+	z-index: 3;
+	text-align: center;
+}
+
+#mechanics .menu{
+	margin-bottom:7px;
+}
+
+#mechanics .menu li{
+	margin-bottom:27px;
+	border: 1px solid blue;
+	padding: 17px 7px;
+	width: 20px;
+}
+
+#mechanics .menu a{
+	color:blue;
+	text-decoration: none;
+	border:none;
+	font-size: 14px;
+	line-height: 1.25em !important;
+	position: relative;
+	z-index:8;
+}
+
+#mechanics .menu a:hover{
+	color:red;
+	text-decoration: none;
+	border:none;
+}
+
 #header{
 	text-align: center;
 }
@@ -77,7 +134,8 @@ h1{
 	position: relative;
 }
 
-#nav ul{
+#nav ul,
+.menu{
 	list-style: none;
 }
 
@@ -132,13 +190,6 @@ h1{
 .button{
 	height:27px;
 	width:100% !important;
-}
-
-#reset{
-	position:fixed;
-	top:20px;
-	right:20px;
-	z-index:2;
 }
 
 .architecture{

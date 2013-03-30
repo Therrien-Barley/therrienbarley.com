@@ -50,7 +50,10 @@ app.get('/alchemy/:collection/glossary/quotes', tumblr.quotes);
 app.get('/alchemy/:collection/glossary/quotes/quote/:term', tumblr.quotesQuote);
 
 //FETCH
-app.get('/alchemy/:collection/refresh', fetchtumblr.refreshTumblr);
+app.get('/alchemy/:collection/sync', fetchtumblr.sync);
+app.get('/alchemy/:collection/download', fetchtumblr.download);
+
+fetchtumblr.clear();
 
 
 app.get('/', routes.index);
