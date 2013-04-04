@@ -2,6 +2,7 @@ var mongo = require('mongodb');
 var Tumblr = require('tumblrwks');
 var request = require('request');
 var $ = require('jquery');
+var ent = require('ent');
 
 
 var Server = mongo.Server,
@@ -179,111 +180,243 @@ exports.posts = function(req, res){
 
 
 
-function returnCategories(returnObject, req, res){
-    if(returnObject.flags >= 6){
-       
-        res.render('categoriesio', {
-            title: 'Categories',
-            architecture: returnObject.architecture.length,
-            fashion: returnObject.fashion.length,
-            tech: returnObject.tech.length,
-            design: returnObject.design.length,
-            women: returnObject.women.length,
-            total_posts: returnObject.total_posts
-        });
+
+
+function getElements(req, res, callback){
+    var col = req.params.collection;
+    var taxonomy = req.params.taxonomy;
+    var tag = req.params.tag || false;
+
+    var returnObject = {};
+    var i = 0;
+
+    if(tag != false){
+        findTag(col, tag, returnObject, req, res, callback);
+    }else{
+        findTaxonomyRecursive(col, taxonomy, i, returnObject, req, res, callback);
     }
 }
 
-function getCategories(req, res, returnObject, callback){
-    var col = req.params.collection;
-
-    db.collection(col, function(err, collection) {
-        collection.find({ tags : 'architecture' }).toArray(function(err, items){
-            returnObject.architecture = items;
-            returnObject.flags++;
-            callback(returnObject, req, res);
+function findTag(col, tag, returnObject, req, res, callback){
+    var tag = tag.replace(/-/g," ");
+        db.collection(col, function(err, collection) {
+            collection.find({ tags : tag }).toArray(function(err, items){         
+                returnObject[ tag ] = items;
+                callback(returnObject, req, res);
+            });  
         });
-
-        collection.find({ tags : 'fashion' }).toArray(function(err, items){
-            returnObject.fashion = items;
-            returnObject.flags++;
-            callback(returnObject, req, res);
-        });
-
-        collection.find({ tags : 'tech' }).toArray(function(err, items){
-            returnObject.tech = items;
-            returnObject.flags++;
-            callback(returnObject, req, res);
-        });
-
-        collection.find({ tags : 'design' }).toArray(function(err, items){
-            returnObject.design = items;
-            returnObject.flags++;
-            callback(returnObject, req, res);
-        });
-
-        collection.find({ tags : 'women' }).toArray(function(err, items){
-            returnObject.women = items;
-            returnObject.flags++;
-            callback(returnObject, req, res);
-        });
-
-        collection.find().count(function(err, number){
-            returnObject.total_posts = number;
-            returnObject.flags++;
-            callback(returnObject, req, res);
-        });
-
-    });
 }
 
-exports.categoriesIO = function(req, res){
-    var col = req.params.collection;
+function findTaxonomyRecursive(col, taxonomy, i, returnObject, req, res, callback){
+    if(i < TAXONOMIES[taxonomy].length){
+        db.collection(col, function(err, collection) {
+            
+            console.log('finding '+ TAXONOMIES[taxonomy][i]);
+            var tag = TAXONOMIES[taxonomy][i];
 
-    var returnObject = {};
-    returnObject.flags = 0;
-
-    getCategories(req, res, returnObject, returnCategories);
+            collection.find({ tags : tag }).toArray(function(err, items){
+                console.log('returned from find with tag: '+ tag);
+                returnObject[ tag ] = items;
+                i++;
+                findTaxonomyRecursive(col, taxonomy, i, returnObject, req, res, callback);
+            });
+            
+        });
+    }else{
+        db.collection(col, function(err, collection) {
+            collection.count(function(err, number){
+                callback(returnObject, req, res, number);
+            });
+        });
+        
+    }   
 }
 
 
+exports.getElementsDistributionByTags = function(req, res){
+    var col = req.params.collection;
 
-function returnCategoriesPosts(returnObject, req, res){
-    if(returnObject.flags >= 6){
+    getElements(req, res, returnDistribution);
+}
 
-        console.dir(returnObject.architecture[0].photos[0].alt_sizes);
-       
-        res.render('categoriesposts', {
-            title: 'Categories',
-            architecture: returnObject.architecture,
-            fashion: returnObject.fashion,
-            tech: returnObject.tech,
-            design: returnObject.design,
-            women: returnObject.women,
-            total_posts: returnObject.total_posts
-        });
+
+function returnDistribution(returnObject, req, res, total_posts){
+    switch(req.params.taxonomy){
+        case 'categories':
+            res.render('categoriesdistribution', {
+                title: 'Categories Distribution',
+                elements: returnObject,
+                total_posts: total_posts,
+                colors: TAXONOMIES['colors']
+            });
+            break;
+        case 'terms':
+            var data = [];
+            var i = 0;
+            for(var tag in returnObject){
+                data[i++] = {
+                    name: tag,
+                    val: Math.floor(returnObject[tag].length/total_posts * 100)
+                };
+            }
+
+            console.log('returnObject.length: '+Object.keys(returnObject).length);
+           
+            var total_objects = Object.keys(returnObject).length;
+            var increment = Math.floor(256/total_objects);
+            var colors = [];
+            var j = 0;
+            for(var tag in returnObject){
+                var redValue = 256-(j*increment);
+                redValue = redValue.toString(16);
+
+                if(redValue.length == 1){
+                    redValue = '0' + redValue;
+                }
+
+                colors[j++] = '#' + redValue + redValue + redValue;
+                console.log(redValue);
+            }
+
+            res.render('termsdistribution', {
+                title: 'Terms Distribution',
+                elements: returnObject,
+                total_posts: total_posts,
+                data: data,
+                colors: colors
+            });
+            break;
+    }  
+}
+
+
+
+var TAXONOMIES = [];
+TAXONOMIES[ 'categories' ] = [
+    'material',
+    'light',
+    'architecture',
+    'fashion',
+    'tech',
+    'design',
+    'women'
+];
+
+TAXONOMIES[ 'terms' ] = [
+    'art',
+    '3d printing',
+    'crowdsourcing',
+    'patterns',
+    'collaboration',
+    '4d printing',
+    'youth',
+    'aging',
+    '1990s',
+    'transgenerational',
+    'quantified self',
+    'context awareness',
+    'ubiquitous computing',
+    'realtime',
+    'social media',
+    'peer to peer',
+    'prosumer',
+    'ownership',
+    'identity',
+    'big data',
+    'analytics',
+    'cultural memory',
+    'nostalgia',
+    'emotion',
+    'new americana',
+    'authenticity',
+    'new aesthetic',
+    'digital dualism',
+    'augmented reality',
+    'maker culture',
+    'street culture',
+    'network culture',
+    'filter failure',
+    'content production',
+    'storytelling',
+    'communication',
+    'advertising',
+    'gamification',
+    'behavior',
+    'collaborative consumption',
+    'share economy',
+    'semantic web',
+    'anticipatory computing',
+    'indieweb',
+    'hypermaterial',
+    'reflectivity',
+    'material lifespan',
+    'wood',
+    'glass',
+    'invisible design',
+    'wearables',
+    'embedded devices',
+    'motivational objects',
+    'performance',
+    'sportswear',
+    'byod',
+    'alternative energy',
+    'mobile workforce',
+    'object oriented ontology',
+    'androgeny',
+    'feminism',
+    'women in tech',
+    'celebrity',
+    'gender roles',
+    'thought leader',
+    'hardware',
+    'socialtech',
+    '1990s',
+    'interface',
+    'sharing',
+    'cultures',
+    'opensource',
+    'postdigital'
+];
+
+TAXONOMIES['colors'] = [];
+TAXONOMIES['colors']['material'] = '#ffb000';
+TAXONOMIES['colors']['light'] = '#0FFF00';
+TAXONOMIES['colors']['architecture'] = '#ff00ff';
+TAXONOMIES['colors']['fashion'] = '#FFFF00';
+TAXONOMIES['colors']['tech'] = '#00FFFF';
+TAXONOMIES['colors']['design'] = '#FF7F7F';
+TAXONOMIES['colors']['women'] = '#aaaaaa';
+
+
+function returnElements(returnObject, req, res){
+
+    switch(req.params.taxonomy){
+        case 'categories':
+            res.render('categorieselements', {
+                title: 'Categories Elements',
+                elements: returnObject
+            });
+            break;
+        case 'terms':
+            res.render('termselements', {
+                title: 'Terms Elements',
+                elements: returnObject
+            });
+            break;
     }
 }
 
-exports.categoriesPosts = function(req, res){
-    var col = req.params.collection;
 
-    var returnObject = {};
-    returnObject.flags = 0;
-
-    getCategories(req, res, returnObject, returnCategoriesPosts);
+exports.getElementsByTags = function(req, res){
+    getElements(req, res, returnElements);
 }
 
 
-
-
-function returnCategoriesPost(returnObject, req, res){
-    if(returnObject.flags >= 6){
+function returnElement(returnObject, req, res, total_posts){
+    
         var id = parseInt( req.params.id );
 
         var col = req.params.collection;
-
-
 
         db.collection(col, function(err, collection) {
             collection.find({ id : id }).toArray(function(err, items){
@@ -358,14 +491,10 @@ function returnCategoriesPost(returnObject, req, res){
                         break;
                 }
 
-                res.render('categoriespostspost', {
+                res.render('categorieselementselement', {
                     title: 'Categories',
-                    architecture: returnObject.architecture,
-                    fashion: returnObject.fashion,
-                    tech: returnObject.tech,
-                    design: returnObject.design,
-                    women: returnObject.women,
-                    total_posts: returnObject.total_posts,
+                    elements: returnObject,
+                    total_posts: total_posts,
                     post_text: post_text,
                     post_photos: post_photos,
                     post_url: post.post_url
@@ -373,15 +502,10 @@ function returnCategoriesPost(returnObject, req, res){
             });
         });
             
-    }
 }
 
-exports.categoriesPost = function(req, res){
-
-    var returnObject = {};
-    returnObject.flags = 0;
-
-    getCategories(req, res, returnObject, returnCategoriesPost);
+exports.getElement = function(req, res){
+    getElements(req, res, returnElement);
 }
 
 
@@ -396,7 +520,9 @@ exports.glossaryTerms = function(req, res){
                 for(var j = 0; j < items[i].tags.length; j++){
                     var tag = items[i].tags[j];
                     //don't print out categories
-                    if(tag.toLowerCase() != 'architecture' && 
+                    if(tag.toLowerCase() != 'material' && 
+                        tag.toLowerCase() != 'light' && 
+                        tag.toLowerCase() != 'architecture' && 
                         tag.toLowerCase() != 'fashion' && 
                         tag.toLowerCase() != 'tech' && 
                         tag.toLowerCase() != 'design' && 
@@ -546,4 +672,266 @@ exports.quotesQuote = function(req, res){
         });
     });
 }
+
+
+function processBlockquotes(obj){
+
+    var html;
+    var return_array = [];
+
+    switch(obj.type){
+        case 'photo':
+            html = obj.caption;
+            break;
+        case 'video':
+            html = obj.caption;
+            break;
+        case 'text':
+            html = obj.body;
+            break;
+        case 'link':
+            html = obj.description;
+            break;
+        case 'quote':
+            return_array.push( ent.decode( obj.text ) );
+            return return_array;
+            break;
+        default:
+            return null;
+            html = '';
+            break;
+    }
+
+    html = ent.decode( html );
+
+    //console.log('HTML!!!');
+    //console.log(html);
+
+    var $html = $(html);
+
+    $html.find('blockquote').each(function(i){
+        var text = $(this).text();
+        return_array.push( text );
+
+        //console.log('******* found blockquote! '+ i + ' with blockquote: '+ text);
+    });
+
+    if(return_array.length > 0){
+        return return_array;
+    }else{
+        return null;
+    }
+
+}
+
+function renderFragmentQuotes(returnObject, req, res, number){
+
+    var elements = [];
+
+    for(var tag in returnObject){
+        elements[tag] = [];
+
+        for(var i = 0; i < returnObject[tag].length; i++){
+            
+
+            var quotes = processBlockquotes( returnObject[tag][i] );
+
+            if(quotes != null){
+                for(var j = 0; j < quotes.length; j++){
+                    var element = {};
+                    element.id = returnObject[tag][i].id;
+                    element.post_url = returnObject[tag][i].post_url;
+                    element.tags = returnObject[tag][i].tags;
+                    element.quote = quotes[j];
+
+                    for(var c = 0; c < TAXONOMIES['categories'].length; c++){
+                        if(returnObject[tag][i].tags.indexOf(TAXONOMIES['categories'][c]) > -1){
+                            element.category = TAXONOMIES['categories'][c];
+                        }
+                    }
+                    
+                    elements[tag].push( element ); 
+                }
+                
+            }
+        }
+    }
+
+    switch(req.params.taxonomy){
+        case 'categories':
+            res.render('termsfragmentsquotes', {
+                title: 'Categories Quotes',
+                elements: elements,
+                total_posts: number
+            });
+            break;
+        case 'terms':
+            res.render('termsfragmentsquotes', {
+                title: 'Terms Quotes',
+                elements: elements,
+                total_posts: number
+            });
+            break;
+    }
+}
+
+
+
+
+function processImages(obj){
+
+    var html;
+    var return_array = [];
+
+    switch(obj.type){
+        case 'photo':
+            for(var p = 0; p < obj.photos.length; p++){
+                return_array.push( obj.photos[p].alt_sizes[0].url );
+            }
+            html = obj.caption;
+            break;
+        case 'video':
+            html = obj.caption;
+            break;
+        case 'text':
+            html = obj.body;
+            break;
+        case 'link':
+            html = obj.description;
+            break;
+        case 'quote':
+            html = obj.source;
+            break;
+        default:
+            return null;
+            html = '';
+            break;
+    }
+
+    html = ent.decode( html );
+
+    //console.log('HTML!!!');
+    //console.log(html);
+
+    var $html = $(html);
+
+    $html.find('img').each(function(i){
+        var src = $(this).attr('src');
+        return_array.push( src );
+
+        //console.log('******* found blockquote! '+ i + ' with blockquote: '+ text);
+    });
+
+    if(return_array.length > 0){
+        return return_array;
+    }else{
+        return null;
+    }
+
+}
+
+function renderFragmentImages(returnObject, req, res){
+    var elements = [];
+
+    for(var tag in returnObject){
+        elements[tag] = [];
+
+        for(var i = 0; i < returnObject[tag].length; i++){
+            
+
+            var images = processImages( returnObject[tag][i] );
+
+            if(images != null){
+                for(var j = 0; j < images.length; j++){
+                    var element = {};
+                    element.id = returnObject[tag][i].id;
+                    element.post_url = returnObject[tag][i].post_url;
+                    element.tags = returnObject[tag][i].tags;
+                    element.image = images[j];
+
+                    for(var c = 0; c < TAXONOMIES['categories'].length; c++){
+                        if(returnObject[tag][i].tags.indexOf(TAXONOMIES['categories'][c]) > -1){
+                            element.category = TAXONOMIES['categories'][c];
+                        }
+                    }
+                    
+                    elements[tag].push( element ); 
+                }
+                
+            }
+        }
+    }
+
+    switch(req.params.taxonomy){
+        case 'categories':
+            res.render('termsfragmentsimages', {
+                title: 'Categories Images',
+                elements: elements
+            });
+            break;
+        case 'terms':
+            res.render('termsfragmentsimages', {
+                title: 'Terms Images',
+                elements: elements
+            });
+            break;
+    }
+
+}
+
+
+
+exports.getFragments = function(req, res){
+    var fragment = req.params.fragment || 'quotes';
+
+    switch(fragment){
+        case 'quotes':
+            console.log('quotes');
+            getElements(req, res, renderFragmentQuotes);
+            break;
+        case 'images':
+            console.log('images');
+            getElements(req, res, renderFragmentImages);
+            break;
+
+        default:
+            console.log('default');
+            break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

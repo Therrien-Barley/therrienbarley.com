@@ -39,13 +39,17 @@ app.get('/fetch/:collection', tumblr.fetchTumblrPosts);
 app.get('/info/:collection', tumblr.info);
 app.get('/clear/:collection', tumblr.clearDatabase);
 
-//CATEGORIES
-app.get('/alchemy/:collection/categories/io', tumblr.categoriesIO);
-app.get('/alchemy/:collection/categories/posts', tumblr.categoriesPosts);
-app.get('/alchemy/:collection/categories/posts/post/:id', tumblr.categoriesPost);
+//ALL
+app.get('/alchemy/:collection/:taxonomy/distribution', tumblr.getElementsDistributionByTags);2
+app.get('/alchemy/:collection/:taxonomy/elements', tumblr.getElementsByTags);
+app.get('/alchemy/:collection/:taxonomy/elements/element/:id', tumblr.getElement);
+
+app.get('/alchemy/:collection/:taxonomy/fragments/:fragment/:tag', tumblr.getFragments);
+
+
 
 //GLOSSARY
-app.get('/alchemy/:collection/glossary/terms', tumblr.glossaryTerms);
+app.get('/alchemy/:collection/terms/all', tumblr.glossaryTerms);
 app.get('/alchemy/:collection/glossary/quotes', tumblr.quotes);
 app.get('/alchemy/:collection/glossary/quotes/quote/:term', tumblr.quotesQuote);
 
@@ -53,7 +57,7 @@ app.get('/alchemy/:collection/glossary/quotes/quote/:term', tumblr.quotesQuote);
 app.get('/alchemy/:collection/sync', fetchtumblr.sync);
 app.get('/alchemy/:collection/download', fetchtumblr.download);
 
-fetchtumblr.clear();
+
 
 
 app.get('/', routes.index);

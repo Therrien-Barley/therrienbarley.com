@@ -78,6 +78,10 @@ h6 a:hover{
 	border:none;
 }
 
+#powered-by{
+	color:#9999ff;
+}
+
 #header{
 	text-align: center;
 }
@@ -98,6 +102,11 @@ h1{
 	position:fixed;
 	bottom: 340px;
 	left: -270px;
+	color:#9999ff;
+}
+
+#footer a{
+	color:#9999ff;
 }
 
 #footer div{
@@ -129,7 +138,7 @@ h1{
 
 #nav{
 	text-align: center;
-	height:260px;
+	height:277px;
 	z-index:2;
 	position: relative;
 }
@@ -187,6 +196,10 @@ h1{
 	margin-bottom:7px;
 }
 
+#sub-nav{
+	margin-bottom:37px;
+}
+
 .button{
 	height:27px;
 	width:100% !important;
@@ -208,14 +221,32 @@ h1{
 }
 
 .women{
-	color:#00FF00;
+	color:#aaa;
+}
+
+.material{
+	color:#ffb000;
+}
+
+.light{
+	color:#0FFF00;
 }
 
 
+#sources .sources-heading{
+	text-align: center;
+	margin:47px 0 17px;
+	color:black;
+}
+
+#sources h6{
+	color:white;
+}
+
 
 .categoriesio #chart{
-	width:500px;
-	height:500px;
+	width:600px;
+	height:600px;
 	position: relative;
 }
 
@@ -235,42 +266,22 @@ h1{
 	text-align: center;
 }
 
-.categories-io-item{
-	margin-bottom:7px;
-	clear:both;
+
+
+#sources{
+	margin-top: 27px;
 }
 
-
-
+#sources .number-of-sources,
 .categories-io-value{
 	font-size:90px;
 	line-height: 1;
 }
 
-.categories-icons{
-	float:left;
-	margin:17px 0 27px;
-}
-
-.categories-icon{
-	font-size:18px;
-	float:left;
-	margin:0 7px 7px 0;
-	position: relative;
-}
-
-.categories-icon img{
-	display: none;
-	position: absolute;
-	width:auto;
-	height:auto;
-	z-index:1;
-}
-
-.categories-icon a:hover{
-	cursor:pointer;
-	position:relative;
-	z-index:2;
+.categories-io-value,
+.fragment-quote-wrapper .quote-count{
+	font-size:67px;
+	line-height: 1;
 }
 
 
@@ -353,12 +364,24 @@ h1{
 	line-height: 60px;
 }
 
+#sources .source-link-wrapper,
+#sources-magazines .source-link{
+	margin-right:28px;
+	font-size:18px;
+	line-height: 36px;
+}
+
+#sources .source-link:first-child{
+	margin-left:0;
+}
+
 .glossaryquotes .terms{
 	text-align: center;
 }
 
 .glossaryterms .term a:hover,
-.glossaryquotes .term a:hover{
+.glossaryquotes .term a:hover,
+#sources .source-link:hover{
 	text-decoration: none;
 	border-bottom:2px dotted;
 }
@@ -376,4 +399,111 @@ h1{
 	line-height: 1;
 }
 
+.tag-elements,
+.tag-elements a{
+	color:black;
+	margin-bottom:7px;
+	clear:both;
+}
 
+.tag-elements h6{
+	color:white;
+}
+
+.tag-elements-icons{
+	float:left;
+	margin:17px 0 27px;
+}
+
+.tag-elements-icon{
+	font-size:18px;
+	float:left;
+	margin:0 7px 7px 0;
+	position: relative;
+}
+
+.tag-elements-icon img{
+	display: none;
+	position: absolute;
+	width:auto;
+	height:auto;
+	z-index:1;
+}
+
+.tag-elements-icon a:hover{
+	cursor:pointer;
+	position:relative;
+	z-index:2;
+}
+
+
+.fragment-quote-wrapper{
+	clear:both;
+	margin-bottom:77px;
+}
+
+
+.fragment-quote-container{
+	float:left;
+	color:blue !important;
+	margin-bottom:17px;
+	text-align: left;
+}
+
+.fragment-quote-container .fragment-quote-text{
+	margin:15px;
+}
+
+.fragment-quote-container .fragment-quote-url,
+.fragment-quote-container .fragment-quote-tags{
+	text-align: right;
+}
+
+.fragment-quote-container .fragment-quote-url a{
+	margin:0 15px 7px 0;
+	font-size:13px;
+	color:black;
+}
+
+.fragment-quote-container .fragment-quote-tags{
+	margin:0 15px 15px 0;
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+
+.fragment-quote-container{
+	background-color: white;
+	width:250px;
+}
+
+.fragment-quote-wrapper .quote-count{
+	margin-bottom:27px;
+	color:black;
+}
+
+.fragment-quote-container.architecture{
+	background-color:#ff00ff;
+}
+
+.fragment-quote-container.fashion{
+	background-color:#FFFF00;
+}
+.fragment-quote-container.tech{
+	background-color:#00FFFF;
+}
+
+.fragment-quote-container.design{
+	background-color:#FF7F7F;
+}
+
+.fragment-quote-container.women{
+	background-color:#aaa;
+}
+
+.fragment-quote-container.material{
+	background-color:#ffb000;
+}
+
+.fragment-quote-container.light{
+	background-color:#0FFF00;
+}
