@@ -39,16 +39,16 @@ function($, init, _, Backbone, TumblrPost, TumblrPostView) {
                 });
 
                 if(data.tumblr_post_view.render()){
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 500);
+                    
                     if($('#overlay').length > 0){
                         $('#overlaybg').css('opacity', 0.7);
                         $('#overlay-close').bind('click', function(){
                             data.tumblr_post_view.unrender();
                             data.tumblr_post = null;
                             data.tumblr_post_view = null;
-                            console.log('scrolling');
-                            $('html, body').animate({
-                                scrollTop: 0
-                            }, 500);
                         });
                     }
                 }
