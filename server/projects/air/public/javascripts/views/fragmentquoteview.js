@@ -6,7 +6,7 @@ define([
 function(_, Backbone, template) {
 
 	var FragmentQuoteView = Backbone.View.extend({
-	    className: 'fragmentquote',
+	    className: 'fragment',
 		template: template,
 		/*
 		initialize: function(){

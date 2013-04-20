@@ -19,12 +19,12 @@ function(Backbone, FragmentQuoteView, template) {
 		    if(vars._quoteViewEl){
 		    	this._quoteViewEl = vars._quoteViewEl;
 		    }
+		    console.log('setting the el of a fragmentQuoteView to '+this._quoteViewEl);
 
 		    _.each(this.collection.models, function(model, index){
                 that._fragmentQuoteViews.push( new FragmentQuoteView({
                     model: model,
-                    tagName: 'div', 
-                    el: this._quoteViewEl
+                    tagName: 'div'
                 }));
             });
 		},
@@ -46,10 +46,9 @@ function(Backbone, FragmentQuoteView, template) {
 		    // Render each sub-view and append it to the parent view's element.
 		    _.each(this._fragmentQuoteViews, function(fragmentQuoteView) {
 		    	if(vars.tag){
-		    		console.dir('about to render a model!');
-		    		console.dir(fragmentQuoteView);
-		    		console.log(that.el);
-		    		$(that.el).append(fragmentQuoteView.render({tag: vars.tag}).el);
+		    		console.log('*******the el for a fqv is: ');
+		    		console.dir(that.el);
+		    		$(that._quoteViewEl).append(fragmentQuoteView.render({tag: vars.tag}).el);
 		    	}
 		    });
 

@@ -2,12 +2,14 @@ requirejs.config({
   paths: {
     "jquery": '../../components/jquery/jquery',
     "underscore": '../../components/underscore-amd/underscore',
-    "backbone": '../../components/backbone-amd/backbone'
+    "backbone": '../../components/backbone-amd/backbone',
+    "jquery-masonry": '../../components/jquery-masonry/jquery.masonry.min'
   }
 });
 
 require([
     'jquery',
+    'jquery-masonry',
     'taxonomies',
     'init',
     'underscore',
@@ -18,7 +20,7 @@ require([
     'views/fragmentquotesview'
 ],
 
-function($, TAXONOMIES, init, _, Backbone, TumblrPost, TumblrPostView, FragmentQuotes, FragmentQuotesView) {
+function($, masonry, TAXONOMIES, init, _, Backbone, TumblrPost, TumblrPostView, FragmentQuotes, FragmentQuotesView) {
 
     console.dir(_);
     console.dir(Backbone);
@@ -110,6 +112,14 @@ function($, TAXONOMIES, init, _, Backbone, TumblrPost, TumblrPostView, FragmentQ
                         $('html, body').animate({
                             scrollTop: 0
                         }, 500);
+
+                        $('.masonry-wrapper').each(function(){
+                            $(this).masonry({
+                              itemSelector: '.fragment',
+                              columnWidth: 250,
+                              gutterWidth:17
+                            });
+                        });
                     }
                 }
             });
