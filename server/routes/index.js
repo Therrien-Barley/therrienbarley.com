@@ -5,7 +5,13 @@
 
 exports.index = function(req, res){
   console.log('getting index!!!!!!!!');
-  res.render('index', { title: 'Therrien–Barley' });
+
+  if(req.headers.host.indexOf('new-habit.at') >= 0){
+    res.render('habitatindex', { title: 'New Habitat' });
+  }else{
+    res.render('index', { title: 'Therrien–Barley' });
+  }
+  
 };
 
 

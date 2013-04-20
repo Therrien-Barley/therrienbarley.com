@@ -1,0 +1,109 @@
+body,
+a, a:visited{
+	color:black;
+	font:bold 24px/24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color:white;
+}
+
+#wrapper{
+	padding:3% 5%;
+	margin:0;
+}
+
+h2{
+	font-size:36px;
+	font-weight: bold;
+	padding:0;
+	margin:0;
+}
+
+a, a:visited{
+	border-bottom:2px dotted;
+	text-decoration: none !important;
+}
+
+a:hover{
+	border:none;
+	text-decoration: none !important;
+}
+
+#header{
+	text-align:left;
+}
+
+#footer{
+	margin-bottom:30px;
+}
+
+#hackcity{
+	position:fixed;
+	top: 0;
+	left: -27px;
+	height: 72px;
+	width: 110px;
+	transform-origin: 100% 100%;
+	-webkit-transform-origin: 100% 100%;
+	-ms-transform-origin: 100% 100%;
+	-moz-transform-origin: 100% 100%;
+	-o-transform-origin: 100% 100%;
+	transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-webkit-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+}
+
+#homeapi{
+	vertical-align: middle;
+	text-align: center;
+	margin:120px auto;
+}
+
+#homeicon{
+	font-size:200px;
+	margin:0 auto;
+}
+
+#equals,
+#api{
+	font-size:120px;
+}
+
+#equals{
+	margin:80px auto 0;
+}
+
+#api{
+	margin:90px auto 0;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+	#homeicon{
+		font-size:170px;
+		margin:0 auto;
+	}
+
+	#equals,
+	#api{
+		font-size:100px;
+	}
+
+	#equals{
+		margin:70px auto 0;
+	}
+
+	#api{
+		margin:80px auto 0;
+	}
+}
+
+.info-block{
+	margin-bottom:50px;
+}
+
+@media (max-width: 480px){
+	#header{
+		text-align:center;
+	}
+}
+

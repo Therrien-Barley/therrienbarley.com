@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- partial('head', {title:title}) %>
+<body data-spy="scroll" data-target=".subnav" data-offset="50" class="glossaryquotes">
+
+	<div id="mechanics">
+		<div class="image"></div>
+		<ul class="menu">
+			<li><a href="/alchemy/tumblrposts/sync"><i class="icon-tumblr"></i><br>s<br>y<br>n<br>c</a></li>
+			<li><a href="/alchemy/tumblrposts/download"><i class="icon-download-alt"></i><br>.<br>c<br>s<br>v</a></li>
+		</ul>
+	</div><!-- /#mechanics -->
+
+	<div class="wrapper">
+		<header id="header">
+			<h6><a href="/alchemy">A.I.R. Trend Analysis<br><span id="powered-by">powered by Alchemy</span></a></h6>
+		</header>
+		
+		
+		<%- partial('nav') %>
+		<%- partial('subnav') %>
+
+
+		
+
+		<div id="main">
+		
+			<% for(var tag in elements){ %>
+				<div class="row-fluid fragment-quote-wrapper">
+					<div class="span12 offset2 terms">
+						
+							<h6><%= tag %></h6>
+							<div class="quote-count"><%= elements[tag].length %></div>
+
+							<div class="masonry-wrapper row-fluid">
+								<% for(var i = 0; i < elements[tag].length; i++){ %>
+
+									<div class="fragment-quote-container <%= elements[tag][i].category %>">
+										<div class="fragment-quote-text"><%= elements[tag][i].quote %></div>
+										<div class="fragment-quote-url"><a href="<%= elements[tag][i].post_url %>" target="_blank">Original post →</a></div>
+										<div class="fragment-quote-tags">
+											<% for(var t = 0; t < elements[tag][i].tags.length; t++){ %>
+												<% if(t < elements[tag][i].tags.length-1){ %>
+													<span class="<%= elements[tag][i].tags[t] %>"><%= elements[tag][i].tags[t] %>, </span>
+												<% }else{ %>
+													<span class="<%= elements[tag][i].tags[t] %>"><%= elements[tag][i].tags[t] %></span>
+												<% } %>
+											<% } %>
+										</div>
+									</div>
+								<% } %>
+							</div>
+						
+					</div>
+				</div>
+			<% } %>
+
+					
+				
+		</div><!-- /#main -->
+
+		<footer id="footer" class="row-fluid">
+			<div class="span6">
+				© 2013 Therrien-Barley, all rights reserved<br>
+				<a href="mailto:info@th-ey.co">info@th-ey.co</a>
+			</div>
+		</footer>
+
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
+	<script src="/javascripts/jquery.masonry.min.js"></script>
+	<script src="/javascripts/select2.min.js"></script>
+	<script src="/javascripts/alchemy.js"></script>
+
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+
+		$('.masonry-wrapper').each(function(){
+			$(this).masonry({
+			  itemSelector: '.fragment-quote-container',
+			  columnWidth: 250,
+			  gutterWidth:17
+			});
+		});
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-29830549-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

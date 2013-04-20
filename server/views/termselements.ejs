@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- partial('head', {title:title}) %>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+
+	<div id="mechanics">
+		<div class="image"></div>
+		<ul class="menu">
+			<li><a href="/alchemy/tumblrposts/sync"><i class="icon-tumblr"></i><br>s<br>y<br>n<br>c</a></li>
+			<li><a href="/alchemy/tumblrposts/download"><i class="icon-download-alt"></i><br>.<br>c<br>s<br>v</a></li>
+		</ul>
+	</div><!-- /#mechanics -->
+	
+	<div class="wrapper">
+		<header id="header">
+			<h6><a href="/alchemy">A.I.R. Trend Analysis<br><span id="powered-by">powered by Alchemy</span></a></h6>
+		</header>			
+		
+		<%- partial('nav') %>
+
+		
+
+		<div id="main">
+
+			<div id="categories-io" class="row-fluid">
+				<div id="categories-io-i" class="span6 offset5">
+					
+
+					<% for(var tag in elements){ %>
+						<% if(elements[tag] != undefined){ %>
+							<div class="tag-elements">
+								<h6><%= tag %></h6>
+								<div class="<%= tag %> categories-io-value bold"><%= elements[tag].length %></div>
+								<div class="<%= tag %> tumblr-posts bold"><a href="http://ifthisthenth-ey.tumblr.com/tagged/<%= tag %>" class="<%= tag %>" target="_blank">tumblr posts →</a></div>
+							
+								<div class="tag-elements-icons">
+									<% for(var i in elements[tag]){ %>
+										<span class="tag-elements-icon">
+											<a href="/alchemy/tumblrposts/terms/elements/element/<%= elements[tag][i].id %>" class="<%= tag %>"><i class="icon-tumblr <%= tag %>"></i></a>
+											<% if(elements[tag][i].type == 'photo'){ %>
+												<img src="<%= elements[tag][i].photos[0].alt_sizes[1].url %>" width="<%= elements[tag][i].photos[0].alt_sizes[1].width %>px" height="<%= elements[tag][i].photos[0].alt_sizes[1].height %>px" style="margin-top:<%= -1*Math.floor(elements[tag][i].photos[0].alt_sizes[1].height/2) %>px; margin-left:<%= -1*Math.floor(elements[tag][i].photos[0].alt_sizes[1].width/2) %>px;">
+											<% } %>
+										</span><!-- /.categories-icon -->
+									<% } %>
+								</div>
+							</div>
+						<% } %>
+
+
+					<% } %>
+
+
+					
+				</div><!-- /.categories-io-i -->
+			</div><!-- /.categories-io -->
+		</div><!-- /#main -->
+
+		<footer id="footer">
+			<div>
+				© 2013 Therrien-Barley, all rights reserved<br>
+				<a href="mailto:info@th-ey.co">info@th-ey.co</a>
+			</div>
+		</footer>
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
+	<script src="/javascripts/select2.min.js"></script>
+	<script src="/javascripts/alchemy.js"></script>
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-29830549-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

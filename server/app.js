@@ -10,7 +10,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , tumblr = require('./routes/tumblr')
-  , fetchtumblr = require('./routes/fetchtumblr');
+  , fetchtumblr = require('./routes/fetchtumblr')
+  , habitat = require('./routes/habitat');
 
 var app = express();
 
@@ -66,6 +67,8 @@ app.get('/projects/yap', routes.projectyap);
 app.get('/alchemy', routes.alchemy);
 
 app.get('/users', user.list);
+
+app.get('/new-habitat', habitat.habitatindex);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
