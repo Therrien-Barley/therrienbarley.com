@@ -21,6 +21,9 @@ exports.insightairroute = function(req, res){
 								console.log('getting Element by id');
 								tumblr.getElement(req, res, url_array[6]);
 								break;
+							case 'fragments':
+								tumblr.getFragments(req, res, 'categories', url_array[6], url_array[7]);
+								break;
 						}
 						break;
 				}
@@ -53,10 +56,9 @@ exports.insightairroute = function(req, res){
 						tumblr.getElementsByTags(req, res, 'categories');
 						break;
 					case 'fragments':
-						res.render('../projects/air/views/categories/fragments', 
-						{
-							title: 'Categories - Fragments | Therrien–Barley'
-						});
+						res.render('../projects/air/views/categories/fragments', {
+			                title: 'Categories Fragments | Therrien-Barley'
+			            });
 						break;
 					default:
 						res.send(501, 'This IP does not serve that host domain');//501 = not implemented

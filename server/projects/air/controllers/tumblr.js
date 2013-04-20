@@ -182,25 +182,34 @@ exports.posts = function(req, res){
 
 
 
-function getElements(req, res, callback, col, taxonomy){
-    var tag = req.params.tag || false;
+function getElements(req, res, callback, col, taxonomy, tag){
+    var tag = tag || false;
+
+    console.log('getElements() tag: '+ tag);
 
     var returnObject = {};
     var i = 0;
 
     if(tag != false){
-        findTag(col, tag, returnObject, req, res, callback);
+        findTag(col, tag, returnObject, req, res, callback, taxonomy);
     }else{
         findTaxonomyRecursive(col, taxonomy, i, returnObject, req, res, callback);
     }
 }
 
-function findTag(col, tag, returnObject, req, res, callback){
+function findTag(col, tag, returnObject, req, res, callback, taxonomy){
+    console.log('findTag()');
+    console.log(col + tag );
+    console.dir(returnObject);
+    console.dir(callback);
+
     var tag = tag.replace(/-/g," ");
         db.collection(col, function(err, collection) {
             collection.find({ tags : tag }).toArray(function(err, items){         
                 returnObject[ tag ] = items;
-                callback(returnObject, req, res);
+                console.log('calling callback after finding # of items: '+ items.length);
+                //console.dir(items);
+                callback(returnObject, req, res, taxonomy, items.length);
             });  
         });
 }
@@ -716,16 +725,17 @@ function processBlockquotes(obj){
 
 }
 
-function renderFragmentQuotes(returnObject, req, res, number){
-
+function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
+    console.log('renderFragmentQuotes()');
     var elements = [];
 
+    var quote_counter = 0;
+    var idx = 0;
+
     for(var tag in returnObject){
-        elements[tag] = [];
 
         for(var i = 0; i < returnObject[tag].length; i++){
             
-
             var quotes = processBlockquotes( returnObject[tag][i] );
 
             if(quotes != null){
@@ -742,29 +752,16 @@ function renderFragmentQuotes(returnObject, req, res, number){
                         }
                     }
                     
-                    elements[tag].push( element ); 
+                    quote_counter++;
+                    elements.push( element ); 
                 }
                 
             }
         }
     }
 
-    switch(req.params.taxonomy){
-        case 'categories':
-            res.render('termsfragmentsquotes', {
-                title: 'Categories Quotes',
-                elements: elements,
-                total_posts: number
-            });
-            break;
-        case 'terms':
-            res.render('termsfragmentsquotes', {
-                title: 'Terms Quotes',
-                elements: elements,
-                total_posts: number
-            });
-            break;
-    }
+    console.dir(elements);
+    res.send(elements);
 }
 
 
@@ -826,10 +823,8 @@ function renderFragmentImages(returnObject, req, res){
     var elements = [];
 
     for(var tag in returnObject){
-        elements[tag] = [];
 
-        for(var i = 0; i < returnObject[tag].length; i++){
-            
+        for(var i = 0; i < returnObject[tag].length; i++){            
 
             var images = processImages( returnObject[tag][i] );
 
@@ -847,43 +842,30 @@ function renderFragmentImages(returnObject, req, res){
                         }
                     }
                     
-                    elements[tag].push( element ); 
+                    elements.push( element ); 
                 }
                 
             }
         }
     }
 
-    switch(req.params.taxonomy){
-        case 'categories':
-            res.render('termsfragmentsimages', {
-                title: 'Categories Images',
-                elements: elements
-            });
-            break;
-        case 'terms':
-            res.render('termsfragmentsimages', {
-                title: 'Terms Images',
-                elements: elements
-            });
-            break;
-    }
+    res.send(elements);
 
 }
 
 
 
-exports.getFragments = function(req, res){
-    var fragment = req.params.fragment || 'quotes';
+exports.getFragments = function(req, res, taxonomy, fragment, tag){
 
     switch(fragment){
         case 'quotes':
-            console.log('quotes');
-            getElements(req, res, renderFragmentQuotes);
+            console.log('getFragments()::quotes');
+            console.log('tax: '+ taxonomy+ ' fragment: '+ fragment+' tag: '+ tag);
+            getElements(req, res, renderFragmentQuotes, 'tumblrposts', taxonomy, tag);
             break;
         case 'images':
             console.log('images');
-            getElements(req, res, renderFragmentImages);
+            getElements(req, res, renderFragmentImages, 'tumblrposts', taxonomy, tag);
             break;
 
         default:
