@@ -29,6 +29,11 @@ app.configure(function(){
   app.use(app.router);
   app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
+  //set up serving of static files from project directory
+  app.use('/projects/air/public', express.static(__dirname + '/projects/air/public'));
+  app.use('/projects/air/components', express.static(__dirname + '/projects/air/components'));
+  app.use('/projects/air/views/templates', express.static(__dirname + '/projects/air/views/templates'));
+
 });
 
 app.configure('development', function(){
@@ -41,7 +46,7 @@ app.get('/info/:collection', tumblr.info);
 app.get('/clear/:collection', tumblr.clearDatabase);
 
 //ALL
-app.get('/alchemy/:collection/:taxonomy/distribution', tumblr.getElementsDistributionByTags);2
+app.get('/alchemy/:collection/:taxonomy/distribution', tumblr.getElementsDistributionByTags);
 app.get('/alchemy/:collection/:taxonomy/elements', tumblr.getElementsByTags);
 app.get('/alchemy/:collection/:taxonomy/elements/element/:id', tumblr.getElement);
 
@@ -58,6 +63,9 @@ app.get('/alchemy/:collection/glossary/quotes/quote/:term', tumblr.quotesQuote);
 app.get('/alchemy/:collection/sync', fetchtumblr.sync);
 app.get('/alchemy/:collection/download', fetchtumblr.download);
 
+
+//A.I.R. 2.0
+app.get('/insights*', routes.route);
 
 
 

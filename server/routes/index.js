@@ -36,3 +36,45 @@ exports.alchemy = function(req, res){
     title: 'Alchemy | Therrien–Barley'
   });
 };
+
+
+
+
+
+
+var insightairrouter = require('../projects/air/routes/router');
+
+exports.route = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          switch(url_array[2]){
+            case 'air':
+              insightairrouter.insightairroute(req, res);
+              break;
+            default:
+              res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+              break;
+          }
+        default:
+          break;
+      }
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
