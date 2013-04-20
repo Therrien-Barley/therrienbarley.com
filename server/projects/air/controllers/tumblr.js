@@ -4,7 +4,6 @@ var request = require('request');
 var $ = require('jquery');
 var ent = require('ent');
 
-
 var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;

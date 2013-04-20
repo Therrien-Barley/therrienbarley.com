@@ -1,0 +1,13 @@
+<div class="fragment-quote-container <%= data.category %>">
+	<div class="fragment-quote-text"><%= data.quote %></div>
+	<div class="fragment-quote-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
+	<div class="fragment-quote-tags">
+		<% for(var t = 0; t < data.tags.length; t++){ %>
+			<% if(t < data.tags.length-1){ %>
+				<span class="<%= data.tags[t] %>"><%= data.tags[t] %>, </span>
+			<% }else{ %>
+				<span class="<%= data.tags[t] %>"><%= data.tags[t] %></span>
+			<% } %>
+		<% } %>
+	</div>
+</div>

@@ -15,36 +15,9 @@
 		
 
 		<div id="main">
+			<div id="fragments-el"></div>
 		
-			<% for(var tag in elements){ %>
-				<div class="row-fluid fragment-quote-wrapper">
-					<div class="span12 offset2 terms">
-						
-							<h6><%= tag %></h6>
-							<div class="quote-count"><%= elements[tag].length %></div>
-
-							<div class="masonry-wrapper row-fluid">
-								<% for(var i = 0; i < elements[tag].length; i++){ %>
-
-									<div class="fragment-quote-container <%= elements[tag][i].category %>">
-										<img src="<%= elements[tag][i].image %>" width="250px">
-										<div class="fragment-quote-url"><a href="<%= elements[tag][i].post_url %>" target="_blank">Original post →</a></div>
-										<div class="fragment-quote-tags">
-											<% for(var t = 0; t < elements[tag][i].tags.length; t++){ %>
-												<% if(t < elements[tag][i].tags.length-1){ %>
-													<span class="<%= elements[tag][i].tags[t] %>"><%= elements[tag][i].tags[t] %>, </span>
-												<% }else{ %>
-													<span class="<%= elements[tag][i].tags[t] %>"><%= elements[tag][i].tags[t] %></span>
-												<% } %>
-											<% } %>
-										</div>
-									</div>
-								<% } %>
-							</div>
-						
-					</div>
-				</div>
-			<% } %>
+			
 
 					
 				
@@ -61,7 +34,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%- partial('../partials/scripts') %>
-    
+
   </body>
 </html>
 
