@@ -1,24 +1,19 @@
 define([
 	'underscore',
-	'backbone',
-	'text!../../../views/templates/fragmentquote.html'
+	'backbone'
 ],
-function(_, Backbone, template) {
+function(_, Backbone) {
 
-	var FragmentQuoteView = Backbone.View.extend({
+	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
-		template: template,
-		/*
-		initialize: function(){
-			_.bind(this.model, 'change', render);
+		
+		initialize: function(vars){
+			//_.bind(this.model, 'change', render);
+			this.template = vars.template;
 		},
-		*/
 
 		render: function(vars){
 			//use Underscore template, pass it the attributes from this model
-
-			console.log('render!!');
-
 			var attributes = this.model.attributes;
 
 			if(vars){
@@ -31,6 +26,8 @@ function(_, Backbone, template) {
 
 			console.log(this.el);
 			console.dir(attr);
+			console.log("^^^template");
+			console.dir(this.template);
 
 			var content = _.template(this.template, attr);
 			$(this.el).html(content);
@@ -47,6 +44,6 @@ function(_, Backbone, template) {
 	    },
 	});
 
-	return FragmentQuoteView;
+	return FragmentView;
 
 });

@@ -1,14 +1,12 @@
-
-
 <div class="fragment-quote-container <%= data.category %>">
-	<img src="<%= data.elements[i].image %>" width="250px">
-	<div class="fragment-quote-url"><a href="<%= data.elements[i].post_url %>" target="_blank">Original post →</a></div>
+	<img src="<%= data.image %>" width="250px">
+	<div class="fragment-quote-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
 	<div class="fragment-quote-tags">
-		<% for(var t = 0; t < data.elements[i].tags.length; t++){ %>
-			<% if(t < data.elements[i].tags.length-1){ %>
-				<span class="<%= data.elements[i].tags[t] %>"><%= data.elements[i].tags[t] %>, </span>
+		<% for(var t = 0; t < data.tags.length; t++){ %>
+			<% if(t < data.tags.length-1){ %>
+				<span class="<%= data.tags[t] %>"><%= data.tags[t] %>, </span>
 			<% }else{ %>
-				<span class="<%= elements[tag][i].tags[t] %>"><%= data.elements[i].tags[t] %></span>
+				<span class="<%= data.tags[t] %>"><%= data.tags[t] %></span>
 			<% } %>
 		<% } %>
 	</div>

@@ -3,12 +3,13 @@ define([
 	'underscore',
 	'backbone',
 	'jquery-masonry',
-    'collections/fragmentquotes',
-    'views/fragmentquotesview',
+    'collections/fragments',
+    'views/fragmentsview',
+    'text!../../views/templates/fragmentquote.html',
     'models/tumblrpost',
     'views/tumblrpostview'
 ],
-function($, _, Backbone, masonry, FragmentQuotes, FragmentQuotesView, TumblrPost, TumblrPostView) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, TumblrPost, TumblrPostView) {
 
 	
 	var Alchemy = {
@@ -51,17 +52,18 @@ function($, _, Backbone, masonry, FragmentQuotes, FragmentQuotesView, TumblrPost
 
 		renderFragmentQuotes: function(tag){
 			var _this = this;
-			_this.data.fragment_quotes = new FragmentQuotes({ tag: tag });
-            _this.data.fragment_quotes.fetch({
+			_this.data.fragments = new Fragments({ fragment: 'quotes', tag: tag });
+            _this.data.fragments.fetch({
                 success: function(collection, response, options){
                     
-                    _this.data.fragment_quotes_view = new FragmentQuotesView({
+                    _this.data.fragments_view = new FragmentsView({
                         collection: collection,
                         el: '#fragments-el',
-                        _quoteViewEl: '#fragmentquotes-el'
+                        _fragmentViewEl: '#fragment-el',
+                        _fragmentTemplate: fragmentQuoteTemplate
                     });
 
-                    if(_this.data.fragment_quotes_view.render({tag: tag})){
+                    if(_this.data.fragments_view.render({ tag: tag})){
                         $('html, body').animate({
                             scrollTop: 0
                         }, 500);
