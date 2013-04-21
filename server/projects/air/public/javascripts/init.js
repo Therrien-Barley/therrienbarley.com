@@ -37,9 +37,6 @@ function($, TAXONOMIES) {
 				break;
 			case 'terms':
 				switch(path_array[4]){
-					case 'all':
-						$('#terms-nav').addClass('active-trail').find('li.terms-all a').addClass('active');
-						break;
 					case 'distribution':
 						$('#terms-nav').addClass('active-trail').find('li.terms-distribution a').addClass('active');
 						break;

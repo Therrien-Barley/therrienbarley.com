@@ -14,12 +14,10 @@ require([
     'taxonomies',
     'init',
     'underscore',
-    'backbone',
-    'models/tumblrpost',
-    'views/tumblrpostview'
+    'backbone'
 ],
 
-function($, Alchemy, TAXONOMIES, init, _, Backbone, TumblrPost, TumblrPostView) {
+function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
     console.dir(_);
     console.dir(Backbone);
@@ -81,13 +79,33 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone, TumblrPost, TumblrPostView) 
                         var tag = $('#sub-nav #terms-nav').val();
 
                         console.log('fragment: '+ fragment+ ' tag: '+ tag);
-                        Alchemy.renderFragmentQuotes(tag);
+
+                        switch(fragment){
+                            case 'quotes':
+                                Alchemy.renderFragmentQuotes(tag);
+                                break;
+                            case 'images':
+                                Alchemy.renderFragmentImages(tag);
+                                break;
+                            case 'titles':
+                                Alchemy.renderFragmentTitles(tag);
+                                break;
+                        }
                     });
                     break;
             }
             break;
         case 'terms':
-
+            switch(url_array[4]){
+                case 'elements':
+                    //render a single tumblr post into the #overlay div
+                    $('.api-get-tumblrpost').click(function(event){
+                        event.preventDefault();
+                        var path_array = $(this).attr('href').split('/');
+                        Alchemy.getTumblrPost(path_array[6]);
+                    });
+                break; 
+            }
             break;
         case 'insights':
 

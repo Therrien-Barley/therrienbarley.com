@@ -4,9 +4,11 @@ define([
 	'backbone',
 	'jquery-masonry',
     'collections/fragmentquotes',
-    'views/fragmentquotesview'
+    'views/fragmentquotesview',
+    'models/tumblrpost',
+    'views/tumblrpostview'
 ],
-function($, _, Backbone, masonry, FragmentQuotes, FragmentQuotesView) {
+function($, _, Backbone, masonry, FragmentQuotes, FragmentQuotesView, TumblrPost, TumblrPostView) {
 
 	
 	var Alchemy = {

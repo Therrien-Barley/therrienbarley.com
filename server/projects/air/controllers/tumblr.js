@@ -405,7 +405,7 @@ function returnElements(returnObject, req, res, number, taxonomy){
             });
             break;
         case 'terms':
-            res.render('../projects/air/views/terms/elements', {
+            res.render('../projects/air/views/categories/elements', {
                 title: 'Terms - Elements | Therrien-Barley',
                 elements: returnObject
             });
@@ -509,8 +509,8 @@ exports.getElement = function(req, res, id){
 }
 
 
-exports.glossaryTerms = function(req, res){
-    var col = req.params.collection;
+exports.renderTermsDistribution = function(req, res){
+    var col = 'tumblrposts';
 
     var terms = [];
 
@@ -546,9 +546,8 @@ exports.glossaryTerms = function(req, res){
             
             sorted_terms.sort(function(a,b) { return b.value - a.value } );
             
-
-            res.render('glossaryterms', {
-                    title: 'Glossary',
+            res.render('../projects/air/views/terms/distribution', {
+                    title: 'Terms - Distribution | Therrien-Barley',
                     terms: sorted_terms
                 });
 

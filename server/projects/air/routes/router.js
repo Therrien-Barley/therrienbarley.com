@@ -65,6 +65,24 @@ exports.insightairroute = function(req, res){
 						break;
 				}
 				break;
+			case 'terms':
+				switch(url_array[4]){
+					case 'distribution':
+						tumblr.renderTermsDistribution(req, res);
+						break;
+					case 'elements':
+						tumblr.getElementsByTags(req, res, 'terms');
+						break;
+					case 'fragments':
+						res.render('../projects/air/views/categories/fragments', {
+			                title: 'Categories Fragments | Therrien-Barley'
+			            });
+						break;
+					default:
+						res.send(501, 'This IP does not serve that host domain');//501 = not implemented
+						break;
+				}
+				break;
 			default:
 				res.send(501, 'This IP does not serve that host domain');//501 = not implemented
 				break;
