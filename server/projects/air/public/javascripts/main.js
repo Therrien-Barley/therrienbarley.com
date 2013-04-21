@@ -43,6 +43,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                     });
                 break; 
                 case 'fragments':
+                    case 'fragments':
                     //set variables from url
                     var term_val = url_array.pop().replace(/%20/g," ");
                     var fragment_val = url_array.pop().replace(/%20/g," ");
@@ -59,17 +60,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                     $('#sub-nav #fragments-nav').val( fragment_val );
 
                     //render out fragments
-                    switch(fragment_val){
-                        case 'quotes':
-                            Alchemy.renderFragmentQuotes(term_val);
-                            break;
-                        case 'images':
-                            Alchemy.renderFragmentImages(term_val);
-                            break;
-                        case 'titles':
-                            Alchemy.renderFragmentTitles(term_val);
-                            break;
-                    }
+                    Alchemy.renderFragments(fragment_val, term_val);
 
                     //trigger re-render with Backbone on change event
                     $('#sub-nav #fragments-nav, #sub-nav #terms-nav').change(function() {
@@ -80,18 +71,9 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
                         console.log('fragment: '+ fragment+ ' tag: '+ tag);
 
-                        switch(fragment){
-                            case 'quotes':
-                                Alchemy.renderFragmentQuotes(tag);
-                                break;
-                            case 'images':
-                                Alchemy.renderFragmentImages(tag);
-                                break;
-                            case 'titles':
-                                Alchemy.renderFragmentTitles(tag);
-                                break;
-                        }
+                        Alchemy.renderFragments(fragment, tag);
                     });
+                    break;
                     break;
             }
             break;
@@ -122,17 +104,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                     $('#sub-nav #fragments-nav').val( fragment_val );
 
                     //render out fragments
-                    switch(fragment_val){
-                        case 'quotes':
-                            Alchemy.renderFragmentQuotes(term_val);
-                            break;
-                        case 'images':
-                            Alchemy.renderFragmentImages(term_val);
-                            break;
-                        case 'titles':
-                            Alchemy.renderFragmentTitles(term_val);
-                            break;
-                    }
+                    Alchemy.renderFragments(fragment_val, term_val);
 
                     //trigger re-render with Backbone on change event
                     $('#sub-nav #fragments-nav, #sub-nav #terms-nav').change(function() {
@@ -143,17 +115,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
                         console.log('fragment: '+ fragment+ ' tag: '+ tag);
 
-                        switch(fragment){
-                            case 'quotes':
-                                Alchemy.renderFragmentQuotes(tag);
-                                break;
-                            case 'images':
-                                Alchemy.renderFragmentImages(tag);
-                                break;
-                            case 'titles':
-                                Alchemy.renderFragmentTitles(tag);
-                                break;
-                        }
+                        Alchemy.renderFragments(fragment, tag);
                     });
                     break;
             }

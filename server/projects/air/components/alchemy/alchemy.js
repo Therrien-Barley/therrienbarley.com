@@ -6,10 +6,12 @@ define([
     'collections/fragments',
     'views/fragmentsview',
     'text!../../views/templates/fragmentquote.html',
+    'text!../../views/templates/fragmentimage.html',
+    'text!../../views/templates/fragmenttitle.html',
     'models/tumblrpost',
     'views/tumblrpostview'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, TumblrPost, TumblrPostView) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView) {
 
 	
 	var Alchemy = {
@@ -50,17 +52,30 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
 		},
 
-		renderFragmentQuotes: function(tag){
+		renderFragments: function(fragmentType, tag){
 			var _this = this;
-			_this.data.fragments = new Fragments({ fragment: 'quotes', tag: tag });
+			_this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
             _this.data.fragments.fetch({
                 success: function(collection, response, options){
+
+                	var tmplt;
+                	switch(fragmentType){
+                		case 'quotes':
+                			tmplt = fragmentQuoteTemplate;
+                			break;
+                		case 'images':
+                			tmplt = fragmentImageTemplate;
+                			break;
+                		case 'titles':
+                			tmplt = fragmentTitleTemplate;
+                			break;
+                	}
                     
                     _this.data.fragments_view = new FragmentsView({
                         collection: collection,
                         el: '#fragments-el',
                         _fragmentViewEl: '#fragment-el',
-                        _fragmentTemplate: fragmentQuoteTemplate
+                        _fragmentTemplate: tmplt
                     });
 
                     if(_this.data.fragments_view.render({ tag: tag})){
@@ -68,13 +83,15 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
                             scrollTop: 0
                         }, 500);
 
-                        $('.masonry-wrapper').each(function(){
-                            $(this).masonry({
-                              itemSelector: '.fragment',
-                              columnWidth: 250,
-                              gutterWidth:17
-                            });
-                        });
+                        var $container = $('.masonry-wrapper');
+
+						$container.imagesLoaded( function(){
+						  	$container.masonry({
+						    	itemSelector: '.fragment',
+                            	columnWidth: 250,
+                            	gutterWidth:17
+							});
+						});
                     }
                 }
             });
