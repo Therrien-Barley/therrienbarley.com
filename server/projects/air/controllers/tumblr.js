@@ -911,7 +911,7 @@ function renderFragmentImages(returnObject, req, res){
                         }
                     });
                 });
-            }
+            } 
                 
             }
         }
