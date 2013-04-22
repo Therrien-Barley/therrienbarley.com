@@ -53,15 +53,9 @@ function($, TAXONOMIES) {
 				break;
 			case 'insights':
 				switch(path_array[4]){
-					case 'examples':
-						$('#insights-nav').addClass('active-trail').find('li.insights-examples a').addClass('active');
+					case 'insights':
+						$('#insights-nav').addClass('active-trail').find('li.insights-insights a').addClass('active');
 						break;
-					case 'research':
-						$('#insights-nav').addClass('active-trail').find('li.insights-research a').addClass('active');
-					break;
-					case 'trends':
-						$('#insights-nav').addClass('active-trail').find('li.insights-trends a').addClass('active');
-					break;
 				}
 				break;
 			default:

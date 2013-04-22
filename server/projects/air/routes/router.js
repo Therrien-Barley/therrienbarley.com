@@ -94,6 +94,18 @@ exports.insightairroute = function(req, res){
 						break;
 				}
 				break;
+			case 'insights':
+				switch(url_array[4]){
+					case 'insights':
+						res.render('../projects/air/views/insights/insights', {
+			                title: 'Insights - Insights | Therrien-Barley'
+			            });
+						break;
+					default:
+						res.send(501, 'This IP does not serve that host domain');//501 = not implemented
+						break;
+				}
+				break;
 			default:
 				res.send(501, 'This IP does not serve that host domain');//501 = not implemented
 				break;

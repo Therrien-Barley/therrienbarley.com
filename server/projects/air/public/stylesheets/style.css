@@ -507,3 +507,18 @@ h1{
 .fragment-quote-container.light{
 	background-color:#0FFF00;
 }
+
+
+/* insights */
+#add-insight-button{
+	text-align: center;
+	padding:5px 0;
+	font-family:Monaco, monospace;
+	font-size:11px;
+	background-color:red;
+}
+#add-insight-button:hover{
+	background-color: white;
+	color:red;
+	cursor: pointer;
+}
