@@ -727,7 +727,6 @@ function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
     console.log('renderFragmentQuotes()');
     var elements = [];
 
-    var quote_counter = 0;
     var idx = 0;
 
     for(var tag in returnObject){
@@ -769,7 +768,6 @@ function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
                         });
                     }
                     
-                    quote_counter++;
                     elements.push( element ); 
 
                 }  
@@ -861,6 +859,7 @@ function renderFragmentImages(returnObject, req, res){
         for(var i = 0; i < returnObject[tag].length; i++){            
 
             var images = processImages( returnObject[tag][i] );
+            var newImages = false;
 
             if(images != null){
                 for(var j = 0; j < images.length; j++){
@@ -875,9 +874,44 @@ function renderFragmentImages(returnObject, req, res){
                             element.category = TAXONOMIES['categories'][c];
                         }
                     }
+
+                    var duplicate = false;
+                    for(var k = 0; k < returnObject[tag][i].fragments.images.length; k++){
+                        if(returnObject[tag][i].fragments.images[k].src == images[j]){
+                            duplicate = true;
+                            break;
+                        }
+                    }
+
+                    //if quote not already in fragments array, add it
+                    if(!duplicate){
+                        newImages = true;//global flag
+                        returnObject[tag][i].fragments.images.push({
+                            iid: returnObject[tag][i].id+'-'+returnObject[tag][i].fragments.images.length,
+                            src: images[j],
+                            insights: []
+                        });
+                    }
                     
                     elements.push( element ); 
                 }
+
+                if(newImages){
+                //add the new quotes to the database
+                console.log('******* id: '+ returnObject[tag][i].id );
+
+                var rtnObjID = returnObject[tag][i].id;
+
+                db.collection('tumblrposts', function(err, collection) {
+                    collection.update({ id: rtnObjID }, { $set: { 'fragments': returnObject[tag][i].fragments } }, { safe:true }, function(err) {
+                        if(err){
+                            console.warn(err.message);
+                        }else{
+                            console.log('successfully added new images to tumblrposts collection with id: '+ rtnObjID);
+                        }
+                    });
+                });
+            }
                 
             }
         }
