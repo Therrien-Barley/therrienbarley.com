@@ -1,0 +1,11 @@
+<div<% if(typeof data.id != 'undefined'){ %>id="insight-<%= data.id %>"<% } %> class="span10 offset3 insight-container">
+	<div class="controls">
+		<div class="bttn save">Save</div>
+	</div>
+	<div class="title" contenteditable="true">
+		<%= data.title %>
+	</div>
+	<div class="description" contenteditable="true">
+		<%= data.description %>
+	</div>
+</div>

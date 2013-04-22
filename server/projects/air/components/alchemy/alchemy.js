@@ -10,9 +10,10 @@ define([
     'text!../../views/templates/fragmenttitle.html',
     'models/tumblrpost',
     'views/tumblrpostview',
-    'models/fragment'
+    'models/insight',
+    'views/insightview'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Fragment) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Insight, InsightView) {
 
 	
 	var Alchemy = {
@@ -53,22 +54,52 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
 		},
 
+        createInsight: function(){
+            var insight = new Insight({
+                title: "Insight title",
+                tags: [{
+                    tag: "tag"
+                }],
+                description: "Description"
+            });
+
+            var insight_view = new InsightView({
+                model: insight,
+                el: '#insights-el'
+            });
+
+            if(typeof insight_view.render() != 'undefined' ){
+                $('.insight-container .save').click(function(){
+                    console.log('clicked save');
+
+                    var $insightContainer = $(this).closest('.insight-container');
+                    var title = $insightContainer.find('.title').html();
+                    var description = $insightContainer.find('.description').html();
+
+                    insight.set({
+                        'title': title, 
+                        'description': description
+                    });
+
+                    console.log('new model: ');
+                    console.dir(insight);
+
+                    //@todo: implement the save function - need to deal with BB sync I think,
+                    //and add an api put call
+                    //insight.save();
+                    
+                });
+            }
+
+
+
+        },
+
 		renderFragments: function(fragmentType, tag){
 			var _this = this;
 			_this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
             _this.data.fragments.fetch({
                 success: function(collection, response, options){
-
-                	console.log('renderFragments()::success::response');
-                	console.dir(response);
-                	console.log('renderFragments()::success::options');
-                	console.dir(options);
-
-                	_this.data.fragments.reset();
-
-                	console.log('renderFragments()::success::_this.data.fragments');
-                	console.dir(_this.data.fragments);
-
                 	
                 	var tmplt;
                 	switch(fragmentType){
@@ -83,19 +114,6 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
                 			break;
                 	}
 
-                	_.each(response, function(res, i){
-                		var model = new Fragment(res);
-                		_this.data.fragments.add(model);
-                		console.dir(model);
-                		console.dir(_this.data.fragments);
-                		console.log('i: '+ i);
-                	});
-
-            		console.log('renderFragments()::success::_this.data.fragments (after)');
-                	console.dir(_this.data.fragments);
-
-
-                    
                     _this.data.fragments_view = new FragmentsView({
                         collection: collection,
                         el: '#fragments-el',

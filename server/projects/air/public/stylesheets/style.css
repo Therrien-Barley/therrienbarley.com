@@ -510,14 +510,20 @@ h1{
 
 
 /* insights */
+.insight-container{
+	text-align: center;
+}
+
 #add-insight-button{
 	text-align: center;
 	padding:5px 0;
 	font-family:Monaco, monospace;
 	font-size:11px;
+}
+#add-insight-button > div{
 	background-color:red;
 }
-#add-insight-button:hover{
+#add-insight-button > div:hover{
 	background-color: white;
 	color:red;
 	cursor: pointer;

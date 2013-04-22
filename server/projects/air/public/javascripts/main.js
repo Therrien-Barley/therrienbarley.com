@@ -121,7 +121,17 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
             }
             break;
         case 'insights':
+            switch(url_array[4]){
+                case 'insights':
+                    //render a single tumblr post into the #overlay div
+                    $('#add-insight-button > div').click(function(event){
+                        event.preventDefault();
+                        console.log('clicked +insight');
 
+                        Alchemy.createInsight();
+                    });
+                break; 
+            }
             break;
     }
 
