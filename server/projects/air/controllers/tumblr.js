@@ -203,14 +203,14 @@ function findTag(col, tag, returnObject, req, res, callback, taxonomy){
     console.dir(callback);
 
     var tag = tag.replace(/-/g," ");
-        db.collection(col, function(err, collection) {
-            collection.find({ tags : tag }).toArray(function(err, items){         
-                returnObject[ tag ] = items;
-                console.log('calling callback after finding # of items: '+ items.length);
-                //console.dir(items);
-                callback(returnObject, req, res, taxonomy, items.length);
-            });  
-        });
+    db.collection(col, function(err, collection) {
+        collection.find({ tags : tag }).toArray(function(err, items){         
+            returnObject[ tag ] = items;
+            console.log('calling callback after finding # of items: '+ items.length);
+            //console.dir(items);
+            callback(returnObject, req, res, taxonomy, items.length);
+        });  
+    });
 }
 
 function findTaxonomyRecursive(col, taxonomy, i, returnObject, req, res, callback){
@@ -545,7 +545,7 @@ exports.renderTermsDistribution = function(req, res){
             }
             
             sorted_terms.sort(function(a,b) { return b.value - a.value } );
-            
+
             res.render('../projects/air/views/terms/distribution', {
                     title: 'Terms - Distribution | Therrien-Barley',
                     terms: sorted_terms
@@ -735,11 +735,12 @@ function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
         for(var i = 0; i < returnObject[tag].length; i++){
             
             var quotes = processBlockquotes( returnObject[tag][i] );
+            var newQuotes = false;
 
             if(quotes != null){
                 for(var j = 0; j < quotes.length; j++){
                     var element = {};
-                    element.id = returnObject[tag][i].id;
+                    element.post_id = returnObject[tag][i].id;
                     element.post_url = returnObject[tag][i].post_url;
                     element.tags = returnObject[tag][i].tags;
                     element.quote = quotes[j];
@@ -749,12 +750,47 @@ function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
                             element.category = TAXONOMIES['categories'][c];
                         }
                     }
+
+                    var duplicate = false;
+                    for(var k = 0; k < returnObject[tag][i].fragments.quotes.length; k++){
+                        if(returnObject[tag][i].fragments.quotes[k].qoute == quotes[j]){
+                            duplicate = true;
+                            break;
+                        }
+                    }
+
+                    //if quote not already in fragments array, add it
+                    if(!duplicate){
+                        newQuotes = true;//global flag
+                        returnObject[tag][i].fragments.quotes.push({
+                            qid: returnObject[tag][i].id+'-'+returnObject[tag][i].fragments.quotes.length,
+                            quote: quotes[j],
+                            insights: []
+                        });
+                    }
                     
                     quote_counter++;
                     elements.push( element ); 
-                }
-                
+
+                }  
             }
+
+            if(newQuotes){
+                //add the new quotes to the database
+                console.log('******* id: '+ returnObject[tag][i].id );
+
+                var rtnObjID = returnObject[tag][i].id;
+
+                db.collection('tumblrposts', function(err, collection) {
+                    collection.update({ id: rtnObjID }, { $set: { 'fragments': returnObject[tag][i].fragments } }, { safe:true }, function(err) {
+                        if(err){
+                            console.warn(err.message);
+                        }else{
+                            console.log('successfully added new quotes to tumblrposts collection with id: '+ rtnObjID);
+                        }
+                    });
+                });
+            }     
         }
     }
 
@@ -829,7 +865,7 @@ function renderFragmentImages(returnObject, req, res){
             if(images != null){
                 for(var j = 0; j < images.length; j++){
                     var element = {};
-                    element.id = returnObject[tag][i].id;
+                    element.post_id = returnObject[tag][i].id;
                     element.post_url = returnObject[tag][i].post_url;
                     element.tags = returnObject[tag][i].tags;
                     element.image = images[j];

@@ -1,5 +1,7 @@
 
 var tumblr = require('../controllers/tumblr');
+var fetchtumblr = require('../controllers/fetchtumblr');
+
 
 
 exports.insightairroute = function(req, res){
@@ -26,8 +28,17 @@ exports.insightairroute = function(req, res){
 								break;
 						}
 						break;
+					//calls a fetch using the tumblr API to update the db
+					case 'sync':
+						fetchtumblr.sync(req, res);
+						break;
+					//downloads a CSV
+					case 'download':
+						fetchtumblr.download(req, res);
+						break;
 				}
 				break;
+
 			case 'sources':
 				switch(url_array[4]){
 					case 'blogs':

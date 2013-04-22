@@ -9,9 +9,10 @@ define([
     'text!../../views/templates/fragmentimage.html',
     'text!../../views/templates/fragmenttitle.html',
     'models/tumblrpost',
-    'views/tumblrpostview'
+    'views/tumblrpostview',
+    'models/fragment'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Fragment) {
 
 	
 	var Alchemy = {
@@ -58,6 +59,17 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
             _this.data.fragments.fetch({
                 success: function(collection, response, options){
 
+                	console.log('renderFragments()::success::response');
+                	console.dir(response);
+                	console.log('renderFragments()::success::options');
+                	console.dir(options);
+
+                	_this.data.fragments.reset();
+
+                	console.log('renderFragments()::success::_this.data.fragments');
+                	console.dir(_this.data.fragments);
+
+                	
                 	var tmplt;
                 	switch(fragmentType){
                 		case 'quotes':
@@ -70,6 +82,19 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
                 			tmplt = fragmentTitleTemplate;
                 			break;
                 	}
+
+                	_.each(response, function(res, i){
+                		var model = new Fragment(res);
+                		_this.data.fragments.add(model);
+                		console.dir(model);
+                		console.dir(_this.data.fragments);
+                		console.log('i: '+ i);
+                	});
+
+            		console.log('renderFragments()::success::_this.data.fragments (after)');
+                	console.dir(_this.data.fragments);
+
+
                     
                     _this.data.fragments_view = new FragmentsView({
                         collection: collection,
@@ -93,6 +118,11 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 							});
 						});
                     }
+	
+
+                	
+
+	                	
                 }
             });
         },
