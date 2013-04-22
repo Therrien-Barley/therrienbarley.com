@@ -4,7 +4,7 @@ define(
 ], function(Backbone){
 
 	var Insight = Backbone.Model.extend({
-		urlRoot: "/insights/air/api/get/insights",
+		urlRoot: "/insights/air/api/post/insight",
 		initialize: function(vars){
 			
 			//initialize the model if vars passed in

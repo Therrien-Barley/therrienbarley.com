@@ -28,6 +28,16 @@ exports.insightairroute = function(req, res){
 								break;
 						}
 						break;
+					case 'post':
+						console.log('--->post');
+						switch(url_array[5]){
+							case 'insight':
+								console.log('post insight!!!');
+								console.dir(req.body);
+								//tumblr.getElement(req, res, url_array[6]);
+								break;
+						}
+						break;
 					//calls a fetch using the tumblr API to update the db
 					case 'sync':
 						fetchtumblr.sync(req, res);

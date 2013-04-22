@@ -86,7 +86,7 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
                     //@todo: implement the save function - need to deal with BB sync I think,
                     //and add an api put call
-                    //insight.save();
+                    insight.save();
                     
                 });
             }
