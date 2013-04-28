@@ -44,6 +44,23 @@ var newhabitatrouter = require('../projects/new-habitat/routes/router');
 
 
 
+
+exports.put = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatput(req, res);
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
+}
+
+
 exports.post = function(req, res){
   var url_array = req.url.split('/');
   switch(req.headers.host){

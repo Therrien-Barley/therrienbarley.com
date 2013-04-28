@@ -83,7 +83,8 @@ exports.create = function(req, res){
         type: 'project',
         title: req.body.title,
         date: req.body.date,
-        description: req.body.description
+        description: req.body.description,
+        works: []
     };
 
     db.collection('projects', function(err, collection) {
@@ -96,6 +97,31 @@ exports.create = function(req, res){
                 console.log('Success: created new project');
                 console.log(docs);
                 res.json(200, docs);
+            }
+        });
+    });
+}
+
+exports.update = function(req, res, _id){
+    console.log('projects.js::create()');
+
+    var newProject = {
+        type: 'project',
+        title: req.body.title,
+        date: req.body.date,
+        description: req.body.description,
+        works: req.body.works
+    };
+
+    db.collection('projects', function(err, collection) {
+        collection.update({'_id': new ObjectID(_id) }, newProject, {safe:true}, function(err) {
+            if (err) {
+                console.log('error: projects.js::create()');
+                console.log(err);
+                res.send(500, 'Error attempting to update project with error message: '+ err);
+            } else {
+                console.log('Success: updated project');
+                res.json(200);
             }
         });
     });

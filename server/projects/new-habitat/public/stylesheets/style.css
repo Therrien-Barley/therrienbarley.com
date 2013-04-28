@@ -58,27 +58,6 @@ h2{
 	margin-bottom:20px;
 }
 
-#input-form{
-	position:fixed;
-	width:30%;
-	height:80%;
-	top:10%;
-	left:35%;
-	background-color:DarkSalmon;
-	z-index:10;
-}
-
-#input-form .button{
-	padding:3px;
-	text-transform: uppercase;
-	border:1px solid;
-}
-
-#input-form .button:hover{
-	background-color:white;
-	color:DarkSalmon;
-}
-
 
 #footer{
 	position:fixed;
@@ -217,7 +196,77 @@ h2{
 	background-size: cover;
 }
 
+/* INPUT FORM */
+#close{
+	position:absolute;
+	top:3%;
+	right:3%;
+	padding:1% 2%;
+	border:1px solid;
+}
 
+#close:hover{
+	cursor: pointer;
+	background-color:white;
+	color:DarkSalmon;
+}
+
+#input-form{
+	position:fixed;
+	width:30%;
+	height:60%;
+	top:10%;
+	left:30%;
+	padding:5%;
+	background-color:DarkSalmon;
+	z-index:10;
+}
+
+#input-form h2{
+	margin-bottom:20px;
+}
+
+#input-form .button{
+	padding:3px;
+	text-transform: uppercase;
+	border:1px solid;
+	text-align: center;
+	margin:0 auto;
+}
+
+#input-form .button:hover{
+	background-color:white;
+	color:DarkSalmon;
+	cursor: pointer;
+}
+
+#input-form .line{
+	height:40px;
+	width:100%;
+	margin:10px 0 0;
+	clear:both;
+}
+
+#input-form #new-work-id{
+	width:90%;
+	color:DarkSalmon;
+	padding:3px;
+	background-color: white;
+}
+
+#input-form .line .label{
+	float:left;
+}
+#input-form .button{
+	float:right;
+}
+
+
+#input-form .save{
+	position: absolute;
+	top:3%;
+	left:3%;
+}
 
 
 

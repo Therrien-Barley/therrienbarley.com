@@ -5,6 +5,35 @@ var tumblr = require('../controllers/tumblr');
 
 
 
+exports.newhabitatput = function(req, res){
+	console.log('newhabitatput()');
+	console.log('newhabitatpost() with url and it\'s array:');
+	console.log(req.url);
+	var url_array = req.url.split('/');//gets rid of the preceding empty string
+	console.dir(url_array);
+
+	
+	switch(url_array[1]){
+		case 'api':
+			switch(url_array[2]){
+				case 'project':
+					console.log('/api/project::create');
+					projects.update(req, res, url_array[3]);
+					break;
+				default:
+					res.send(501, 'Invalid api request to '+req.url);
+					break;
+			}
+			break;
+		default:
+			res.send(501, 'This IP does not serve that host domain');//501 = not implemented
+			break;
+
+	}	
+	
+
+}
+
 exports.newhabitatget = function(req, res){
 	console.log('newhabitatroute() with url and it\'s array:');
 	console.log(req.url);
