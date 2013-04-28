@@ -14,20 +14,24 @@ function($, Project, ProjectView, Projects, ProjectsView, projectsTemplate) {
 	function initHome(){
 
 		$('#main').empty();
-		$('#main').append('<div id="home-el"></div>');
+		$('#main').append('<div id="home-el" class="row-fluid"></div>');
 
 		var project = new Project({
-			id: _id
+			_id: _id,
+			image: 'hackcity.jpg'
 		});
-		project.fetch();
+		project.fetch({
+			success: function(model, response, options){
+				var projectView = new ProjectView({
+					model: project,
+					el: '#home-el'
+				});
 
-		var projectView = new ProjectView({
-			model: project,
-			el: '#home-el'
+				projectView.render();
+
+				$('.project').css('background-image', 'url(/projects/new-habitat/public/images/' + $('.project').attr('bg') + ')').height( window.innerHeight*0.6 );
+			}
 		});
-
-		projectView.render();
-
 	}
 
 	function initProjects(){
@@ -87,6 +91,9 @@ function($, Project, ProjectView, Projects, ProjectsView, projectsTemplate) {
 					event.preventDefault();
 
 					switch($(this).attr('href')){
+						case '/':
+							initHome();
+							break;
 						case '/projects':
 							initProjects();
 							break;

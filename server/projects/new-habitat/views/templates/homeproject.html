@@ -2,9 +2,8 @@
 	<div class="info">
 		<% console.log(data) %>
 		<h2><%= data.title %></h2>
-		<h2 class="date"><%= data.date %></h2>
+		<div class="date"><%= data.date %></div>
 		<div class="description"><%= data.description %></div>
-		<a class="add_gallery">Add Gallery</a>
-		<div id="project-gallery-el"></div>
+		<a class="view" pid="<%= data._id %>">View Project</a>
 	</div><!-- /.info -->
 </div>

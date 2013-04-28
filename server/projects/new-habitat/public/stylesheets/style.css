@@ -1,12 +1,23 @@
-body,
+body{
+	color:white;
+	background-color: black;
+}
 a, a:visited{
-	color:black;
+	color:white;
 	font:bold 24px/26px "Helvetica Neue", Helvetica, Arial, sans-serif;
-	background-color:white;
+	border-bottom:2px dotted;
+	text-decoration: none !important;
+}
+
+a:hover{
+	border:none;
+	text-decoration: none !important;
+	color:white;
+	cursor:pointer;
 }
 
 #wrapper{
-	padding:3% 5%;
+	padding:0 5%;
 	margin:0;
 }
 
@@ -17,22 +28,55 @@ h2{
 	margin:0;
 }
 
-a, a:visited{
-	border-bottom:2px dotted;
-	text-decoration: none !important;
-}
 
 .anchor-wrapper{
 	margin-bottom:7px;
 }
 
-a:hover{
-	border:none;
-	text-decoration: none !important;
-}
 
 #header{
-	text-align:left;
+	text-align:center;
+	padding:40px 0;
+}
+
+#nav{
+	padding:20px 0;
+	text-align: center;
+}
+
+.menu{
+	margin:0 auto;
+	list-style: none;
+}
+
+.menu li{
+	display: inline;
+	padding:0 20px;
+}
+
+#main{
+	margin-bottom:20px;
+}
+
+#input-form{
+	position:fixed;
+	width:30%;
+	height:80%;
+	top:10%;
+	left:35%;
+	background-color:DarkSalmon;
+	z-index:10;
+}
+
+#input-form .button{
+	padding:3px;
+	text-transform: uppercase;
+	border:1px solid;
+}
+
+#input-form .button:hover{
+	background-color:white;
+	color:DarkSalmon;
 }
 
 
@@ -150,7 +194,6 @@ a:hover{
 #create a:hover{
 	border:none;
 	cursor:pointer;
-	color:black;
 }
 
 #create-form{
@@ -164,3 +207,25 @@ a:hover{
 	z-index:10;
 	color: white;
 }
+
+
+/* HOME */
+#home-el .project{
+	overflow: hidden;
+	background-color: red;
+	padding:5%;
+	background-size: cover;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

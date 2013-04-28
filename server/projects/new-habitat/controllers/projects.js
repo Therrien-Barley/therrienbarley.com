@@ -67,7 +67,7 @@ exports.get = function(req, res, _id){
                 } else {
                     console.log('Success: get project');
                     console.log(items);
-                    res.json(200, items);
+                    res.json(200, items[0]);
                 }
             });
         });
