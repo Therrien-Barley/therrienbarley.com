@@ -141,6 +141,17 @@ a:hover{
 	}
 }
 
+#create{
+	text-align: center;
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+#create a:hover{
+	border:none;
+	cursor:pointer;
+	color:black;
+}
 
 #create-form{
 	position:fixed;

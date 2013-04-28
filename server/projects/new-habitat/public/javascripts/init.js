@@ -1,16 +1,29 @@
 
 define([
 	'jquery',
+	'models/project',
 	'collections/projects',
 	'views/projectsview',
 	'text!../../views/templates/projects.html',
 ],
-function($, Projects, ProjectsView, projectsTemplate) {
+function($, Project, Projects, ProjectsView, projectsTemplate) {
+
+	var _id = "517c877677baf47534000001";
+
+	function initHome(){
+
+		$('#main').empty();
+		$('#main').append('<div id="home-el"></div>');
+
+		
+
+	}
 
 	function initProjects(){
 		//build the page
 		$('#main, #hackcity, #footer').empty();
 
+		$('#main').append('<div class="row-fluid"><div id="create" class="span6 offset5"><a>create project</a></div></div>');
 		$('#main').append('<div id="projects-el"></div>');
 
 		var projects = new Projects();
@@ -27,12 +40,7 @@ function($, Projects, ProjectsView, projectsTemplate) {
 			}
 		});
 
-
-
-
-		$('#main').append('<a id="create">create project</a>');
-
-		$('#create').bind('click', function(event){
+		$('#create > a').bind('click', function(event){
 			$('#main').append('<div id="create-form"><h2 id="new-title" contenteditable="true">Title</h2><div id="new-date" contenteditable="true">Date</div><div id="new-description" contenteditable="true">Description</div><a id="save">Save</a>');
 
 			//create new project
