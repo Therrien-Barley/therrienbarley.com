@@ -1,6 +1,17 @@
 <div class="span12 offset2 work" bg="<% if(typeof data.image != 'undefined'){ %><%= data.image %><% } %>">
 	<div class="info">
-		<% console.log(data) %>
+		<% _.each(data, function(post, i){ %>
+
+			<% _.each(post.tags, function(tag, j){ %>
+				<% if(tag == 'title'){ %>
+					<h3><%= post.caption %></h3>
+					<div class="thumb">
+						<img src="<%= post.photos[0].alt_sizes[3].url %>">
+					</div>
+				<% } %>
+			<% }) %>
+
+		<% }) %>
 		
 	</div><!-- /.info -->
 </div>

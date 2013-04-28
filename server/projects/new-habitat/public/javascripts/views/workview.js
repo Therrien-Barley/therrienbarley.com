@@ -17,16 +17,10 @@ function(_, Backbone, template, Work) {
 			}
 		},
 
-		render: function(vars){
-			//use Underscore template, pass it the attributes from this model
-			var attributes = this.model.toJSON();
-
-			if(vars){
-				_.extend(attributes, vars);
-			}
+		render: function(){
 		
-			var content = _.template(this.template, attributes, {variable: 'data'});
-			$(this.el).html(content);
+			var content = _.template(this.template, this.model._posts, {variable: 'data'});
+			$(this.el).append(content);
 
 			// return ```this``` so calls can be chained.
 			return this;

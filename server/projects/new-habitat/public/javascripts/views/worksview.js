@@ -4,7 +4,6 @@ define([
 	'text!../../../views/templates/works.html'
 ],
 function(Backbone, WorkView, template) {
-	console.dir(_);
 
 	var WorksView = Backbone.View.extend({
 		tagName: 'div',
@@ -26,27 +25,21 @@ function(Backbone, WorkView, template) {
                 }));
             });
 		},
-
-		renderThumbnails: function(){
-
-
-		},
-
-		renderSlideshows: function(){
-
-
-		},
 		 
 		render : function(vars) {
 			var that = this;
 		    // Clear out this element.
 		    $(this.el).empty();
 
-		    var attr = { data: {
-		    		total_projects: this._projectViews.length,
-		    		project_view_el: this._projectViewEl
-			    }
-			};
+			var models = [];
+
+			_.each(this.collection.models, function(model, index){
+				
+				
+				models.push({
+
+				});
+			});
 
 		    var content = _.template(this.template, attr);
 			$(this.el).html(content);

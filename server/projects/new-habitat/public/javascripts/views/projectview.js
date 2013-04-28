@@ -4,11 +4,12 @@ define([
 	'text!../../../views/templates/homeproject.html',
 	'text!../../../views/templates/project.html',
 	'models/work',
+	'views/workview',
 	'collections/works',
 	'views/worksview'
 
 ],
-function(_, Backbone, homeTemplate, projectTemplate, Work, Works, WorksView) {
+function(_, Backbone, homeTemplate, projectTemplate, Work, WorkView, Works, WorksView) {
 
 	var ProjectView = Backbone.View.extend({
 	    className: 'project',
@@ -81,26 +82,37 @@ function(_, Backbone, homeTemplate, projectTemplate, Work, Works, WorksView) {
 			});
 
 			pv.render();
+
+			this.renderWorks();
 		},
 
 		renderWorks: function(){
 			console.log('called renderWorks()');
 
-			if(typeof this.model._works != 'undefined'){
-				console.log('this.model.get(works)');
-				console.dir(this.model.get('works'));
-				var key = 'ZWPsDquPDANctjAnxAcTmKL2ywTit3LyiMaLIYXK8C0wMcsYuu';
+			var key = 'ZWPsDquPDANctjAnxAcTmKL2ywTit3LyiMaLIYXK8C0wMcsYuu';
 
-				var target_url = 'http://api.tumblr.com/v2/blog/new-habitat.tumblr.com/info';
+			var target_url = 'http://api.tumblr.com/v2/blog/new-habitat.tumblr.com/posts';
+
+			_.each(this.model.get('works'), function(workid, index){
+				console.log('launching tumblr req number: '+ index);
 
 				$.ajax({
 			    	type : "GET",
 			    	dataType : "jsonp",
-			    	data: { api_key: key },
+			    	data: { api_key: key, tag: workid },
 			        url : target_url, // ?callback=?
 			        success: function(data){
-			          console.log('success');
-			          console.log(data);
+			          console.log('tumblr success');
+			          
+
+			          var workView = new WorkView({
+			          	model: new Work(data.response.posts),
+			          	el: '#project-gallery-el'
+			          });
+
+			          console.log('calling workView.render()');
+
+			          workView.render();
 			        },
 
 			        error: function(e){
@@ -108,9 +120,7 @@ function(_, Backbone, homeTemplate, projectTemplate, Work, Works, WorksView) {
 			          console.dir(e);
 			        }
 			    }); 
-
-
-			}
+			});
 
 		},
 
@@ -124,8 +134,6 @@ function(_, Backbone, homeTemplate, projectTemplate, Work, Works, WorksView) {
 		
 			var content = _.template(this.template, attributes, {variable: 'data'});
 			$(this.el).html(content);
-
-			this.renderWorks();
 
 			// return ```this``` so calls can be chained.
 			return this;
