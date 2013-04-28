@@ -69,12 +69,13 @@ app.get('/alchemy/:collection/download', fetchtumblr.download);
 
 
 //A.I.R. 2.0
-app.get('/insights*', routes.route);
+app.get('/insights*', routes.get);
 
 
 
-app.get('/', routes.route);
-app.post('/api*', routes.route);
+app.get('/', routes.get);
+app.get('/api*', routes.get);
+app.post('/api*', routes.post);
 
 app.get('/projects/yap', routes.projectyap);
 

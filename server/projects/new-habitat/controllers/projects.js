@@ -32,11 +32,54 @@ exports.project = function(req, res, pid){
 
 }
 
+var GET_LIMIT = 100;
+
+
+
+exports.get = function(req, res, _id){
+    var _id = _id || false;
+    console.log('projects.js::get() with _id: '+ _id);
+
+    if(_id == false){
+        //get all projects
+        db.collection('projects', function(err, collection) {
+            collection.find({'type': 'project' }).limit(GET_LIMIT).toArray(function(err, items) {
+                if (err) {
+                    console.log('error: projects.js::create()');
+                    console.log(err);
+                    res.send(500, 'Error attempting to get project with error message: '+ err);
+                } else {
+                    console.log('Success: get project');
+                    console.log(items);
+                    res.json(200, items);
+                }
+            });
+        });
+    }else{
+        //get single project by _id
+        db.collection('projects', function(err, collection) {
+            collection.find({'_id': _id }).limit(GET_LIMIT).toArray(function(err, items) {
+                if (err) {
+                    console.log('error: projects.js::create()');
+                    console.log(err);
+                    res.send(500, 'Error attempting to get project with error message: '+ err);
+                } else {
+                    console.log('Success: get project');
+                    console.log(items);
+                    res.json(200, items);
+                }
+            });
+        });
+    }
+        
+}
+
 
 exports.create = function(req, res){
     console.log('projects.js::create()');
 
     var newProject = {
+        type: 'project',
         title: req.body.title,
         date: req.body.date,
         description: req.body.description
@@ -55,7 +98,6 @@ exports.create = function(req, res){
             }
         });
     });
-
 }
 
 

@@ -1,15 +1,36 @@
 
 define([
 	'jquery',
-	'models/project'
+	'collections/projects',
+	'views/projectsview',
+	'text!../../views/templates/projects.html',
 ],
-function($, Project) {
+function($, Projects, ProjectsView, projectsTemplate) {
 
 	function initProjects(){
 		//build the page
 		$('#main, #hackcity, #footer').empty();
 
-		$('#main').html('<a id="create">create project</a>');
+		$('#main').append('<div id="projects-el"></div>');
+
+		var projects = new Projects();
+		projects.fetch({
+			success: function(collection, response, options){
+				var projectsView = new ProjectsView({
+                    collection: collection,
+                    el: '#projects-el',
+                    _projectViewEl: '#project-el',
+                    _projectTemplate: projectsTemplate
+                });
+
+               projectsView.render();
+			}
+		});
+
+
+
+
+		$('#main').append('<a id="create">create project</a>');
 
 		$('#create').bind('click', function(event){
 			$('#main').append('<div id="create-form"><h2 id="new-title" contenteditable="true">Title</h2><div id="new-date" contenteditable="true">Date</div><div id="new-description" contenteditable="true">Description</div><a id="save">Save</a>');
