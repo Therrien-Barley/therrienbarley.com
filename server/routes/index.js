@@ -39,10 +39,10 @@ exports.alchemy = function(req, res){
 
 
 
-
-
-
 var insightairrouter = require('../projects/air/routes/router');
+var newhabitatrouter = require('../projects/new-habitat/routes/router');
+
+
 
 exports.route = function(req, res){
   var url_array = req.url.split('/');
@@ -58,9 +58,17 @@ exports.route = function(req, res){
               res.send(501, 'This IP does not serve the host domain');//501 = not implemented
               break;
           }
+          break;
+        case 'alchemy':
+          res.render('index', { title: 'Therrien–Barley' });
+          break;
         default:
           break;
       }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatroute(req, res);
       break;
     default:
       res.send(501, 'This IP does not serve the host domain');//501 = not implemented

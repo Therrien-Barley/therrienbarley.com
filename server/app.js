@@ -34,6 +34,10 @@ app.configure(function(){
   app.use('/projects/air/components', express.static(__dirname + '/projects/air/components'));
   app.use('/projects/air/views/templates', express.static(__dirname + '/projects/air/views/templates'));
 
+  app.use('/projects/new-habitat/public', express.static(__dirname + '/projects/new-habitat/public'));
+  app.use('/projects/new-habitat/components', express.static(__dirname + '/projects/new-habitat/components'));
+  app.use('/projects/new-habitat/views/templates', express.static(__dirname + '/projects/new-habitat/views/templates'));
+
 });
 
 app.configure('development', function(){
@@ -69,14 +73,12 @@ app.get('/insights*', routes.route);
 
 
 
-app.get('/', routes.index);
+app.get('/', routes.route);
 app.get('/projects/yap', routes.projectyap);
 
 app.get('/alchemy', routes.alchemy);
 
 app.get('/users', user.list);
-
-app.get('/new-habitat', habitat.habitatindex);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
