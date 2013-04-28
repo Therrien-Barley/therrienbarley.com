@@ -1,4 +1,5 @@
 var mongo = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -58,7 +59,7 @@ exports.get = function(req, res, _id){
     }else{
         //get single project by _id
         db.collection('projects', function(err, collection) {
-            collection.find({'_id': _id }).limit(GET_LIMIT).toArray(function(err, items) {
+            collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
                 if (err) {
                     console.log('error: projects.js::create()');
                     console.log(err);

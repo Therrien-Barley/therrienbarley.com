@@ -2,11 +2,12 @@
 define([
 	'jquery',
 	'models/project',
+	'views/projectview',
 	'collections/projects',
 	'views/projectsview',
 	'text!../../views/templates/projects.html',
 ],
-function($, Project, Projects, ProjectsView, projectsTemplate) {
+function($, Project, ProjectView, Projects, ProjectsView, projectsTemplate) {
 
 	var _id = "517c877677baf47534000001";
 
@@ -15,7 +16,17 @@ function($, Project, Projects, ProjectsView, projectsTemplate) {
 		$('#main').empty();
 		$('#main').append('<div id="home-el"></div>');
 
-		
+		var project = new Project({
+			id: _id
+		});
+		project.fetch();
+
+		var projectView = new ProjectView({
+			model: project,
+			el: '#home-el'
+		});
+
+		projectView.render();
 
 	}
 
@@ -70,6 +81,8 @@ function($, Project, Projects, ProjectsView, projectsTemplate) {
 
 		switch(url_array[1]){
 			case '':
+
+				initHome();
 				$('#nav a').bind('click', function(event){
 					event.preventDefault();
 
