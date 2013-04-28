@@ -39,14 +39,10 @@ exports.newhabitatroute = function(req, res){
 						break;
 					case 'project':
 						console.log('/api/project::create');
-						switch(url_array[3]){
-							case '':
-								projects.create(req, res);
-								break;
-						}
+						projects.create(req, res);
 						break;
 					default:
-						res.send(501, 'This IP does not serve that host domain');//501 = not implemented
+						res.send(501, 'Invalid api request to '+req.url);
 						break;
 				}
 				break;

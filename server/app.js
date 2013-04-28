@@ -74,6 +74,8 @@ app.get('/insights*', routes.route);
 
 
 app.get('/', routes.route);
+app.post('/api*', routes.route);
+
 app.get('/projects/yap', routes.projectyap);
 
 app.get('/alchemy', routes.alchemy);

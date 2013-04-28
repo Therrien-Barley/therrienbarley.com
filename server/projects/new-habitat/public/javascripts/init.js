@@ -12,11 +12,13 @@ function($, Project) {
 		$('#main').html('<a id="create">create project</a>');
 
 		$('#create').bind('click', function(event){
-			$('#main').append('<div id="create-form"><h2 id="title" contenteditable="true">Title</h2><div id="date" contenteditable="true">Date</div><div id="description" contenteditable="true">Description</div><a id="save">Save</a>');
+			$('#main').append('<div id="create-form"><h2 id="new-title" contenteditable="true">Title</h2><div id="new-date" contenteditable="true">Date</div><div id="new-description" contenteditable="true">Description</div><a id="save">Save</a>');
 
 			//create new project
 			$('#save').bind('click', function(event){
 				event.preventDefault();
+
+				console.log()
 
 				var project = new Project({
 					title: $('#new-title').text(),

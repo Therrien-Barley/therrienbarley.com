@@ -42,9 +42,6 @@ exports.create = function(req, res){
         description: req.body.description
     };
 
-    console.dir(newProject);
-
-/*
     db.collection('projects', function(err, collection) {
         collection.insert(newProject, function(err, docs) {
             if (err) {
@@ -54,12 +51,10 @@ exports.create = function(req, res){
             } else {
                 console.log('Success: created new project');
                 console.log(docs);
-                console.dir(docs);//need to return the _id value
-                res.send(200);
+                res.json(200, docs);
             }
         });
     });
-*/
 
 }
 
