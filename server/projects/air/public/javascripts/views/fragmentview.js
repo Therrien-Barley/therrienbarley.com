@@ -12,8 +12,7 @@ function(_, Backbone) {
 	    },
 
 	    showInsightsMenu: function(){
-	    	console.log('insightview.js::showInsightsMenu()--');
-	    	console.dir(this);
+	    	var that = this;
 	    	var $menu = $('#insights-menu').clone();
 	    	$menu.attr('id', 'insights-menu-live').show();
 	    	$(this.el).append($menu);
@@ -22,6 +21,21 @@ function(_, Backbone) {
 	    		$(this).remove();
 	    	});
 
+	    	$menu.find('li').bind('click', function(){
+
+	    		that.model.save({
+	    			type: 'image',
+	    			content: that.model.get('image'),
+	    			element: that.model.get('post_id'),
+	    			tags: that.model.get('tags'),
+	    			insight_id: $(this).attr('id').substr(8)
+	    		}, {
+	    			success: function(model, response){
+	    				console.log('saved! new model');
+	    				console.dir(model);
+	    			}
+	    		});
+	    	});
 	    },
 		
 		initialize: function(vars){

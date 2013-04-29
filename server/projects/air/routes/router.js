@@ -2,6 +2,7 @@
 var tumblr = require('../controllers/tumblr');
 var fetchtumblr = require('../controllers/fetchtumblr');
 var insights = require('../controllers/insights');
+var fragments = require('../controllers/fragments');
 
 
 exports.insightairput = function(req, res){
@@ -67,6 +68,9 @@ exports.insightairpost = function(req, res){
 					console.log('/insights/air/api/insight::create');
 					insights.create(req, res);
 					break;
+				case 'fragment':
+					fragments.create(req, res);
+					break;
 				default:
 					res.send(501, 'Invalid api request to '+req.url);
 					break;
@@ -95,6 +99,10 @@ exports.insightairget = function(req, res){
 					case 'insight':
 						insights.get(req, res, url_array[5]);
 						break;
+					case 'fragment':
+						console.log('calling tumblr.getFragments()');
+						tumblr.getFragments(req, res, 'categories', url_array[5], url_array[6]);
+						break;
 
 					//@todo!!!!!!!
 					case 'get':
@@ -105,19 +113,7 @@ exports.insightairget = function(req, res){
 								console.log('getting Element by id');
 								tumblr.getElement(req, res, url_array[6]);
 								break;
-							case 'fragments':
-								tumblr.getFragments(req, res, 'categories', url_array[6], url_array[7]);
-								break;
-						}
-						break;
-					case 'post':
-						console.log('--->post');
-						switch(url_array[5]){
-							case 'insight':
-								console.log('post insight!!!');
-								console.dir(req.body);
-								//tumblr.getElement(req, res, url_array[6]);
-								break;
+							
 						}
 						break;
 					//calls a fetch using the tumblr API to update the db

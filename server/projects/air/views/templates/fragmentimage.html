@@ -3,6 +3,7 @@
 	<i class="icon-idea-alt insight-menu-icon"></i>
 	<div class="fragment-quote-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
 	<div class="fragment-quote-tags">
+		<% console.log('data!'); console.dir(data) %>
 		<% for(var t = 0; t < data.tags.length; t++){ %>
 			<% if(t < data.tags.length-1){ %>
 				<span class="<%= data.tags[t] %>"><%= data.tags[t] %>, </span>

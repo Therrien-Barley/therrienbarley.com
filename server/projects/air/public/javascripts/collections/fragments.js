@@ -8,7 +8,7 @@ function(Backbone, Fragment) {
 	model: Fragment,
 	initialize: function(vars){
 		if(vars.tag){
-			this.url = "/insights/air/api/get/fragments/"+ vars.fragment +"/" + vars.tag;
+			this.url = "/insights/air/api/fragment/"+ vars.fragment +"/" + vars.tag;
 		}
 	}
   });

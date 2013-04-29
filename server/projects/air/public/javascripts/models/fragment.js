@@ -4,7 +4,7 @@ define(
 ], function(Backbone){
 
 	var Fragment = Backbone.Model.extend({
-		urlRoot: "/insights/air/api/get/fragments"
+		urlRoot: "/insights/air/api/fragment"
 	});
 
 	return Fragment;
