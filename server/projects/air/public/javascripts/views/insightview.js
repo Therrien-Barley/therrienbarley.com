@@ -2,7 +2,6 @@ define([
 	'underscore',
 	'backbone',
 	'text!../../../views/templates/insight.html'
-
 ],
 function(_, Backbone, template) {
 
@@ -46,10 +45,10 @@ function(_, Backbone, template) {
 	    	var newInsight = this.model.isNew();
 
 	    	var this_selector = newInsight ? '#new-insights-el .insight-container' : '#insight-'+ this.model.get('_id');
-            var title = $('.title', this_selector).text();
+            var title = $('.title', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
             var description = $('.description', this_selector).text();
 
-            var categories = $('.categories', this_selector).text().split(',');
+            var categories = $('.categories', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"").split(',');
 
             this.model.set({
                 'title': title, 

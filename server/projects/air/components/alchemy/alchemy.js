@@ -22,6 +22,40 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
 		data: {},//used to de-scope (to pass values between functions) and persist
 
+        init: function(){
+            console.log('alchemy.js::init()');
+            var that = this;
+
+            //@todo: later, do this with the insights collection (fetch at site load) and a new InsightsMenuView
+            $.ajax({
+                url: 'http://therrienbarley.com/insights/air/api/insight',
+                type: 'GET',
+                success:function(data){
+                    console.log('alchmey init returned');
+
+                    var $menu = $('<div id="insights-menu" class="insights-menu"><h6>Add to insight</h6></div>');
+                    $menu.append('<div class="new-insight"></div>');
+                    $menu.append('<ul class="insights-options"></ul>');
+
+                    _.each(data, function(insight, index){
+                        var insight_title = (insight.title.length > 30) ? insight.title.substr(0, 30) + '...' : insight.title;
+                        console.log('insight title number: '+ index+' is '+insight_title);
+
+                        $menu.find('.insights-options').append('<li id="insight-'+insight._id+'" class="insights-option">'+insight_title+'</li>');
+                    });
+
+                    $('body').append($menu);
+                }
+            })
+
+        },
+
+        showInsightsMenu: function(event){
+            console.log('showInsightsMenu()');
+            console.dir(this);
+
+        },
+
 		//renders a single tumblr post into the #overlay div
 		getTumblrPost: function(id){
 			var _this = this;

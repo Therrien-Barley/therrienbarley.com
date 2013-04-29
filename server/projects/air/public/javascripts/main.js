@@ -19,9 +19,10 @@ require([
 
 function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
-    console.dir(_);
-    console.dir(Backbone);
+    console.log('main.js starting');
     init();
+
+    Alchemy.init();
 
     var url_array = window.location.pathname.split('/');
 
@@ -123,7 +124,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                 case 'insights':
 
                     Alchemy.renderInsights();
-                    
+
                     //render a single tumblr post into the #overlay div
                     $('#add-insight-button > div').click(function(event){
                         event.preventDefault();

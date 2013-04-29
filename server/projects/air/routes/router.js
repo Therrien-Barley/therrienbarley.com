@@ -96,7 +96,6 @@ exports.insightairget = function(req, res){
 						insights.get(req, res, url_array[5]);
 						break;
 
-
 					//@todo!!!!!!!
 					case 'get':
 						console.log('--->get');

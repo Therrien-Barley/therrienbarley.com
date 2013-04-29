@@ -6,6 +6,23 @@ function(_, Backbone) {
 
 	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
+
+	    events: {
+	    	'mouseenter .insight-menu-icon': 'showInsightsMenu'
+	    },
+
+	    showInsightsMenu: function(){
+	    	console.log('insightview.js::showInsightsMenu()--');
+	    	console.dir(this);
+	    	var $menu = $('#insights-menu').clone();
+	    	$menu.attr('id', 'insights-menu-live').show();
+	    	$(this.el).append($menu);
+
+	    	$menu.bind('mouseleave', function(){
+	    		$(this).remove();
+	    	});
+
+	    },
 		
 		initialize: function(vars){
 			//_.bind(this.model, 'change', render);
@@ -23,11 +40,6 @@ function(_, Backbone) {
 			var attr = {
 				data: attributes
 			};
-
-			console.log(this.el);
-			console.dir(attr);
-			console.log("^^^template");
-			console.dir(this.template);
 
 			var content = _.template(this.template, attr);
 			$(this.el).html(content);

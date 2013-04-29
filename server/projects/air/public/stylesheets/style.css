@@ -545,6 +545,21 @@ h1{
 	background-color:#0FFF00;
 }
 
+.fragment{
+	position: relative;
+}
+
+.fragment .insight-menu-icon{
+	position:absolute;
+	top:5px;
+	right:5px;
+	z-index: 100;
+	color:blue;
+}
+
+.insight-menu-icon:hover{
+	cursor:pointer;
+}
 
 /* insights */
 .insight-container{
@@ -569,5 +584,44 @@ h1{
 .insight-container .categories{
 	font-family:Monaco, monospace;
 	font-size:11px;
+}
+
+/* insights menu */
+#insights-menu{
+	display: none;
+}
+.insights-menu{
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	background-color:white;
+	color:red;
+	font-size:10px;
+	padding:0;
+	z-index:101;
+	border-bottom:3px solid red;
+	text-align: center;
+}
+
+.insights-menu h6{
+	margin-top:10px;
+}
+
+.insights-menu ul{
+	width: 90%;
+	border-top:1px dotted red;
+	margin:5px auto;
+	padding:10px 0 5px;
+	text-align: center;
+}
+
+.insights-menu ul li{
+	margin-bottom:3px;
+}
+
+.insights-menu ul li:hover{
+	cursor:pointer;
+	color:blue;
 }
 
