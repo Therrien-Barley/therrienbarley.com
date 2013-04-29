@@ -25,8 +25,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
     var url_array = window.location.pathname.split('/');
 
-                    
-
+                
 
     switch(url_array[3]){
         case 'sources':
@@ -73,7 +72,6 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
                         Alchemy.renderFragments(fragment, tag);
                     });
-                    break;
                     break;
             }
             break;
@@ -123,6 +121,9 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
         case 'insights':
             switch(url_array[4]){
                 case 'insights':
+
+                    Alchemy.renderInsights();
+                    
                     //render a single tumblr post into the #overlay div
                     $('#add-insight-button > div').click(function(event){
                         event.preventDefault();

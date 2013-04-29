@@ -70,6 +70,8 @@ app.get('/alchemy/:collection/download', fetchtumblr.download);
 
 //A.I.R. 2.0
 app.get('/insights*', routes.get);
+app.post('/insights*', routes.post);
+app.put('/insights*', routes.put);
 
 
 

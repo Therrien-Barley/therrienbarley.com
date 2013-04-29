@@ -1,11 +1,26 @@
-<div<% if(typeof data.id != 'undefined'){ %>id="insight-<%= data.id %>"<% } %> class="span10 offset3 insight-container">
-	<div class="controls">
-		<div class="bttn save">Save</div>
+<div<% if(typeof data._id != 'undefined'){ %> id="insight-<%= data._id %>"<% } %> class="insight-container">
+	<div class="content row-fluid">
+		<div class="title span10 offset3 editable" contenteditable="false">
+			<h2><%= data.title %></h2>
+		</div>
 	</div>
-	<div class="title" contenteditable="true">
-		<%= data.title %>
+	<div class="content row-fluid">
+		<div class="categories span10 offset3 editable" contenteditable="false">
+			<% if(typeof data.categories != 'undefined'){ %>
+				<% for(var i = 0; i < data.categories.length; i++){ %>
+					<span class="category <%= data.categories[i] %>"><%= data.categories[i] %><% if(i < data.categories.length-1){ %>, <% } %></span>
+				<% } %>
+			<% } %>
+		</div>
 	</div>
-	<div class="description" contenteditable="true">
-		<%= data.description %>
+	<div class="content row-fluid">
+		<div class="description span6 offset5 editable" contenteditable="false">
+			<%= data.description %>
+		</div>
 	</div>
+	<div class="controls row-fluid">
+		<div class="bttn edit span2 offset7">Edit</div>
+	</div>
+	<div class="fragment-el"></div>
+
 </div>

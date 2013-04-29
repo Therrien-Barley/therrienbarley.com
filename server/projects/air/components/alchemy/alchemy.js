@@ -11,9 +11,11 @@ define([
     'models/tumblrpost',
     'views/tumblrpostview',
     'models/insight',
-    'views/insightview'
+    'views/insightview',
+    'collections/insights',
+    'views/insightsview'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Insight, InsightView) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView) {
 
 	
 	var Alchemy = {
@@ -57,27 +59,33 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
         createInsight: function(){
             var insight = new Insight({
                 title: "Insight title",
-                tags: [{
-                    tag: "tag"
-                }],
+                tags: [
+                    "tag"
+                ],
                 description: "Description"
             });
 
             var insight_view = new InsightView({
                 model: insight,
-                el: '#insights-el'
+                el: '#new-insights-el'
             });
 
+            //run render synchronously
             if(typeof insight_view.render() != 'undefined' ){
+                $('.insight-container .edit').removeClass('edit').addClass('save').text('Save');
+
                 $('.insight-container .save').click(function(){
                     console.log('clicked save');
 
                     var $insightContainer = $(this).closest('.insight-container');
-                    var title = $insightContainer.find('.title').html();
-                    var description = $insightContainer.find('.description').html();
+                    var title = $insightContainer.find('.title').text();
+                    var description = $insightContainer.find('.description').text();
+
+                    var categories = $insightContainer.find('categories').text().split(',');
 
                     insight.set({
                         'title': title, 
+                        'categories' : categories,
                         'description': description
                     });
 
@@ -87,11 +95,28 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
                     //@todo: implement the save function - need to deal with BB sync I think,
                     //and add an api put call
                     insight.save();
+
+                    $(this).text('Edit').removeClass('save').addClass('edit');
+                    $(this).closest('.insight-container').find('div').attr('contenteditable', 'false');
                     
                 });
             }
+        },
 
+        renderInsights: function(){
+            console.log('Alchemy.js::renderInsights()');
+            var insights = new Insights();
+            insights.fetch({
+                success: function(collection, response, options){
+                    var insights_view = new InsightsView({
+                        collection: collection,
+                        el: '#insights-el',
+                        _insightViewEl: '.insights-list-el'
+                    });
 
+                    insights_view.render();
+                }
+            });
 
         },
 

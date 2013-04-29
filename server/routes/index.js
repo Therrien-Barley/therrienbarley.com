@@ -51,7 +51,15 @@ exports.put = function(req, res){
     case 'therrienbarley.com':
       switch(url_array[1]){
         case 'insights':
-          insightairrouter.put(req, res);
+          switch(url_array[2]){
+            case 'air':
+              switch(url_array[3]){
+                case 'api':
+                  insightairrouter.insightairput(req, res);
+                  break;
+              }
+              break;
+          }
           break;
       }
       break;
@@ -72,7 +80,7 @@ exports.post = function(req, res){
     case 'therrienbarley.com':
       switch(url_array[1]){
         case 'insights':
-          insightairrouter.post(req, res);
+          insightairrouter.insightairpost(req, res);
           break;
       }
       break;
@@ -95,7 +103,7 @@ exports.get = function(req, res){
         case 'insights':
           switch(url_array[2]){
             case 'air':
-              insightairrouter.insightairroute(req, res);
+              insightairrouter.insightairget(req, res);
               break;
             default:
               res.send(501, 'This IP does not serve the host domain');//501 = not implemented

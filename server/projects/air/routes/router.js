@@ -1,10 +1,61 @@
 
 var tumblr = require('../controllers/tumblr');
 var fetchtumblr = require('../controllers/fetchtumblr');
+var insights = require('../controllers/insights');
 
 
+exports.insightairput = function(req, res){
+	console.log('insightairput() with url and it\'s array:');
+	console.log(req.url);
+	var url_array = req.url.split('/');//gets rid of the preceding empty string
+	console.dir(url_array);
 
-exports.insightairroute = function(req, res){
+	switch(url_array[3]){
+		case 'api':
+			switch(url_array[4]){
+				case 'insight':
+					console.log('/insights/air/api/insight::update');
+					insights.update(req, res, url_array[5]);
+					break;
+				default:
+					res.send(501, 'Invalid api request to '+req.url);
+					break;
+			}
+			break;
+		default:
+			res.send(501, 'This IP does not serve '+req.url);//501 = not implemented
+			break;
+
+	}	
+}
+
+exports.insightairpost = function(req, res){
+	console.log('insightairpost() with url and it\'s array:');
+	console.log(req.url);
+	var url_array = req.url.split('/');//gets rid of the preceding empty string
+	console.dir(url_array);
+
+	switch(url_array[3]){
+		case 'api':
+			switch(url_array[4]){
+				case 'insight':
+					console.log('/insights/air/api/insight::create');
+					insights.create(req, res);
+					break;
+				default:
+					res.send(501, 'Invalid api request to '+req.url);
+					break;
+			}
+			break;
+		default:
+			res.send(501, 'This IP does not serve '+req.url);//501 = not implemented
+			break;
+
+	}	
+};
+
+
+exports.insightairget = function(req, res){
 	console.log('insightairroute()');
 	console.log(req.url);
 	var url_array = req.url.split('/');//gets rid of the preceding empty string
@@ -14,7 +65,14 @@ exports.insightairroute = function(req, res){
 		switch(url_array[3]){
 			case 'api':
 				console.log('--->api');
+
 				switch(url_array[4]){
+					case 'insight':
+						insights.get(req, res, url_array[5]);
+						break;
+
+
+					//@todo!!!!!!!
 					case 'get':
 						console.log('--->get');
 						switch(url_array[5]){
