@@ -95,6 +95,28 @@ exports.post = function(req, res){
 
 }
 
+
+exports.delete = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          insightairrouter.insightairdelete(req, res);
+          break;
+      }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatpost(req, res);
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
+
+}
+
 exports.get = function(req, res){
   var url_array = req.url.split('/');
   switch(req.headers.host){

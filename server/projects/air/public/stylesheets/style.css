@@ -49,6 +49,14 @@ h6 a:hover{
 }
 
 
+.delete{
+	display: none !important;
+}
+
+.edit-mode .delete{
+	display:block !important;
+}
+
 
 #mechanics{
 	position:fixed;

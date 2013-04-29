@@ -29,6 +29,31 @@ exports.insightairput = function(req, res){
 	}	
 }
 
+exports.insightairdelete = function(req, res){
+	console.log('insightairdelete() with url and it\'s array:');
+	console.log(req.url);
+	var url_array = req.url.split('/');//gets rid of the preceding empty string
+	console.dir(url_array);
+
+	switch(url_array[3]){
+		case 'api':
+			switch(url_array[4]){
+				case 'insight':
+					console.log('/insights/air/api/insight::update');
+					insights.delete(req, res, url_array[5]);
+					break;
+				default:
+					res.send(501, 'Invalid api request to '+req.url);
+					break;
+			}
+			break;
+		default:
+			res.send(501, 'This IP does not serve '+req.url);//501 = not implemented
+			break;
+
+	}	
+}
+
 exports.insightairpost = function(req, res){
 	console.log('insightairpost() with url and it\'s array:');
 	console.log(req.url);

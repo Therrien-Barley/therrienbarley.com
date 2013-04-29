@@ -73,7 +73,7 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
             //run render synchronously
             if(typeof insight_view.render() != 'undefined' ){
                 $('#new-insights-el .insight-container').addClass('edit-mode');
-                $('#new-insights-el .insight-container .edit').removeClass('edit').addClass('save').text('Save');
+                $('#new-insights-el .insight-container .edit').removeClass('edit span2').addClass('save span1 pull-left').text('Save');
                 $('#new-insights-el .insight-container .editable').attr('contenteditable', 'true');
             }
         },

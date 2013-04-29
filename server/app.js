@@ -72,6 +72,7 @@ app.get('/alchemy/:collection/download', fetchtumblr.download);
 app.get('/insights*', routes.get);
 app.post('/insights*', routes.post);
 app.put('/insights*', routes.put);
+app.delete('/insights*', routes.delete);
 
 
 

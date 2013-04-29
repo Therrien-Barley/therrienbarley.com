@@ -12,8 +12,24 @@ function(_, Backbone, template) {
 	    template: template,
 
 	    events: {
+	    	'click .delete': 'delete',
 	    	'click .edit': 'edit',
 	    	'click .save': 'save'
+	    },
+
+	    delete: function(){
+	    	this.unrender();
+
+	    	var conf = confirm("This will delete the insight from the database, this cannot be undone. Are you sure you would like to delete this insight?");
+			if (conf==true)
+  			{
+  				this.model.destroy({
+		    		success: function(model, response, options){
+		    			alert('The Insight has been deleted from the database');
+		    		}
+		    	});
+  			}
+		    
 	    },
 
 	    edit: function(){
@@ -21,7 +37,7 @@ function(_, Backbone, template) {
 	    	console.log('this_selector: '+ this_selector);
 
 	    	$(this_selector).addClass('edit-mode');
-	    	$('.edit', this_selector).removeClass('edit').addClass('save').text('Save');
+	    	$('.edit', this_selector).removeClass('edit span2').addClass('save span1 pull-left').text('Save');
 	    	$('.editable', this_selector).attr('contenteditable', 'true');
 
 	    },
@@ -58,7 +74,7 @@ function(_, Backbone, template) {
             });
 
             $(this_selector).removeClass('edit-mode');
-            $('.save', this_selector).text('Edit').removeClass('save').addClass('edit');
+            $('.save', this_selector).text('Edit').removeClass('save span1 pull-left').addClass('edit span2');
             $('.editable', this_selector).attr('contenteditable', 'false');
 	    },
 

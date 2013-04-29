@@ -67,6 +67,24 @@ exports.get = function(req, res, _id){
 
 
 
+exports.delete = function(req, res, _id){
+    console.log('insights.js::delete()');
+
+    db.collection(col,function(err, collection){
+        collection.remove({ '_id': new ObjectID(_id) },function(err, removed){
+            if (err) {
+                console.log('error: insights.js::delete()');
+                console.log(err);
+                res.send(500, 'Error attempting to delete insight with error message: '+ err);
+            } else {
+                console.log('Success: deleted insight');
+                res.json(200, removed);
+            }
+        });
+    });
+}
+
+
 exports.update = function(req, res, _id){
     console.log('insights.js::create()');
 
