@@ -1,11 +1,11 @@
 <div<% if(typeof data._id != 'undefined'){ %> id="insight-<%= data._id %>"<% } %> class="insight-container">
 	<div class="content row-fluid">
-		<div class="title span10 offset3 editable" contenteditable="false">
+		<div class="title span6 offset5 editable" contenteditable="false">
 			<h2><%= data.title %></h2>
 		</div>
 	</div>
 	<div class="content row-fluid">
-		<div class="categories span10 offset3 editable" contenteditable="false">
+		<div class="categories span6 offset5 editable" contenteditable="false">
 			<% if(typeof data.categories != 'undefined'){ %>
 				<% for(var i = 0; i < data.categories.length; i++){ %>
 					<span class="category <%= data.categories[i] %>"><%= data.categories[i] %><% if(i < data.categories.length-1){ %>, <% } %></span>

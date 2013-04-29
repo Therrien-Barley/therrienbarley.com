@@ -72,34 +72,9 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
             //run render synchronously
             if(typeof insight_view.render() != 'undefined' ){
-                $('.insight-container .edit').removeClass('edit').addClass('save').text('Save');
-
-                $('.insight-container .save').click(function(){
-                    console.log('clicked save');
-
-                    var $insightContainer = $(this).closest('.insight-container');
-                    var title = $insightContainer.find('.title').text();
-                    var description = $insightContainer.find('.description').text();
-
-                    var categories = $insightContainer.find('categories').text().split(',');
-
-                    insight.set({
-                        'title': title, 
-                        'categories' : categories,
-                        'description': description
-                    });
-
-                    console.log('new model: ');
-                    console.dir(insight);
-
-                    //@todo: implement the save function - need to deal with BB sync I think,
-                    //and add an api put call
-                    insight.save();
-
-                    $(this).text('Edit').removeClass('save').addClass('edit');
-                    $(this).closest('.insight-container').find('div').attr('contenteditable', 'false');
-                    
-                });
+                $('#new-insights-el .insight-container').addClass('edit-mode');
+                $('#new-insights-el .insight-container .edit').removeClass('edit').addClass('save').text('Save');
+                $('#new-insights-el .insight-container .editable').attr('contenteditable', 'true');
             }
         },
 

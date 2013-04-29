@@ -27,9 +27,11 @@ function(_, Backbone, template) {
 	    },
 
 	    save: function(){
-	    	console.log('insightview.js::save!');
+	    	console.log('insightview.js::save!!!');
 
-	    	var this_selector = '#insight-'+ this.model.get('_id');
+	    	var newInsight = this.model.isNew();
+
+	    	var this_selector = newInsight ? '#new-insights-el .insight-container' : '#insight-'+ this.model.get('_id');
             var title = $('.title', this_selector).text();
             var description = $('.description', this_selector).text();
 
@@ -41,7 +43,19 @@ function(_, Backbone, template) {
                 'description': description
             });
 
-            this.model.save();
+            this.model.save({}, {
+            	success:function(model, response, options){
+            		console.log('insightview.js::model saved! with newInsight = '+newInsight);
+            		if(newInsight == true){
+            			console.log('was a new insight, cleaning up with this.model id: '+ response[0]._id);
+
+	            		$(this_selector).attr('id', '#insight-'+ response[0]._id);
+	            		var $this = $(this_selector).detach();
+	            		var $that = $('<div class="insight"></div>').append($this);
+	            		$('#insights-el .insights-list-el').prepend($that);
+	            	}
+            	}
+            });
 
             $(this_selector).removeClass('edit-mode');
             $('.save', this_selector).text('Edit').removeClass('save').addClass('edit');
