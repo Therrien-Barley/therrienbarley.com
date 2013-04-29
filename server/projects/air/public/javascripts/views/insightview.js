@@ -18,11 +18,9 @@ function(_, Backbone, template) {
 	    },
 
 	    delete: function(){
-	    	this.unrender();
-
 	    	var conf = confirm("This will delete the insight from the database, this cannot be undone. Are you sure you would like to delete this insight?");
-			if (conf==true)
-  			{
+			if (conf==true){
+				this.unrender();
   				this.model.destroy({
 		    		success: function(model, response, options){
 		    			alert('The Insight has been deleted from the database');
