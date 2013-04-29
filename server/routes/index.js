@@ -49,6 +49,11 @@ exports.put = function(req, res){
   var url_array = req.url.split('/');
   switch(req.headers.host){
     case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          insightairrouter.put(req, res);
+          break;
+      }
       break;
     case 'new-habit.at':
       console.log('routing for new-habit.at');
@@ -65,6 +70,11 @@ exports.post = function(req, res){
   var url_array = req.url.split('/');
   switch(req.headers.host){
     case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          insightairrouter.post(req, res);
+          break;
+      }
       break;
     case 'new-habit.at':
       console.log('routing for new-habit.at');
