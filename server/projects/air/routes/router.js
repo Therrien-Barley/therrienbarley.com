@@ -40,8 +40,12 @@ exports.insightairdelete = function(req, res){
 		case 'api':
 			switch(url_array[4]){
 				case 'insight':
-					console.log('/insights/air/api/insight::update');
+					console.log('/insights/air/api/insight::delete');
 					insights.delete(req, res, url_array[5]);
+					break;
+				case 'fragment':
+					console.log('/insights/air/api/fragment::delete');
+					fragments.delete(req, res, url_array[5]);
 					break;
 				default:
 					res.send(501, 'Invalid api request to '+req.url);

@@ -480,68 +480,80 @@ h1{
 }
 
 
-.fragment-quote-container{
+.fragment-quote-container,
+.fragment-image-container{
 	float:left;
 	color:blue !important;
 	margin-bottom:17px;
 	text-align: left;
+	background-color: white;
+	width:250px;
+	position: relative;
 }
 
-.fragment-quote-container .fragment-quote-text{
+.fragment-quote-container .fragment-quote-text,
+.fragment-image-container .fragment-quote-text{
 	margin:15px;
 }
 
 .fragment-quote-container .fragment-quote-url,
-.fragment-quote-container .fragment-quote-tags{
+.fragment-quote-container .fragment-quote-tags,
+.fragment-image-container .fragment-quote-url,
+.fragment-image-container .fragment-quote-tags{
 	text-align: right;
 }
 
-.fragment-quote-container .fragment-quote-url a{
+.fragment-quote-container .fragment-quote-url a,
+.fragment-image-container .fragment-quote-url a{
 	margin:0 15px 7px 0;
 	font-size:13px;
 	color:black;
 }
 
-.fragment-quote-container .fragment-quote-tags{
+.fragment-quote-container .fragment-quote-tags,
+.fragment-image-container .fragment-quote-tags{
 	margin:0 15px 15px 0;
 	font-family:Monaco, monospace;
 	font-size:11px;
 }
 
-.fragment-quote-container{
-	background-color: white;
-	width:250px;
-}
 
 .fragment-quote-wrapper .quote-count{
 	margin-bottom:27px;
 	color:black;
 }
 
-.fragment-quote-container.architecture{
+.fragment-quote-container.architecture,
+.fragment-image-container.architecture{
 	background-color:#ff00ff;
 }
 
-.fragment-quote-container.fashion{
+.fragment-quote-container.fashion,
+.fragment-image-container.fashion{
 	background-color:#FFFF00;
 }
-.fragment-quote-container.tech{
+.fragment-quote-container.tech,
+.fragment-image-container.tech{
 	background-color:#00FFFF;
 }
 
-.fragment-quote-container.design{
+.fragment-quote-container.design,
+.fragment-image-container.design{
 	background-color:#FF7F7F;
 }
 
-.fragment-quote-container.women{
+.fragment-quote-container.women,
+.fragment-image-container.women{
 	background-color:#aaa;
 }
 
-.fragment-quote-container.material{
+.fragment-quote-container.material,
+.fragment-image-container.material{
 	background-color:#ffb000;
 }
 
-.fragment-quote-container.light{
+.fragment-quote-container.light,
+.fragment-image-container.light{
 	background-color:#0FFF00;
 }
 
@@ -549,17 +561,31 @@ h1{
 	position: relative;
 }
 
-.fragment .insight-menu-icon{
-	position:absolute;
-	top:5px;
-	right:5px;
-	z-index: 100;
-	color:blue;
+.insight-container .fragment-delete{
+	display: none;
 }
 
-.insight-menu-icon:hover{
+.insight-container.edit-mode .fragment-delete{
+	display:block;
+}
+
+.fragment .insight-menu-icon,
+.insight-container .fragment-delete{
+	position: absolute;
+	top:5px;
+	right:5px;
+	color:blue;
+	font-size:14px;
+	z-index:100;
+}
+
+.insight-menu-icon:hover,
+.insight-container .fragment-delete:hover{
+	color:red;
 	cursor:pointer;
 }
+
+
 
 /* insights */
 .insight-container{
@@ -585,6 +611,10 @@ h1{
 	font-family:Monaco, monospace;
 	font-size:11px;
 }
+
+
+
+
 
 /* insights menu */
 #insights-menu{

@@ -1,6 +1,6 @@
-<div class="fragment-quote-container <%= data.category %>">
+<div class="fragment-image-container <%= data.category %>">
+	<% if(typeof data.type != "undefined"){ %><i class="fragment-delete icon-remove"></i><% }else{ %><i class="icon-idea-alt insight-menu-icon"></i><% } %>
 	<img src="<%= data.image %>" width="250px">
-	<i class="icon-idea-alt insight-menu-icon"></i>
 	<div class="fragment-quote-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
 	<div class="fragment-quote-tags">
 		<% console.log('data!'); console.dir(data) %>

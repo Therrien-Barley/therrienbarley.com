@@ -68,16 +68,16 @@ exports.get = function(req, res, _id){
 
 
 exports.delete = function(req, res, _id){
-    console.log('insights.js::delete()');
+    console.log('fragments.js::delete()');
 
     db.collection(col,function(err, collection){
         collection.remove({ '_id': new ObjectID(_id) },function(err, removed){
             if (err) {
-                console.log('error: insights.js::delete()');
+                console.log('error: fragments.js::delete()');
                 console.log(err);
-                res.send(500, 'Error attempting to delete insight with error message: '+ err);
+                res.send(500, 'Error attempting to delete fragment with error message: '+ err);
             } else {
-                console.log('Success: deleted insight');
+                console.log('Success: deleted fragment');
                 res.json(200, removed);
             }
         });
@@ -121,11 +121,25 @@ exports.update = function(req, res, _id){
 exports.create = function(req, res){
     var fragment = {
         type: req.body.type,
-        content: req.body.content,
         element: req.body.element,
         tags: req.body.tags,
-        insight_id: req.body.insight_id
+        category: req.body.category,
+        insight_id: req.body.insight_id,
+        post_url: req.body.post_url
     };
+
+    switch(req.body.type){
+        case 'quote':
+            fragment.quote = req.body.quote;
+            break;
+        case 'image':
+            fragment.image = req.body.image;
+            break;
+        case 'title':
+            fragment.title = req.body.title;
+            break;
+    }
+    
 
     db.collection(col, function(err, collection) {
         collection.insert(fragment, function(err, docs) {

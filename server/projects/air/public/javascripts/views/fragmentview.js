@@ -8,7 +8,22 @@ function(_, Backbone) {
 	    className: 'fragment',
 
 	    events: {
-	    	'mouseenter .insight-menu-icon': 'showInsightsMenu'
+	    	'mouseenter .insight-menu-icon': 'showInsightsMenu',
+	    	'click .fragment-delete': 'delete'
+	    },
+
+	    delete: function(){
+	    	var conf = confirm("This will remove the fragment from this insight, this cannot be undone. Are you sure you would like to remove this fragment?");
+			if (conf==true){
+				console.dir(this.model);
+				this.unrender();
+  				this.model.destroy({
+		    		success: function(model, response, options){
+		    			//alert('The fragment has been removed from the insight');
+		    		}
+		    	});
+  			}
+
 	    },
 
 	    showInsightsMenu: function(){
@@ -29,7 +44,8 @@ function(_, Backbone) {
 	    			element: that.model.get('post_id'),
 	    			tags: that.model.get('tags'),
 	    			category: that.model.get('category'),
-	    			insight_id: $(this).attr('id').substr(8)
+	    			insight_id: $(this).attr('id').substr(8),
+	    			post_url: that.model.get('post_url')
 	    		}, {
 	    			success: function(model, response){
 	    				console.log('saved! new model');
