@@ -25,9 +25,10 @@ function(_, Backbone) {
 
 	    		that.model.save({
 	    			type: 'image',
-	    			content: that.model.get('image'),
+	    			image: that.model.get('image'),
 	    			element: that.model.get('post_id'),
 	    			tags: that.model.get('tags'),
+	    			category: that.model.get('category'),
 	    			insight_id: $(this).attr('id').substr(8)
 	    		}, {
 	    			success: function(model, response){

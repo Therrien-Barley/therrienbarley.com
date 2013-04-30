@@ -13,7 +13,7 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 db = new Db('audiinnovationresearch', server, {safe:false});
 var col = 'airfragments';
 
-var GET_LIMIT = 100;
+var GET_LIMIT = 300;
 
 db.open(function(err, db) {
 	console.log('opening DB audiinnovationresearch');
@@ -30,18 +30,18 @@ db.open(function(err, db) {
 
 exports.get = function(req, res, _id){
     var _id = _id || false;
-    console.log('insights.js::get() with _id: '+ _id);
+    console.log('fragments.js::get() with _id: '+ _id);
 
     if(_id == false){
         //get all projects
         db.collection(col, function(err, collection) {
-            collection.find({'type': 'insight' }).limit(GET_LIMIT).toArray(function(err, items) {
+            collection.find().limit(GET_LIMIT).toArray(function(err, items) {
                 if (err) {
-                    console.log('error: insights.js::create()');
+                    console.log('error: fragments.js::create()');
                     console.log(err);
-                    res.send(500, 'Error attempting to get insight with error message: '+ err);
+                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
                 } else {
-                    console.log('Success: got insight');
+                    console.log('Success: got fragment');
                     console.log(items);
                     res.json(200, items);
                 }
@@ -52,11 +52,11 @@ exports.get = function(req, res, _id){
         db.collection(col, function(err, collection) {
             collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
                 if (err) {
-                    console.log('error: insights.js::create()');
+                    console.log('error: fragments.js::create()');
                     console.log(err);
-                    res.send(500, 'Error attempting to get insight with error message: '+ err);
+                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
                 } else {
-                    console.log('Success: g0t insight');
+                    console.log('Success: g0t fragment');
                     console.log(items);
                     res.json(200, items[0]);
                 }

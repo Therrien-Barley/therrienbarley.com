@@ -24,12 +24,12 @@ function(Backbone, FragmentView, template) {
 		    	this._fragmentTemplate = vars._fragmentTemplate;
 		    }
 
-
 		    _.each(this.collection.models, function(model, index){
                 that._fragmentViews.push( new FragmentView({
                     model: model,
                     tagName: 'div',
-                    template: vars._fragmentTemplate
+                    template: vars._fragmentTemplate,
+                    el: this._fragmentViewEl
                 }));
             });
 		},
@@ -39,20 +39,34 @@ function(Backbone, FragmentView, template) {
 		    // Clear out this element.
 		    $(this.el).empty();
 
-		    var attr = { data: {
-		    		tag: vars.tag,
-		    		total_fragments: this._fragmentViews.length
-			    }
-			};
+		    if(vars){
+		    	var attr = { data: {
+			    		tag: vars.tag,
+			    		total_fragments: this._fragmentViews.length
+				    }
+				};
+		    }else{
+		    	var attr = { data: {
+		    			total_fragments: this._fragmentViews.length
+		    		}
+				};
+		    }
+
+			console.log('fragmentsview.js::render() with attr:');
+			console.dir(attr);
 
 		    var content = _.template(this.template, attr);
 			$(this.el).html(content);
 		 
 		    // Render each sub-view and append it to the parent view's element.
 		    _.each(this._fragmentViews, function(fragmentView) {
-		    	if(vars.tag){
-		    		$(that._fragmentViewEl).append(fragmentView.render({tag: vars.tag}).el);
-		    	}
+		    	if(vars){
+			    	if(vars.tag){
+			    		$(that._fragmentViewEl).append(fragmentView.render({tag: vars.tag}).el);
+			    	}
+			    }else{
+			    	$(that._fragmentViewEl).append(fragmentView.render().el);
+			    }
 		    });
 
 		    return true;

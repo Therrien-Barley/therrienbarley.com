@@ -1,9 +1,12 @@
 define([
 	'underscore',
 	'backbone',
-	'text!../../../views/templates/insight.html'
+	'text!../../../views/templates/insight.html',
+	'collections/fragments',
+	'views/fragmentsview',
+	'text!../../../views/templates/fragmentimage.html',
 ],
-function(_, Backbone, template) {
+function(_, Backbone, template, Fragments, FragmentsView, fragmentImageTemplate) {
 
 	var InsightView = Backbone.View.extend({
 	    className: 'insight',
@@ -75,7 +78,27 @@ function(_, Backbone, template) {
             $('.editable', this_selector).attr('contenteditable', 'false');
 	    },
 
-		render: function(vars){
+	    renderFragments: function(frags){
+			var fragments_view_el = '#insight-'+ this.model.get('_id') +' .fragments-el';
+	    	var _fragmentViewEl = '#insight-'+ this.model.get('_id') +' .fragment-el';
+
+	    	var fragments = new Fragments();
+	    	fragments.add(frags);
+
+	    	var fragments_view = new FragmentsView({
+	    		collection: fragments,
+	    		el: fragments_view_el, 
+	    		_fragmentTemplate: fragmentImageTemplate,
+	    		_fragmentViewEl: _fragmentViewEl
+	    	});
+
+
+	    	fragments_view.render();
+		},
+
+
+		render: function(vars, fragments){
+			var that = this;
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;
 
@@ -88,7 +111,12 @@ function(_, Backbone, template) {
 			};
 
 			var content = _.template(this.template, attr);
-			$(this.el).html(content);
+			$(this.el).html(content); 
+			
+
+			setTimeout(function(){
+				that.renderFragments(fragments);
+			}, 10);
 
 			// return ```this``` so calls can be chained.
 			return this;

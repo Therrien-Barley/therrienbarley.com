@@ -1,10 +1,10 @@
 <div class="row-fluid fragment-quote-wrapper">
 	<div class="span12 offset2 terms">
 		
-			<h6><%= data.tag %></h6>
-			<div class="quote-count"><%= data.total_fragments %></div>
+			<% if(typeof data.tag != 'undefined'){ %><h6><%= data.tag %></h6><div class="quote-count"><%= data.total_fragments %></div><% } %>
+			
 
-			<div id="fragment-el" class="masonry-wrapper row-fluid">
+			<div class="fragment-el masonry-wrapper row-fluid">
 				
 			</div>
 		

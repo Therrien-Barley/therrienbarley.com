@@ -150,8 +150,8 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 
                     _this.data.fragments_view = new FragmentsView({
                         collection: collection,
-                        el: '#fragments-el',
-                        _fragmentViewEl: '#fragment-el',
+                        el: '.fragments-el',
+                        _fragmentViewEl: '.fragment-el',
                         _fragmentTemplate: tmplt
                     });
 
@@ -170,10 +170,6 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 							});
 						});
                     }
-	
-
-                	
-
 	                	
                 }
             });
