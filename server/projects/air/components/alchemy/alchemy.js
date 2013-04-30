@@ -127,6 +127,9 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
         },
 
 		renderFragments: function(fragmentType, tag){
+            console.log('renderFragments with type: '+ fragmentType+ ' and tag: '+ tag);
+            console.dir(tag);
+
 			var _this = this;
 			_this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
             _this.data.fragments.fetch({

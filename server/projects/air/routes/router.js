@@ -107,8 +107,8 @@ exports.insightairget = function(req, res){
 						if(typeof url_array[5] == 'undefined'){
 							fragments.get(req, res);
 						}else{
-							console.log('calling tumblr.getFragments()');
-							tumblr.getFragments(req, res, 'categories', url_array[5], url_array[6]);
+							console.log('calling tumblr.getFragments() with : '+ url_array[6]);
+							tumblr.getFragments(req, res, 'categories', url_array[5], unescape(url_array[6]));
 						}	
 						break;
 
