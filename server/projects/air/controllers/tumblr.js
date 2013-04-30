@@ -874,6 +874,9 @@ function renderFragmentImages(returnObject, req, res){
                         }
                     }
 
+                    console.log('');console.log('>>>>>>> returnObject[tag][i]:');
+                    console.dir(returnObject[tag][i]);
+
                     var duplicate = false;
                     for(var k = 0; k < returnObject[tag][i].fragments.images.length; k++){
                         if(returnObject[tag][i].fragments.images[k].src == images[j]){
