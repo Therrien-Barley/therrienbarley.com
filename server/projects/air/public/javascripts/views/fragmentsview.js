@@ -69,6 +69,18 @@ function(Backbone, FragmentView, template) {
 			    }
 		    });
 
+		    var $container = $('.masonry-wrapper');
+
+            $container.masonry({
+                itemSelector: '.fragment',
+                columnWidth: 250,
+                gutterWidth:17
+            });
+
+			$container.imagesLoaded( function(){
+			  	$container.masonry();
+			});
+
 		    return true;
 		}
 	});
