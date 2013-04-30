@@ -1,11 +1,10 @@
 define([
 	'backbone',
 	'views/insightview',
-	'text!../../../../views/templates/insights.html',
+	'text!../../../views/templates/insights.html',
 	'collections/fragments'
 ],
 function(Backbone, InsightView, template, Fragments) {
-	console.dir(_);
 
 	var InsightsView = Backbone.View.extend({
 		tagName: 'div',
@@ -26,10 +25,7 @@ function(Backbone, InsightView, template, Fragments) {
 		    }
 
 		    _.each(this.collection.models, function(model, index){
-                that
-                ._insightViews
-                .push( 
-                	new InsightView({
+                that._insightViews.push(new InsightView({
                     model: model,
                     tagName: 'div',
                     el: this._insightViewEl
@@ -45,31 +41,21 @@ function(Backbone, InsightView, template, Fragments) {
 		    var content = _.template(this.template);
 			$(this.el).html(content);
 
-			
-
-			console.log('insightsview.js::fetching the fragments');
-
 	    	var fragments = new Fragments();
 
 	    	fragments.fetch({
 	    		success: function(collection, response, options){
-	    			console.log('insight fragments:');
-			    	console.dir(fragments);
-
 			    	var frags;
 
 			    	// Render each sub-view and append it to the parent view's element.
 				    _.each(that._insightViews, function(insightView) {
 				    	frags = collection.where({ insight_id : insightView.model.get('_id') });
+
 				    	$(that._insightViewEl).append(insightView.render(null, frags).el);
 				    });
 	    		}
 	    	});
 		 
-		    
-
-
-
 		    return true;
 		}
 	});

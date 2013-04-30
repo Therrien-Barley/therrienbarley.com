@@ -125,21 +125,9 @@ exports.create = function(req, res){
         tags: req.body.tags,
         category: req.body.category,
         insight_id: req.body.insight_id,
-        post_url: req.body.post_url
+        post_url: req.body.post_url,
+        content: req.body.content
     };
-
-    switch(req.body.type){
-        case 'quote':
-            fragment.quote = req.body.quote;
-            break;
-        case 'image':
-            fragment.image = req.body.image;
-            break;
-        case 'title':
-            fragment.title = req.body.title;
-            break;
-    }
-    
 
     db.collection(col, function(err, collection) {
         collection.insert(fragment, function(err, docs) {

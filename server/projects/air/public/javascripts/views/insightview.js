@@ -3,10 +3,9 @@ define([
 	'backbone',
 	'text!../../../views/templates/insight.html',
 	'collections/fragments',
-	'views/fragmentsview',
-	'text!../../../views/templates/fragmentimage.html',
+	'views/fragmentsview'
 ],
-function(_, Backbone, template, Fragments, FragmentsView, fragmentImageTemplate) {
+function(_, Backbone, template, Fragments, FragmentsView) {
 
 	var InsightView = Backbone.View.extend({
 	    className: 'insight',
@@ -34,16 +33,18 @@ function(_, Backbone, template, Fragments, FragmentsView, fragmentImageTemplate)
 
 	    edit: function(){
 	    	var this_selector = '#insight-'+ this.model.get('_id');
-	    	console.log('this_selector: '+ this_selector);
 
 	    	$(this_selector).addClass('edit-mode');
 	    	$('.edit', this_selector).removeClass('edit span2').addClass('save span1 pull-left').text('Save');
 	    	$('.editable', this_selector).attr('contenteditable', 'true');
 
+	    	$('.fragment', this_selector).each(function(){
+
+	    	});
+
 	    },
 
 	    save: function(){
-	    	console.log('insightview.js::save!!!');
 
 	    	var newInsight = this.model.isNew();
 
@@ -76,24 +77,39 @@ function(_, Backbone, template, Fragments, FragmentsView, fragmentImageTemplate)
             $(this_selector).removeClass('edit-mode');
             $('.save', this_selector).text('Edit').removeClass('save span1 pull-left').addClass('edit span2');
             $('.editable', this_selector).attr('contenteditable', 'false');
+
+            var $container = $('.masonry-wrapper');
+
+            $container.masonry({
+                itemSelector: '.fragment',
+                columnWidth: 250,
+                gutterWidth:17
+            });
+
+			$container.imagesLoaded( function(){
+			  	$container.masonry();
+			});
 	    },
 
 	    renderFragments: function(frags){
 			var fragments_view_el = '#insight-'+ this.model.get('_id') +' .fragments-el';
 	    	var _fragmentViewEl = '#insight-'+ this.model.get('_id') +' .fragment-el';
 
+
+			//quote fragments
 	    	var fragments = new Fragments();
 	    	fragments.add(frags);
 
-	    	var fragments_view = new FragmentsView({
+
+        	var fragments_view = new FragmentsView({
 	    		collection: fragments,
 	    		el: fragments_view_el, 
-	    		_fragmentTemplate: fragmentImageTemplate,
 	    		_fragmentViewEl: _fragmentViewEl
 	    	});
 
-
 	    	fragments_view.render();
+
+
 		},
 
 

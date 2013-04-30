@@ -1,8 +1,14 @@
 <div class="fragment-image-container <%= data.category %>">
 	<% if(typeof data.type != "undefined"){ %><i class="fragment-delete icon-remove"></i><% }else{ %><i class="icon-idea-alt insight-menu-icon"></i><% } %>
-	<img src="<%= data.image %>" width="250px">
-	<div class="fragment-quote-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
-	<div class="fragment-quote-tags">
+	<% if(typeof data.image != "undefined"){ %>
+		<img src="<%= data.image %>" width="250px">
+	<% }else if(typeof data.quote != 'undefined'){ %>
+		<div class="fragment-quote-text"><%= data.quote %></div>
+	<% }else if(typeof data.title != 'undefined'){ %>
+		<div class="fragment-title"><%= data.title %></div>
+	<% } %>
+	<div class="fragment-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
+	<div class="fragment-tags">
 		<% console.log('data!'); console.dir(data) %>
 		<% for(var t = 0; t < data.tags.length; t++){ %>
 			<% if(t < data.tags.length-1){ %>

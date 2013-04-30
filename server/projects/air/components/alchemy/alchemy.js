@@ -5,9 +5,6 @@ define([
 	'jquery-masonry',
     'collections/fragments',
     'views/fragmentsview',
-    'text!../../views/templates/fragmentquote.html',
-    'text!../../views/templates/fragmentimage.html',
-    'text!../../views/templates/fragmenttitle.html',
     'models/tumblrpost',
     'views/tumblrpostview',
     'models/insight',
@@ -15,7 +12,7 @@ define([
     'collections/insights',
     'views/insightsview'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplate, fragmentImageTemplate, fragmentTitleTemplate, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView) {
+function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView) {
 
 	
 	var Alchemy = {
@@ -134,25 +131,11 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, fragmentQuoteTemplat
 			_this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
             _this.data.fragments.fetch({
                 success: function(collection, response, options){
-                	
-                	var tmplt;
-                	switch(fragmentType){
-                		case 'quotes':
-                			tmplt = fragmentQuoteTemplate;
-                			break;
-                		case 'images':
-                			tmplt = fragmentImageTemplate;
-                			break;
-                		case 'titles':
-                			tmplt = fragmentTitleTemplate;
-                			break;
-                	}
 
                     _this.data.fragments_view = new FragmentsView({
                         collection: collection,
                         el: '.fragments-el',
-                        _fragmentViewEl: '.fragment-el',
-                        _fragmentTemplate: tmplt
+                        _fragmentViewEl: '.fragment-el'
                     });
 
                     if(_this.data.fragments_view.render({ tag: tag})){

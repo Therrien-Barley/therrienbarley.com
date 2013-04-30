@@ -1,15 +1,15 @@
 define([
 	'backbone',
+	'jquery-masonry',
 	'views/fragmentview',
 	'text!../../../views/templates/fragments.html'
 ],
-function(Backbone, FragmentView, template) {
-	console.dir(_);
-
+function(Backbone, masonry, FragmentView, template) {
 	var FragmentsView = Backbone.View.extend({
 		tagName: 'div',
 	    className: 'fragment',
 		_fragmentViews: null,
+		_fragmentViewEl: null,
 		collection: null,
 		template: template,
 
@@ -17,18 +17,14 @@ function(Backbone, FragmentView, template) {
 		    var that = this;
 		    this._fragmentViews = [];
 		    if(vars._fragmentViewEl){
+		    	console.log('init _fragmentViewEl with '+ vars._fragmentViewEl);
 		    	this._fragmentViewEl = vars._fragmentViewEl;
-		    }
-
-		    if(vars._fragmentTemplate){
-		    	this._fragmentTemplate = vars._fragmentTemplate;
 		    }
 
 		    _.each(this.collection.models, function(model, index){
                 that._fragmentViews.push( new FragmentView({
                     model: model,
                     tagName: 'div',
-                    template: vars._fragmentTemplate,
                     el: this._fragmentViewEl
                 }));
             });
@@ -52,19 +48,19 @@ function(Backbone, FragmentView, template) {
 				};
 		    }
 
-			console.log('fragmentsview.js::render() with attr:');
-			console.dir(attr);
 
 		    var content = _.template(this.template, attr);
 			$(this.el).html(content);
-		 
-		    // Render each sub-view and append it to the parent view's element.
+
+	 		// Render each sub-view and append it to the parent view's element.
 		    _.each(this._fragmentViews, function(fragmentView) {
 		    	if(vars){
 			    	if(vars.tag){
 			    		$(that._fragmentViewEl).append(fragmentView.render({tag: vars.tag}).el);
 			    	}
 			    }else{
+			    	console.log('that._fragmentViewEl');
+			    	console.dir(that._fragmentViewEl);
 			    	$(that._fragmentViewEl).append(fragmentView.render().el);
 			    }
 		    });
@@ -80,6 +76,8 @@ function(Backbone, FragmentView, template) {
 			$container.imagesLoaded( function(){
 			  	$container.masonry();
 			});
+
+			    
 
 		    return true;
 		}

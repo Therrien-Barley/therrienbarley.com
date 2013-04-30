@@ -480,8 +480,7 @@ h1{
 }
 
 
-.fragment-quote-container,
-.fragment-image-container{
+.fragment-container{
 	float:left;
 	color:blue !important;
 	margin-bottom:17px;
@@ -491,27 +490,22 @@ h1{
 	position: relative;
 }
 
-.fragment-quote-container .fragment-quote-text,
-.fragment-image-container .fragment-quote-text{
+.fragment-container .fragment-quote-text{
 	margin:15px;
 }
 
-.fragment-quote-container .fragment-quote-url,
-.fragment-quote-container .fragment-quote-tags,
-.fragment-image-container .fragment-quote-url,
-.fragment-image-container .fragment-quote-tags{
+.fragment-container .fragment-url,
+.fragment-container .fragment-tags{
 	text-align: right;
 }
 
-.fragment-quote-container .fragment-quote-url a,
-.fragment-image-container .fragment-quote-url a{
+.fragment-container .fragment-url a{
 	margin:0 15px 7px 0;
 	font-size:13px;
 	color:black;
 }
 
-.fragment-quote-container .fragment-quote-tags,
-.fragment-image-container .fragment-quote-tags{
+.fragment-container .fragment-tags{
 	margin:0 15px 15px 0;
 	font-family:Monaco, monospace;
 	font-size:11px;
@@ -523,37 +517,30 @@ h1{
 	color:black;
 }
 
-.fragment-quote-container.architecture,
-.fragment-image-container.architecture{
+.fragment-container.architecture{
 	background-color:#ff00ff;
 }
 
-.fragment-quote-container.fashion,
-.fragment-image-container.fashion{
+.fragment-container.fashion{
 	background-color:#FFFF00;
 }
-.fragment-quote-container.tech,
-.fragment-image-container.tech{
+.fragment-container.tech{
 	background-color:#00FFFF;
 }
 
-.fragment-quote-container.design,
-.fragment-image-container.design{
+.fragment-container.design{
 	background-color:#FF7F7F;
 }
 
-.fragment-quote-container.women,
-.fragment-image-container.women{
+.fragment-container.women{
 	background-color:#aaa;
 }
 
-.fragment-quote-container.material,
-.fragment-image-container.material{
+.fragment-container.material{
 	background-color:#ffb000;
 }
 
-.fragment-quote-container.light,
-.fragment-image-container.light{
+.fragment-container.light{
 	background-color:#0FFF00;
 }
 

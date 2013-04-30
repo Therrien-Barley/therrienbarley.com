@@ -198,9 +198,6 @@ function getElements(req, res, callback, col, taxonomy, tag){
 
 function findTag(col, tag, returnObject, req, res, callback, taxonomy){
     console.log('findTag()');
-    console.log(col + tag );
-    console.dir(returnObject);
-    console.dir(callback);
 
     var tag = tag.replace(/-/g," ");
     db.collection(col, function(err, collection) {
@@ -739,10 +736,11 @@ function renderFragmentQuotes(returnObject, req, res, taxonomy, number){
             if(quotes != null){
                 for(var j = 0; j < quotes.length; j++){
                     var element = {};
+                    element.type = 'quote';
                     element.post_id = returnObject[tag][i].id;
                     element.post_url = returnObject[tag][i].post_url;
                     element.tags = returnObject[tag][i].tags;
-                    element.quote = quotes[j];
+                    element.content = quotes[j];
 
                     for(var c = 0; c < TAXONOMIES['categories'].length; c++){
                         if(returnObject[tag][i].tags.indexOf(TAXONOMIES['categories'][c]) > -1){
@@ -864,10 +862,11 @@ function renderFragmentImages(returnObject, req, res){
             if(images != null){
                 for(var j = 0; j < images.length; j++){
                     var element = {};
+                    element.type = 'image';
                     element.post_id = returnObject[tag][i].id;
                     element.post_url = returnObject[tag][i].post_url;
                     element.tags = returnObject[tag][i].tags;
-                    element.image = images[j];
+                    element.content = images[j];
 
                     for(var c = 0; c < TAXONOMIES['categories'].length; c++){
                         if(returnObject[tag][i].tags.indexOf(TAXONOMIES['categories'][c]) > -1){
