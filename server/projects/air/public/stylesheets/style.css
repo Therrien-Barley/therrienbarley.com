@@ -269,6 +269,16 @@ h1{
 	color:#0FFF00;
 }
 
+.architecture .architecture,
+.fashion .fashion,
+.tech .tech,
+.design .design,
+.women .women,
+.material .material,
+.light .light{
+	color:black;
+}
+
 
 #sources .sources-heading{
 	text-align: center;

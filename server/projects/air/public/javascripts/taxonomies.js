@@ -14,6 +14,7 @@ function() {
 	
 	TAXONOMIES[ 'terms' ] = [
 		'art',
+		'magazine',
 	    '3d printing',
 	    'crowdsourcing',
 	    'patterns',

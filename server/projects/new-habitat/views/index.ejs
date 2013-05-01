@@ -1,23 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- partial('partials/head', {title:title}) %>
-<body data-spy="scroll" data-target=".subnav" data-offset="50">
+	<head>
+	    <meta charset="utf-8">
+	    <title>New Habitat</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
 
-	<div id="wrapper">
-		<%- partial('partials/header') %>
-		<%- partial('partials/nav') %>
+		<!-- styles -->
+		<link rel="stylesheet" href="/stylesheets/habitat-bootstrap.min.css" />
+		<link rel="stylesheet" href="/stylesheets/elusive-webfont.css" />
+		<link rel="stylesheet" href="/stylesheets/habitat.css" />
 
-		<div id="main"></div><!--/#main-->
+			
+		
+	    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]>
+	      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
 
-		<%- partial('partials/footer') %>
-	</div><!-- /#wrapper -->
+	    <!--[if lte IE 7]><script src="assets/elusive-font/lte-ie7.js"></script><![endif]-->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <%- partial('partials/scripts') %>
-  </body>
+	    <!-- Le fav and touch icons -->
+	    <link rel="shortcut icon" href="/favicon.ico">
+	</head>
+	<body>
+
+		<div id="wrapper">
+
+			<header id="header">
+				<div class="row-fluid">
+					<div class="span6 offset5">
+						<h2>New Habitat</h2>
+					</div>
+				</div>
+			</header><!--/#header-->
+
+			<div id="hackcity">
+				#hackcity
+			</div>
+
+			<div id="main">
+				<div id="homeapi" class="row-fluid">
+					<div class="span3 offset2">
+						<i id="homeicon" class="icon-home"></i>
+					</div>
+					<div id="equals" class="span2">
+						=
+					</div>
+					<div id="api" class="span3">
+						API
+					</div>
+				</div>
+
+				<div id="info" class="row-fluid">
+					<div class="span3 offset5 info-block">
+						<div>Hackathon</div>
+						<div>April 27–28</div>
+						<div>NewLab, Navy Yards</div>
+						<div>Brooklyn, NY</div>
+					</div>
+					<div class="span3 info-block">
+						<div>Presentation</div>
+						<div>May 3</div>
+						<div>New Museum</div>
+						<div><a href="http://www.ideas-city.org/view/hack-city" target="_blank">Ideas City Festival</a></div><br>
+						<a href="http://new-habitat-pitch.eventbrite.com" target="_blank">Attend Presentation</a>
+					</div>
+				</div><!--/#info-->
+
+				<footer id="footer" class="row-fluid">
+					<div class="span5 offset7">
+						<a href="https://docs.google.com/document/d/1qqC8E-qFDlyhf1wG9d55el5Ub7YbENi9AlFHUSkNdw0/edit?usp=sharing" target="_blank">press release</a>&nbsp;&nbsp;&nbsp;<a href="https://twitter.com/new_habitat" target="_blank">@new_habitat</a>
+					</div>
+				</footer><!--/#footer-->
+			</div><!--/#main-->
+
+		</div>
+
+
+
+	    <!-- Le javascript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="/javascripts/bootstrap.min.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				if( Math.random() > 0.5 ){
+					$('body, a, a:visited').css('color', 'white').css('backgroundColor', 'black');
+				}
+			});
+		</script>
+
+		
+		<!-- Google Analytics -->
+	
+	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
