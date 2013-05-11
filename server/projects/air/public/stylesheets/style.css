@@ -566,6 +566,11 @@ h1{
 	display:block;
 }
 
+.tumblr-post-media{
+	position: relative;
+}
+
+.tumblr-post-media .insight-menu-icon,
 .fragment .insight-menu-icon,
 .insight-container .fragment-delete{
 	position: absolute;
