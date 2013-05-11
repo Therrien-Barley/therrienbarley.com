@@ -45,7 +45,8 @@ function(_, Backbone, template) {
 	    			tags: that.model.get('tags'),
 	    			category: that.model.get('category'),
 	    			insight_id: $(this).attr('id').substr(8),
-	    			post_url: that.model.get('post_url')
+	    			post_url: that.model.get('post_url'),
+	    			caption: ''
 	    		}, {
 	    			success: function(model, response){
 	    			}

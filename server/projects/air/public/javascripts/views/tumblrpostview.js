@@ -52,7 +52,8 @@ function(Backbone, template, TAXONOMIES, Fragment) {
 	    			tags: tags,
 	    			category: category,
 	    			insight_id: $(this).attr('id').substr(8),
-	    			post_url: that.model.get('post_url')
+	    			post_url: that.model.get('post_url'),
+	    			caption: ''
 	    		});
 	    		
 	    		fragment.save({}, {

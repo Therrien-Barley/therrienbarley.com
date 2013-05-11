@@ -35,7 +35,7 @@ exports.get = function(req, res, _id){
     if(_id == false){
         //get all projects
         db.collection(col, function(err, collection) {
-            collection.find().limit(GET_LIMIT).toArray(function(err, items) {
+            collection.find().limit(GET_LIMIT).sort(order).toArray(function(err, items) {
                 if (err) {
                     console.log('error: fragments.js::create()');
                     console.log(err);
@@ -86,25 +86,28 @@ exports.delete = function(req, res, _id){
 
 
 exports.update = function(req, res, _id){
-    console.log('insights.js::create()');
+    console.log('fragments.js::create()');
 
-    var insight = {
-        type: 'insight',
-        title: req.body.title,
-        categories: req.body.categories,
-        description: req.body.description,
-        questions: req.body.questions,
-        fragments: req.body.fragments
+    var fragment = {
+        type: req.body.type,
+        element: req.body.element,
+        tags: req.body.tags,
+        category: req.body.category,
+        insight_id: req.body.insight_id,
+        post_url: req.body.post_url,
+        content: req.body.content,
+        caption: req.body.caption,
+        order: req.body.order
     };
 
     db.collection(col, function(err, collection) {
-        collection.update({'_id': new ObjectID(_id) }, insight, {safe:true}, function(err) {
+        collection.update({'_id': new ObjectID(_id) }, fragment, {safe:true}, function(err) {
             if (err) {
-                console.log('error: insights.js::create()');
+                console.log('error: fragments.js::create()');
                 console.log(err);
-                res.send(500, 'Error attempting to update insight with error message: '+ err);
+                res.send(500, 'Error attempting to update fragment with error message: '+ err);
             } else {
-                console.log('Success: updated insight');
+                console.log('Success: updated fragment');
                 res.json(200);
             }
         });
@@ -126,7 +129,9 @@ exports.create = function(req, res){
         category: req.body.category,
         insight_id: req.body.insight_id,
         post_url: req.body.post_url,
-        content: req.body.content
+        content: req.body.content,
+        caption: req.body.caption,
+        order: req.body.order
     };
 
     db.collection(col, function(err, collection) {
