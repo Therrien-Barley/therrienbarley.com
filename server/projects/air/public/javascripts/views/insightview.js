@@ -11,11 +11,20 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    className: 'insight',
 	    tagName: 'div',
 	    template: template,
+	    _featuredViews: null,
 
 	    events: {
 	    	'click .delete': 'delete',
 	    	'click .edit': 'edit',
 	    	'click .save': 'save'
+	    },
+
+	    initialize: function(opts){
+	    	this._featuredViews = [];
+	    },
+
+	    addFeatured: function(featuredView){
+	    	this._featuredViews.push(featuredView);
 	    },
 
 	    delete: function(){
@@ -71,6 +80,10 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	            		var $that = $('<div class="insight"></div>').append($this);
 	            		$('#insights-el .insights-list-el').prepend($that);
 	            	}
+
+	            	$('.featured.new').each(function(){
+
+	            	});
             	}
             });
 
@@ -89,12 +102,19 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 			$container.imagesLoaded( function(){
 			  	$container.masonry();
 			});
+
+			//save each of the featured fragments
+			_.each(this._featuredViews, function(featuredView, index){
+				featuredView.save();
+			});
 	    },
 
 	    renderFragments: function(frags){
-			var fragments_view_el = '#insight-'+ this.model.get('_id') +' .fragments-el';
-	    	var _fragmentViewEl = '#insight-'+ this.model.get('_id') +' .fragment-el';
+	    	var that = this;
 
+			var fragments_view_el = '#insight-'+ this.model.get('_id') +' .fragments-el';
+	    	var fragmentViewEl = '#insight-'+ this.model.get('_id') +' .fragment-el';
+	    	var featuredViewEl = '#insight-'+ this.model.get('_id') +' .featured';
 
 			//quote fragments
 	    	var fragments = new Fragments();
@@ -104,12 +124,12 @@ function(_, Backbone, template, Fragments, FragmentsView) {
         	var fragments_view = new FragmentsView({
 	    		collection: fragments,
 	    		el: fragments_view_el, 
-	    		_fragmentViewEl: _fragmentViewEl
+	    		_fragmentViewEl: fragmentViewEl,
+	    		_featuredViewEl: featuredViewEl,
+	    		_insightView: that
 	    	});
 
 	    	fragments_view.render();
-
-
 		},
 
 

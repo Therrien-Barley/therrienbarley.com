@@ -10,6 +10,7 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
 	    template: template,
+	    _insightView: null,//link to the related insight view
 	    events: {
 	    	'mouseenter .insight-menu-icon': 'showInsightsMenu',
 	    	'click .fragment-delete': 'delete',
@@ -23,9 +24,38 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	    	if(opts.tagName){
 	    		this.tagName = opts.tagName;
 	    	}
+	    	if(opts._insightView){
+	    		this._insightView = opts._insightView;
+	    	}
+
+	    	_.bind(this, 'save');
+	    },
+
+	    save: function(){
+	    	console.log('featured model saved');
+
+	    	var selector = '#insight-' + this._insightView.model.get('_id');
+	    	console.log('selector: '+ selector);
+
+	    	var caption = $('.caption', selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
+	    	
+	    	this.model.save({
+				featured: true,
+				caption: caption
+	    	}, {
+	    		success: function(){
+	    			console.log('featured model saved');
+	    		},
+	    		error: function(){
+	    			console.log('ERROR: featured model NOT saved');
+	    		}
+	    	});
 	    },
 
 	    feature: function(event){
+
+	    	console.log('this._insightView:');
+	    	console.dir(this._insightView);
 
 	    	var id = $(event.target).closest('.insight-container').attr('id');
 
@@ -35,15 +65,21 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	    		model: new_fragment,
 	    		template: featuredTemplate,
 	    		tagName: 'li',
-                el: '#'+id+' .featured'
+                el: '#'+id+' .featured',
+                _insightView: this._insightView
 	    	});
 
+	    	console.log('*******new_fragment');
 	    	console.dir(new_fragment);
 	    	console.dir(new_view);
 
 	    	//call append instead of render so it adds, rather than replaces
 	    	new_view.append();
 	    	console.log('should have rendered!!!!!!!');
+
+	    	this._insightView.addFeatured(new_view);
+
+	    	this.unrender();
 
 	    },
 
@@ -97,6 +133,8 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 				_.extend(attributes, vars);
 			}
 
+			_.extend(attributes, { 'new': 'true' });
+
 			var attr = {
 				data: attributes
 			};
@@ -104,6 +142,8 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 			var content = _.template(this.template, attr);
 
 			$(this.el).append(content);
+
+			$('.caption').attr('contenteditable', 'true');
 			
 			// return ```this``` so calls can be chained.
 			return this;

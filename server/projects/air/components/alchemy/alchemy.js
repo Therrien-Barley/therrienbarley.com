@@ -36,7 +36,6 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
 
                     _.each(data, function(insight, index){
                         var insight_title = (insight.title.length > 30) ? insight.title.substr(0, 30) + '...' : insight.title;
-                        console.log('insight title number: '+ index+' is '+insight_title);
 
                         $menu.find('.insights-options').append('<li id="insight-'+insight._id+'" class="insights-option">'+insight_title+'</li>');
                     });

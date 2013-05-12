@@ -35,7 +35,7 @@ exports.get = function(req, res, _id){
     if(_id == false){
         //get all projects
         db.collection(col, function(err, collection) {
-            collection.find().limit(GET_LIMIT).sort(order).toArray(function(err, items) {
+            collection.find().limit(GET_LIMIT).sort('order').toArray(function(err, items) {
                 if (err) {
                     console.log('error: fragments.js::create()');
                     console.log(err);

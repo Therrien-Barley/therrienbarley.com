@@ -18,6 +18,10 @@ exports.insightairput = function(req, res){
 					console.log('/insights/air/api/insight::update');
 					insights.update(req, res, url_array[5]);
 					break;
+				case 'fragment':
+					console.log('/insights/air/api/fragment::update');
+					fragments.update(req, res, url_array[5]);
+					break;
 				default:
 					res.send(501, 'Invalid api request to '+req.url);
 					break;
@@ -105,6 +109,7 @@ exports.insightairget = function(req, res){
 						break;
 					case 'fragment':
 						if(typeof url_array[5] == 'undefined'){
+							console.log('yes! trying to get all fragments');
 							fragments.get(req, res);
 						}else{
 							console.log('calling tumblr.getFragments() with : '+ url_array[6]);

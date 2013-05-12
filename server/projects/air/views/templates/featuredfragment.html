@@ -1,4 +1,4 @@
-<li class="featured <%= data.category %>">
+<li class="featured-item <% if(typeof data.new != undefined){ %> new<% } %>">
 	<div class="media-container row-fluid">
 		<div class="span4 offset6">
 			<i class="fragment-unfeature icon-minus"></i><i class="fragment-delete icon-remove"></i>
@@ -11,14 +11,18 @@
 			<% } %>
 		</div>
 	</div><!-- /.media-container -->
-	<div class="text-container row-fluid">
-		<div class="span6 offset5">
-			<div class="fragment-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
+	<div class="row-fluid">
+		<div class="span16 fragment-url">
+			<a href="<%= data.post_url %>" target="_blank">Original post →</a>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="caption span6 offset5 editable" contenteditable="false">
 			<% if(typeof data.caption != 'undefined'){ %>
-				<div class="caption editable" contenteditable="false">
 					<%= data.caption %>
-				</div>
+			<% }else{ %>
+				Add caption
 			<% } %>
 		</div>
-	</div><!-- /.text-container -->
+	</div>
 </li>
