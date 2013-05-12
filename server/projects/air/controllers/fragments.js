@@ -97,7 +97,8 @@ exports.update = function(req, res, _id){
         post_url: req.body.post_url,
         content: req.body.content,
         caption: req.body.caption,
-        order: req.body.order
+        order: req.body.order,
+        featured: req.body.featured
     };
 
     db.collection(col, function(err, collection) {
@@ -131,7 +132,8 @@ exports.create = function(req, res){
         post_url: req.body.post_url,
         content: req.body.content,
         caption: req.body.caption,
-        order: req.body.order
+        order: req.body.order,
+        featured: false
     };
 
     db.collection(col, function(err, collection) {

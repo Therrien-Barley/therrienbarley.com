@@ -1,0 +1,24 @@
+<li class="featured <%= data.category %>">
+	<div class="media-container row-fluid">
+		<div class="span4 offset6">
+			<i class="fragment-unfeature icon-minus"></i><i class="fragment-delete icon-remove"></i>
+			<% if(data.type == "image"){ %>
+				<img src="<%= data.content %>">
+			<% }else if(data.type == 'quote'){ %>
+				<div class="fragment-quote-text"><%= data.content %></div>
+			<% }else if(data.type == 'title'){ %>
+				<div class="fragment-title"><%= data.content %></div>
+			<% } %>
+		</div>
+	</div><!-- /.media-container -->
+	<div class="text-container row-fluid">
+		<div class="span6 offset5">
+			<div class="fragment-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
+			<% if(typeof data.caption != 'undefined'){ %>
+				<div class="caption editable" contenteditable="false">
+					<%= data.caption %>
+				</div>
+			<% } %>
+		</div>
+	</div><!-- /.text-container -->
+</li>

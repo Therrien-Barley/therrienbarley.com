@@ -1,16 +1,50 @@
 define([
 	'underscore',
 	'backbone',
-	'text!../../../views/templates/fragment.html'
+	'models/fragment',
+	'text!../../../views/templates/fragment.html',
+	'text!../../../views/templates/featuredfragment.html'
 ],
-function(_, Backbone, template) {
+function(_, Backbone, Fragment, template, featuredTemplate) {
 
 	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
 	    template: template,
 	    events: {
 	    	'mouseenter .insight-menu-icon': 'showInsightsMenu',
-	    	'click .fragment-delete': 'delete'
+	    	'click .fragment-delete': 'delete',
+	    	'click .fragment-feature': 'feature'
+	    },
+
+	    initialize: function(opts){
+	    	if(opts.template){
+	    		this.template = opts.template;
+	    	}
+	    	if(opts.tagName){
+	    		this.tagName = opts.tagName;
+	    	}
+	    },
+
+	    feature: function(event){
+
+	    	var id = $(event.target).closest('.insight-container').attr('id');
+
+	    	var new_fragment = this.model.clone();
+
+	    	var new_view = new FragmentView({
+	    		model: new_fragment,
+	    		template: featuredTemplate,
+	    		tagName: 'li',
+                el: '#'+id+' .featured'
+	    	});
+
+	    	console.dir(new_fragment);
+	    	console.dir(new_view);
+
+	    	//call append instead of render so it adds, rather than replaces
+	    	new_view.append();
+	    	console.log('should have rendered!!!!!!!');
+
 	    },
 
 	    delete: function(){
@@ -23,7 +57,6 @@ function(_, Backbone, template) {
 		    		}
 		    	});
   			}
-
 	    },
 
 	    showInsightsMenu: function(){
@@ -54,6 +87,28 @@ function(_, Backbone, template) {
 	    	});
 	    },
 
+	    //same as render, but doesn't wipe out the el, just appends to it
+	    //used for adding featured fragments
+	    append: function(vars){
+			//use Underscore template, pass it the attributes from this model
+			var attributes = this.model.attributes;
+
+			if(vars){
+				_.extend(attributes, vars);
+			}
+
+			var attr = {
+				data: attributes
+			};
+
+			var content = _.template(this.template, attr);
+
+			$(this.el).append(content);
+			
+			// return ```this``` so calls can be chained.
+			return this;
+	    },
+
 		render: function(vars){
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;
@@ -66,17 +121,10 @@ function(_, Backbone, template) {
 				data: attributes
 			};
 
-			console.log('*** length');
-			console.log('this.el: '+ this.el);
-			console.dir(this.el);
-			console.log($(this.el).length);
-
 			var content = _.template(this.template, attr);
 
-			console.log(content);
 			$(this.el).html(content);
 			
-
 			// return ```this``` so calls can be chained.
 			return this;
 	    },

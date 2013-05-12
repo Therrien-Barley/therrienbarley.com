@@ -558,11 +558,15 @@ h1{
 	position: relative;
 }
 
-.insight-container .fragment-delete{
+.insight-container .fragment-delete,
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
 	display: none;
 }
 
-.insight-container.edit-mode .fragment-delete{
+.insight-container.edit-mode .fragment-delete,
+.insight-container.edit-mode .fragment-feature,
+.insight-container.edit-mode .fragment-unfeature{
 	display:block;
 }
 
@@ -572,7 +576,9 @@ h1{
 
 .tumblr-post-media .insight-menu-icon,
 .fragment .insight-menu-icon,
-.insight-container .fragment-delete{
+.insight-container .fragment-delete,
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
 	position: absolute;
 	top:5px;
 	right:5px;
@@ -581,8 +587,15 @@ h1{
 	z-index:100;
 }
 
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
+	right:25px;
+}
+
 .insight-menu-icon:hover,
-.insight-container .fragment-delete:hover{
+.insight-container .fragment-delete:hover,
+.insight-container .fragment-feature:hover,
+.insight-container .fragment-unfeature:hover{
 	color:red;
 	cursor:pointer;
 }
