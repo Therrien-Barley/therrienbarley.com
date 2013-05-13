@@ -43,20 +43,22 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 		    		if(featured == true){
 		    			console.log('found a featured! vars');
 		    			console.log('that._featuredViewEl: '+ that._featuredViewEl);
+		    			console.log('this._fragmentViewEl: '+ this._fragmentViewEl);
+		    			console.log('that._fragmentViewEl: '+ that._fragmentViewEl);
 
 		    			that._featuredViews.push( new FragmentView({
 		                    model: model,
 		                    tagName: 'li',
-		                    el: that._featuredViewEl,
-		                    _insightView: iV,
-				    		template: featuredTemplate
+		                    el: this._featuredViewEl,
+				    		template: featuredTemplate,
+				    		_fragmentsView: that
 		                }));
 		    		}else{
 		    			that._fragmentViews.push( new FragmentView({
 		                    model: model,
 		                    tagName: 'div',
 		                    el: this._fragmentViewEl,
-		                    _insightView: iV
+				    		_fragmentsView: that
 		                }));
 		    		}
 		    	}else{
@@ -64,11 +66,22 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 	                    model: model,
 	                    tagName: 'div',
 	                    el: this._fragmentViewEl,
-	                    _insightView: iV
+				    	_fragmentsView: that
 	                }));
 		    	}
             });
 	
+		},
+
+		addFeatured: function(featuredView){
+	    	this._featuredViews.push(featuredView);
+	    },
+
+		saveFeatured: function(){
+			console.log('fragmentsView.js::saveFeatured with _featuredViews.length: '+ this._featuredViews.length);
+			_.each(this._featuredViews, function(featuredView, index){
+				featuredView.saveFeatured();
+			});
 		},
 		 
 		render: function(vars) {
@@ -97,18 +110,9 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 		    _.each(this._fragmentViews, function(fragmentView) {
 		    	if(vars){
 			    	if(vars.tag){
-			    		console.log('rendering A, that._fragmentViewEl: ');
-			    		console.log(that._fragmentViewEl);
-			    		console.log('fragmentView');
-			    		console.dir(fragmentView);
-
 			    		$(that._fragmentViewEl).append(fragmentView.render({tag: vars.tag}).el);
 			    	}
 			    }else{
-			    	console.log('rendering B, that._fragmentViewEl: ');
-			    		console.log(that._fragmentViewEl);
-			    		console.log('fragmentView');
-			    		console.dir(fragmentView);
 			    	$(that._fragmentViewEl).append(fragmentView.render().el);
 			    }
 		    });
@@ -124,6 +128,7 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 			$container.imagesLoaded( function(){
 			  	$container.masonry();
 			});
+
 
 
 			//render featured fragments

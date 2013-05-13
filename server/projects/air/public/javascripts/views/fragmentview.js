@@ -1,20 +1,22 @@
 define([
 	'underscore',
 	'backbone',
+	'jquery-masonry',
 	'models/fragment',
 	'text!../../../views/templates/fragment.html',
 	'text!../../../views/templates/featuredfragment.html'
 ],
-function(_, Backbone, Fragment, template, featuredTemplate) {
+function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
 
 	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
 	    template: template,
-	    _insightView: null,//link to the related insight view
+	    _fragmentsView: null,
 	    events: {
 	    	'mouseenter .insight-menu-icon': 'showInsightsMenu',
 	    	'click .fragment-delete': 'delete',
-	    	'click .fragment-feature': 'feature'
+	    	'click .fragment-feature': 'feature',
+	    	'click .fragment-unfeature': 'unfeature'
 	    },
 
 	    initialize: function(opts){
@@ -24,19 +26,17 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	    	if(opts.tagName){
 	    		this.tagName = opts.tagName;
 	    	}
-	    	if(opts._insightView){
-	    		this._insightView = opts._insightView;
+	    	if(opts._fragmentsView){
+	    		this._fragmentsView = opts._fragmentsView;
 	    	}
 
 	    	_.bind(this, 'save');
 	    },
 
-	    save: function(){
-	    	console.log('featured model saved');
+	    saveFeatured: function(){
+	    	console.log('saveFeatured()');
 
-	    	var selector = '#insight-' + this._insightView.model.get('_id');
-	    	console.log('selector: '+ selector);
-
+	    	var selector = '#featured-' + this.model.get('_id');
 	    	var caption = $('.caption', selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
 	    	
 	    	this.model.save({
@@ -53,9 +53,8 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	    },
 
 	    feature: function(event){
-
-	    	console.log('this._insightView:');
-	    	console.dir(this._insightView);
+	    	console.log('this._fragmentsView:');
+	    	console.dir(this._fragmentsView);
 
 	    	var id = $(event.target).closest('.insight-container').attr('id');
 
@@ -66,21 +65,57 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 	    		template: featuredTemplate,
 	    		tagName: 'li',
                 el: '#'+id+' .featured',
-                _insightView: this._insightView
+                _fragmentsView: this._fragmentsView
 	    	});
-
-	    	console.log('*******new_fragment');
-	    	console.dir(new_fragment);
-	    	console.dir(new_view);
 
 	    	//call append instead of render so it adds, rather than replaces
 	    	new_view.append();
-	    	console.log('should have rendered!!!!!!!');
 
-	    	this._insightView.addFeatured(new_view);
-
+	    	this._fragmentsView.addFeatured(new_view);
 	    	this.unrender();
+	    },
 
+	    unfeature: function(event){
+	    	var that = this;
+	    	var id = $(event.target).closest('.insight-container').attr('id');
+
+	    	//save the model with featured = false, and then render it to the 
+	    	//fragments masonry attachment, then unrender the featured view
+	    	this.model.save({
+	    		featured: false,
+	    		caption: ''
+	    	}, {
+	    		success: function(model, response, options){
+	    			console.log('success! saved unfeatured');
+	    			
+	    			var new_fragment = that.model.clone();
+
+			    	var new_view = new FragmentView({
+			    		model: new_fragment,
+		                el: '#'+id+' .fragment-el',
+		                _fragmentsView: that._fragmentsView
+			    	});
+			    	var async = new_view.append({},'fragment');
+			    	//$(that.el).append(new_view.render().el);
+			    	that.unrender();
+
+			    	console.log('calling masonry on : '+ '#'+id+' .masonry-wrapper');
+			    	var $container = $('#'+id+' .masonry-wrapper');
+
+			    	setTimeout(function(){
+			    		$container.masonry({
+			                itemSelector: '.fragment',
+			                columnWidth: 250,
+			                gutterWidth:17
+			            });
+			    	}, 100);
+			            
+
+	    		},
+	    		error: function(){
+	    			alert('Fragment not unfeatured. Refresh the page and try again.');
+	    		}
+	    	});
 	    },
 
 	    delete: function(){
@@ -125,7 +160,8 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 
 	    //same as render, but doesn't wipe out the el, just appends to it
 	    //used for adding featured fragments
-	    append: function(vars){
+	    append: function(vars, wrapperClass){
+	    	var wrapperClass = wrapperClass || null;
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;
 
@@ -140,6 +176,12 @@ function(_, Backbone, Fragment, template, featuredTemplate) {
 			};
 
 			var content = _.template(this.template, attr);
+
+			//for some reason it doesn't wrap fragments rendered through the feature() and unfeature()
+			//functions in the className tag, so I have to do it explicitly
+			if(wrapperClass != null){
+				content = '<div class="'+ wrapperClass+'">'+content+'</div>';
+			}
 
 			$(this.el).append(content);
 

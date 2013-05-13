@@ -1,6 +1,7 @@
 requirejs.config({
   paths: {
     "jquery": '../../components/jquery/jquery',
+    "jquery-ui": '../../components/jquery-ui/ui/jquery-ui',
     "underscore": '../../components/underscore-amd/underscore',
     "backbone": '../../components/backbone-amd/backbone',
     "jquery-masonry": '../../components/jquery-masonry/jquery.masonry.min',

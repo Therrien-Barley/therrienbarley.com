@@ -1,6 +1,6 @@
-<li class="featured-item <% if(typeof data.new != undefined){ %> new<% } %>">
+<li id="featured-<%= data._id %>" class="featured-item<% if(typeof data.new != undefined){ %> new<% } %>">
 	<div class="media-container row-fluid">
-		<div class="span4 offset6">
+		<div class="rel span4 offset6">
 			<i class="fragment-unfeature icon-minus"></i><i class="fragment-delete icon-remove"></i>
 			<% if(data.type == "image"){ %>
 				<img src="<%= data.content %>">

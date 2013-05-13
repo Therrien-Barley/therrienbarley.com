@@ -11,20 +11,12 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    className: 'insight',
 	    tagName: 'div',
 	    template: template,
-	    _featuredViews: null,
+	    _fragmentsView: null,
 
 	    events: {
 	    	'click .delete': 'delete',
 	    	'click .edit': 'edit',
 	    	'click .save': 'save'
-	    },
-
-	    initialize: function(opts){
-	    	this._featuredViews = [];
-	    },
-
-	    addFeatured: function(featuredView){
-	    	this._featuredViews.push(featuredView);
 	    },
 
 	    delete: function(){
@@ -104,9 +96,10 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 			});
 
 			//save each of the featured fragments
-			_.each(this._featuredViews, function(featuredView, index){
-				featuredView.save();
-			});
+			//_.each(this._featuredViews, function(featuredView, index){
+			//	featuredView.saveFeatured();
+			//});
+			this._fragmentsView.saveFeatured();
 	    },
 
 	    renderFragments: function(frags){
@@ -120,8 +113,10 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    	var fragments = new Fragments();
 	    	fragments.add(frags);
 
+	    	this._fragmentsView = null;
 
-        	var fragments_view = new FragmentsView({
+
+        	this._fragmentsView = new FragmentsView({
 	    		collection: fragments,
 	    		el: fragments_view_el, 
 	    		_fragmentViewEl: fragmentViewEl,
@@ -129,7 +124,7 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    		_insightView: that
 	    	});
 
-	    	fragments_view.render();
+	    	this._fragmentsView.render();
 		},
 
 

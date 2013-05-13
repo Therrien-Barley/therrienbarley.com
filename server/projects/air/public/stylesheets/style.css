@@ -57,6 +57,10 @@ h6 a:hover{
 	display:block !important;
 }
 
+.rel{
+	position: relative;
+}
+
 
 #mechanics{
 	position:fixed;
@@ -498,6 +502,10 @@ h1{
 	background-color: white;
 	width:250px;
 	position: relative;
+}
+
+.featured-container{
+
 }
 
 .fragment-container .fragment-quote-text{
