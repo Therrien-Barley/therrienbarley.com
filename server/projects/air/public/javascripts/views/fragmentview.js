@@ -33,15 +33,15 @@ function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
 	    	_.bind(this, 'save');
 	    },
 
-	    saveFeatured: function(){
-	    	console.log('saveFeatured()');
+	    saveFeatured: function(order){
+	    	console.log('saveFeatured() with order: '+order);
 
 	    	var selector = '#featured-' + this.model.get('_id');
 	    	var caption = $('.caption', selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
 	    	
 	    	this.model.save({
-				featured: true,
-				caption: caption
+				caption: caption,
+				order: order
 	    	}, {
 	    		success: function(){
 	    			console.log('featured model saved');
@@ -59,6 +59,10 @@ function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
 	    	var id = $(event.target).closest('.insight-container').attr('id');
 
 	    	var new_fragment = this.model.clone();
+	    	new_fragment.set({
+	    		featured: true,
+	    		order: 9999
+	    	});//add it to the end
 
 	    	var new_view = new FragmentView({
 	    		model: new_fragment,
@@ -71,8 +75,10 @@ function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
 	    	//call append instead of render so it adds, rather than replaces
 	    	new_view.append();
 
-	    	this._fragmentsView.addFeatured(new_view);
+	    	var async = this._fragmentsView.addFeatured(new_view);
 	    	this.unrender();
+	    	$('#'+id+' .sortable').sortable();
+	    	$('#'+id+' .sortable').disableSelection();
 	    },
 
 	    unfeature: function(event){
@@ -81,41 +87,41 @@ function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
 
 	    	//save the model with featured = false, and then render it to the 
 	    	//fragments masonry attachment, then unrender the featured view
-	    	this.model.save({
+	    	this.model.set({
 	    		featured: false,
-	    		caption: ''
-	    	}, {
-	    		success: function(model, response, options){
-	    			console.log('success! saved unfeatured');
-	    			
-	    			var new_fragment = that.model.clone();
-
-			    	var new_view = new FragmentView({
-			    		model: new_fragment,
-		                el: '#'+id+' .fragment-el',
-		                _fragmentsView: that._fragmentsView
-			    	});
-			    	var async = new_view.append({},'fragment');
-			    	//$(that.el).append(new_view.render().el);
-			    	that.unrender();
-
-			    	console.log('calling masonry on : '+ '#'+id+' .masonry-wrapper');
-			    	var $container = $('#'+id+' .masonry-wrapper');
-
-			    	setTimeout(function(){
-			    		$container.masonry({
-			                itemSelector: '.fragment',
-			                columnWidth: 250,
-			                gutterWidth:17
-			            });
-			    	}, 100);
-			            
-
-	    		},
-	    		error: function(){
-	    			alert('Fragment not unfeatured. Refresh the page and try again.');
-	    		}
+	    		caption: '',
+	    		order: -1
 	    	});
+	    	/*
+			
+			console.log('success! saved unfeatured');
+			
+			var new_fragment = that.model.clone();
+
+	    	var new_view = new FragmentView({
+	    		model: new_fragment,
+                el: '#'+id+' .fragment-el',
+                _fragmentsView: that._fragmentsView
+	    	});
+	    	var async = new_view.append({},'fragment');
+	    	//$(that.el).append(new_view.render().el);
+	    	*/
+	    	that.unrender();
+	    	/*
+	    	console.log('calling masonry on : '+ '#'+id+' .masonry-wrapper');
+	    	var $container = $('#'+id+' .masonry-wrapper');
+
+	    	setTimeout(function(){
+	    		$container.masonry({
+	                itemSelector: '.fragment',
+	                columnWidth: 250,
+	                gutterWidth:17
+	            });
+	    	}, 100);
+			*/     
+
+	    		
+	    		
 	    },
 
 	    delete: function(){

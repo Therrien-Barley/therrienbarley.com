@@ -9,6 +9,7 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 	var FragmentsView = Backbone.View.extend({
 		tagName: 'div',
 	    className: 'fragment',
+	    _insightView: null,
 		_fragmentViews: null,
 		_fragmentViewEl: null,
 		_featuredViews: null,
@@ -29,9 +30,7 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 		    }
 
 		    if(vars._insightView){
-		    	var iV = vars._insightView;
-		    }else{
-		    	var iV = null;
+		    	this._insightView = vars._insightView;
 		    }
 
 		    var that = this;
@@ -79,8 +78,14 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 
 		saveFeatured: function(){
 			console.log('fragmentsView.js::saveFeatured with _featuredViews.length: '+ this._featuredViews.length);
+			var that = this;
+
 			_.each(this._featuredViews, function(featuredView, index){
-				featuredView.saveFeatured();
+				var selector = '#insight-'+that._insightView.model.get('_id')+' #featured-'+featuredView.model.get('_id');
+				var index = $(selector).parent().index();
+				console.log(selector + ' has index: '+ index);
+
+				featuredView.saveFeatured( parseInt(index) );
 			});
 		},
 		 
@@ -134,8 +139,7 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 			//render featured fragments
 			_.each(this._featuredViews, function(featuredView) {
 			    $(that._featuredViewEl).append(featuredView.render().el);
-		    });
-			    
+		    });		    
 
 		    return true;
 		}

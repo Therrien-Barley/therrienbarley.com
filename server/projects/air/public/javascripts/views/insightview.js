@@ -3,7 +3,8 @@ define([
 	'backbone',
 	'text!../../../views/templates/insight.html',
 	'collections/fragments',
-	'views/fragmentsview'
+	'views/fragmentsview',
+	'jquery-ui'
 ],
 function(_, Backbone, template, Fragments, FragmentsView) {
 
@@ -42,6 +43,9 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    	$('.fragment', this_selector).each(function(){
 
 	    	});
+
+		    $('.sortable', this_selector).sortable();
+	    	$('.sortable', this_selector).disableSelection();
 
 	    },
 
