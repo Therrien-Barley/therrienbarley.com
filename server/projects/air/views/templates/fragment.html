@@ -9,11 +9,13 @@
 	<% } %>
 	<div class="fragment-url"><a href="<%= data.post_url %>" target="_blank">Original post →</a></div>
 	<div class="fragment-tags">
-		<% for(var t = 0; t < data.tags.length; t++){ %>
-			<% if(t < data.tags.length-1){ %>
-				<span class="<%= data.tags[t] %>"><%= data.tags[t] %>, </span>
-			<% }else{ %>
-				<span class="<%= data.tags[t] %>"><%= data.tags[t] %></span>
+		<% if(data.tags){ %>
+			<% for(var t = 0; t < data.tags.length; t++){ %>
+				<% if(t < data.tags.length-1){ %>
+					<span class="<%= data.tags[t] %>"><%= data.tags[t] %>, </span>
+				<% }else{ %>
+					<span class="<%= data.tags[t] %>"><%= data.tags[t] %></span>
+				<% } %>
 			<% } %>
 		<% } %>
 	</div>

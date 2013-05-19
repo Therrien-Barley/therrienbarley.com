@@ -202,8 +202,15 @@ exports.insightairget = function(req, res){
 			                title: 'Insights - Insights | Therrien-Barley'
 			            });
 						break;
+					case 'material':
+						res.render('../projects/air/views/insights/insights', {
+			                title: 'Insights - Material | Therrien-Barley'
+			            });
+						break;
 					default:
-						res.send(501, 'This IP does not serve that host domain');//501 = not implemented
+						res.render('../projects/air/views/insights/insights', {
+			                title: 'Insights - Insights | Therrien-Barley'
+			            });
 						break;
 				}
 				break;

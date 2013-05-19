@@ -28,6 +28,8 @@ db.open(function(err, db) {
 });
 
 
+var SECTIONS = ['material', 'light', 'air', 'sound'];
+
 exports.get = function(req, res, _id){
     var _id = _id || false;
     console.log('insights.js::get() with _id: '+ _id);
@@ -48,20 +50,38 @@ exports.get = function(req, res, _id){
             });
         });
     }else{
-        //get single project by _id
-        db.collection(col, function(err, collection) {
-            collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
-                if (err) {
-                    console.log('error: insights.js::create()');
-                    console.log(err);
-                    res.send(500, 'Error attempting to get insight with error message: '+ err);
-                } else {
-                    console.log('Success: g0t insight');
-                    console.log(items);
-                    res.json(200, items[0]);
-                }
+        //is one of the sections
+        if(SECTIONS.indexOf(_id) > -1){
+            //get single project by _id
+            db.collection(col, function(err, collection) {
+                collection.find({"section": _id }).limit(GET_LIMIT).toArray(function(err, items) {
+                    if (err) {
+                        console.log('error: insights.js::create()');
+                        console.log(err);
+                        res.send(500, 'Error attempting to get insight with error message: '+ err);
+                    } else {
+                        console.log('Success: g0t insight');
+                        console.log(items);
+                        res.json(200, items);
+                    }
+                });
             });
-        });
+        }else{//is an _id
+            //get single project by _id
+            db.collection(col, function(err, collection) {
+                collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
+                    if (err) {
+                        console.log('error: insights.js::create()');
+                        console.log(err);
+                        res.send(500, 'Error attempting to get insight with error message: '+ err);
+                    } else {
+                        console.log('Success: g0t insight');
+                        console.log(items);
+                        res.json(200, items[0]);
+                    }
+                });
+            });
+        }    
     }
 }
 
@@ -94,7 +114,8 @@ exports.update = function(req, res, _id){
         categories: req.body.categories,
         description: req.body.description,
         questions: req.body.questions,
-        fragments: req.body.fragments
+        fragments: req.body.fragments,
+        section: req.body.section
     };
 
     db.collection(col, function(err, collection) {
@@ -125,7 +146,8 @@ exports.create = function(req, res){
         categories: req.body.categories,
         description: req.body.description,
         questions: req.body.questions,
-        fragments: []
+        fragments: [],
+        section: req.body.section
     };
 
     db.collection(col, function(err, collection) {
@@ -137,13 +159,11 @@ exports.create = function(req, res){
             } else {
                 console.log('Success: created new insight');
                 console.log(docs);
-                res.json(200, docs);
+                res.json(200, docs[0]);
             }
         });
     });
-
 }
-
 
 
 

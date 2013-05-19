@@ -3,6 +3,7 @@
 		<div class="bttn edit span2 offset7">Edit</div>
 		<div class="bttn cancel span2 pull-left">Cancel</div>
 		<div class="bttn delete span2 pull-left">Delete</div>
+		<div class="bttn clone span2 pull-left">Clone</div>
 	</div>
 	<div class="content row-fluid">
 		<div class="title span6 offset5 editable" contenteditable="false">
@@ -12,7 +13,7 @@
 	<div class="content row-fluid">
 		<div class="section span6 offset5" contenteditable="false">
 			<% if(data.section){ %>
-				<h2><%= data.section %></h2>
+				<h4 class="selected"><%= data.section %></h4>
 			<% } %>
 			<select>
 				<option value="material">Material</option>

@@ -108,20 +108,39 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
             }
         },
 
-        renderInsights: function(){
-            console.log('Alchemy.js::renderInsights()');
-            var insights = new Insights();
-            insights.fetch({
-                success: function(collection, response, options){
-                    var insights_view = new InsightsView({
-                        collection: collection,
-                        el: '#insights-el',
-                        _insightViewEl: '.insights-list-el'
-                    });
+        renderInsights: function(section){
+            if(section){
+                console.log('Alchemy.js::renderInsights('+ section + ')');
+                var insights = new Insights({
+                    section: section
+                });
+                insights.fetch({
+                    success: function(collection, response, options){
+                        var insights_view = new InsightsView({
+                            collection: collection,
+                            el: '#insights-el',
+                            _insightViewEl: '.insights-list-el'
+                        });
 
-                    insights_view.render();
-                }
-            });
+                        insights_view.render();
+                    }
+                });
+            }else{
+                console.log('Alchemy.js::renderInsights()');
+                var insights = new Insights();
+                insights.fetch({
+                    success: function(collection, response, options){
+                        var insights_view = new InsightsView({
+                            collection: collection,
+                            el: '#insights-el',
+                            _insightViewEl: '.insights-list-el'
+                        });
+
+                        insights_view.render();
+                    }
+                });
+            }
+                
 
         },
 

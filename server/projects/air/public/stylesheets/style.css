@@ -647,7 +647,7 @@ h1{
 	display:block;
 }
 
-.edit-mode .section h2{
+.edit-mode .section .selected{
 	display: none;
 }
 

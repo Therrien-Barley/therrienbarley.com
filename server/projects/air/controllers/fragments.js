@@ -13,7 +13,7 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 db = new Db('audiinnovationresearch', server, {safe:false});
 var col = 'airfragments';
 
-var GET_LIMIT = 300;
+var GET_LIMIT = 500;
 
 db.open(function(err, db) {
 	console.log('opening DB audiinnovationresearch');

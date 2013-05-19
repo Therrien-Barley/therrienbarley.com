@@ -2,11 +2,14 @@ define([
 	'underscore',
 	'backbone',
 	'text!../../../views/templates/insight.html',
+	'models/fragment',
+	'views/fragmentview',
 	'collections/fragments',
 	'views/fragmentsview',
+	'models/insight',
 	'jquery-ui'
 ],
-function(_, Backbone, template, Fragments, FragmentsView) {
+function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView, Insight) {
 
 	var InsightView = Backbone.View.extend({
 	    className: 'insight',
@@ -19,9 +22,107 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    	'click .delete': 'delete',
 	    	'click .cancel': 'cancel',
 	    	'click .edit': 'edit',
-	    	'click .save': 'save'
+	    	'click .save': 'save',
+	    	'click .clone': 'clone'
 	    },
 
+	    initialize: function(vars){
+	    	if(vars){
+	    		if(vars._fragments){
+	    			this._fragments = vars._fragments;
+	    		}else{
+	    			this._fragments = new Fragments();
+	    		}
+	    	}else{
+	    		this._fragments = new Fragments();
+	    	}
+	    	
+	    },
+
+	    clone: function(){
+
+	    	console.log('cloning');
+
+	    	var that = this;
+
+	    	var clone = new Insight({
+	    		type: 'insight',
+                title: this.model.get('title'),
+                categories: this.model.get('categories'),
+                description: this.model.get('description'),
+                questions: this.model.get('questions'),
+                fragments: this.model.get('fragments'),
+                section: this.model.get('section')
+	    	});
+
+	    	clone.save({}, {
+	    		success: function(model, response, options){
+
+	    			console.log('success!!');
+	    			console.dir(model);
+	    			console.log('_id: '+ model.get('_id'));
+
+		    		var frags = new Fragments();
+
+		    		console.log('that._fragments');
+		    		console.dir(that._fragments);
+
+		            _.each(that._fragments, function(fragment, index){
+		            	console.log('frag tags: '+fragment.get('tags'));
+		    			console.dir(fragment.get('tags'));
+
+
+		            	var frag = new Fragment({
+		            		type: fragment.get('type'),
+					        element: fragment.get('element'),
+					        tags: fragment.get('tags'),
+					        category: fragment.get('category'),
+					        insight_id: ''+ model.get('_id'),
+					        post_url: fragment.get('post_url'),
+					        content: fragment.get('content'),
+					        caption: fragment.get('caption'),
+					        order: fragment.get('order'),
+					        featured: fragment.get('featured')
+		            	});
+
+		            	frag.save();
+
+		            	frags.add(frag);
+		            });
+
+			        var insight_view = new InsightView({
+		                model: model,
+		                tagName: 'div',
+		                el: '#new-insights-el',
+		                _fragments: frags.models
+		            });
+
+		            //run render synchronously
+		            if(typeof insight_view.render() != 'undefined' ){
+		                $('#new-insights-el .insight-container').addClass('edit-mode');
+		                $('#new-insights-el .insight-container .edit').removeClass('edit span2').addClass('save span1 pull-left').text('Save');
+		                $('#new-insights-el .insight-container .editable').attr('contenteditable', 'true');
+
+		                var $container = $('.masonry-wrapper');
+
+			            $container.masonry({
+			                itemSelector: '.fragment',
+			                columnWidth: 250,
+			                gutterWidth:17
+			            });
+
+						$container.imagesLoaded( function(){
+						  	$container.masonry();
+						});
+		            }
+		        }
+	    	});
+
+
+		    	
+	    },
+
+	    //@todo: delete the fragments too!
 	    delete: function(){
 	    	var conf = confirm("This will delete the insight from the database, this cannot be undone. Are you sure you would like to delete this insight?");
 			if (conf==true){
@@ -32,7 +133,6 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 		    		}
 		    	});
   			}
-		    
 	    },
 
 	    edit: function(){
@@ -66,7 +166,9 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 
             var categories = $('.categories', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"").split(',');
 
-            var section = $('select.section', this_selector).val();
+            var section = $('.section select', this_selector).val();
+
+            $('.section .selected').text(section);
 
             this.model.set({
                 'title': title, 
@@ -144,10 +246,17 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 
 		render: function(vars, fragments){
 			var that = this;
+			console.log('RENDERING!!!!!!! with fragments: ');
+			console.dir(fragments);
+
+
 			if(fragments){
+				console.log('setting this._fragments');
 				this._fragments = fragments;
 			}else{
 				fragments = this._fragments;
+				console.log('just set this._fragments with');
+				console.dir(this._fragments);
 			}
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;
