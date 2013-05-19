@@ -13,9 +13,11 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    tagName: 'div',
 	    template: template,
 	    _fragmentsView: null,
+	    _fragments: null,
 
 	    events: {
 	    	'click .delete': 'delete',
+	    	'click .cancel': 'cancel',
 	    	'click .edit': 'edit',
 	    	'click .save': 'save'
 	    },
@@ -37,7 +39,7 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 	    	var this_selector = '#insight-'+ this.model.get('_id');
 
 	    	$(this_selector).addClass('edit-mode');
-	    	$('.edit', this_selector).removeClass('edit span2').addClass('save span1 pull-left').text('Save');
+	    	$('.edit', this_selector).removeClass('edit offset7').addClass('save pull-left offset5').text('Save');
 	    	$('.editable', this_selector).attr('contenteditable', 'true');
 
 	    	$('.fragment', this_selector).each(function(){
@@ -47,6 +49,11 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 		    $('.sortable', this_selector).sortable();
 	    	$('.sortable', this_selector).disableSelection();
 
+	    },
+
+	    cancel: function(){
+	    	this.unrender();
+	    	this.render();
 	    },
 
 	    save: function(){
@@ -59,10 +66,13 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 
             var categories = $('.categories', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"").split(',');
 
+            var section = $('select.section', this_selector).val();
+
             this.model.set({
                 'title': title, 
                 'categories' : categories,
-                'description': description
+                'description': description,
+                'section': section
             });
 
             this.model.save({}, {
@@ -84,7 +94,7 @@ function(_, Backbone, template, Fragments, FragmentsView) {
             });
 
             $(this_selector).removeClass('edit-mode');
-            $('.save', this_selector).text('Edit').removeClass('save span1 pull-left').addClass('edit span2');
+            $('.save', this_selector).text('Edit').removeClass('save offset5 pull-left').addClass('edit offset7');
             $('.editable', this_selector).attr('contenteditable', 'false');
 
             var $container = $('.masonry-wrapper');
@@ -134,6 +144,11 @@ function(_, Backbone, template, Fragments, FragmentsView) {
 
 		render: function(vars, fragments){
 			var that = this;
+			if(fragments){
+				this._fragments = fragments;
+			}else{
+				fragments = this._fragments;
+			}
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;
 

@@ -49,11 +49,14 @@ h6 a:hover{
 }
 
 
-.delete{
+
+.delete,
+.cancel{
 	display: none !important;
 }
 
-.edit-mode .delete{
+.edit-mode .delete,
+.edit-mode .cancel{
 	display:block !important;
 }
 
@@ -635,7 +638,17 @@ h1{
 	font-size:11px;
 }
 
+.section select{
+	display: none;
+}
 
+.edit-mode .section select{
+	display:block;
+}
+
+.edit-mode .section h2{
+	display: none;
+}
 
 
 
@@ -677,4 +690,6 @@ h1{
 	cursor:pointer;
 	color:blue;
 }
+
+
 
