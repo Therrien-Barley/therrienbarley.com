@@ -38,6 +38,10 @@ app.configure(function(){
   app.use('/projects/new-habitat/components', express.static(__dirname + '/projects/new-habitat/components'));
   app.use('/projects/new-habitat/views/templates', express.static(__dirname + '/projects/new-habitat/views/templates'));
 
+  app.use('/projects/tcttopten/public', express.static(__dirname + '/projects/tcttopten/public'));
+  app.use('/projects/tcttopten/components', express.static(__dirname + '/projects/tcttopten/components'));
+  app.use('/projects/tcttopten/views/templates', express.static(__dirname + '/projects/tcttopten/views/templates'));
+
 });
 
 app.configure('development', function(){
@@ -74,6 +78,11 @@ app.post('/insights*', routes.post);
 app.put('/insights*', routes.put);
 app.delete('/insights*', routes.delete);
 
+//TCT TOP TEN
+app.get('/research*', routes.get);
+app.post('/research*', routes.post);
+app.put('/research*', routes.put);
+app.delete('/research*', routes.delete);
 
 
 app.get('/', routes.get);

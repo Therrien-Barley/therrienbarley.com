@@ -41,6 +41,7 @@ exports.alchemy = function(req, res){
 
 var insightairrouter = require('../projects/air/routes/router');
 var newhabitatrouter = require('../projects/new-habitat/routes/router');
+var tcttoptenrouter = require('../projects/tcttopten/routes/router');
 
 
 
@@ -61,11 +62,25 @@ exports.put = function(req, res){
               break;
           }
           break;
+        case 'research':
+          switch(url_array[2]){
+            case 'topten':
+              switch(url_array[3]){
+                case 'api':
+                  tcttoptenrouter.tcttoptenput(req, res);
+                  break;
+              }
+              break;
+          }
+          break;
       }
       break;
     case 'new-habit.at':
       console.log('routing for new-habit.at');
       newhabitatrouter.newhabitatput(req, res);
+      break;
+    case 'troyconradtherrien.com':
+      //migrate here later
       break;
     default:
       res.send(501, 'This IP does not serve the host domain');//501 = not implemented
@@ -81,6 +96,9 @@ exports.post = function(req, res){
       switch(url_array[1]){
         case 'insights':
           insightairrouter.insightairpost(req, res);
+          break;
+        case 'research':
+          tcttoptenrouter.tcttoptenpost(req, res);
           break;
       }
       break;
@@ -104,6 +122,9 @@ exports.delete = function(req, res){
         case 'insights':
           insightairrouter.insightairdelete(req, res);
           break;
+        case 'research':
+          tcttoptenrouter.tcttoptendelete(req, res);
+          break;
       }
       break;
     case 'new-habit.at':
@@ -126,6 +147,16 @@ exports.get = function(req, res){
           switch(url_array[2]){
             case 'air':
               insightairrouter.insightairget(req, res);
+              break;
+            default:
+              res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+              break;
+          }
+          break;
+        case 'research':
+          switch(url_array[2]){
+            case 'topten':
+              tcttoptenrouter.tcttoptenget(req, res);
               break;
             default:
               res.send(501, 'This IP does not serve the host domain');//501 = not implemented

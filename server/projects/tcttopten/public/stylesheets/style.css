@@ -1,0 +1,696 @@
+body{
+	font-family:"Apercu Regular", Calibri, sans-serif; font-size-adjust:0.508; font-weight:normal; font-style:normal;
+	font-size:15px;
+	line-height: 21px;
+}
+
+.bold{
+	font-family:"Apercu Bold", Calibri, sans-serif; font-size-adjust:0.508; font-weight:bold; font-style:normal;
+}
+
+ul{
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+
+h6{
+	font-family: Monaco, monospace;
+	letter-spacing:3px;
+	font-size:11px;
+	margin:0;
+	padding:0;
+}
+
+h6 a:hover{
+	text-decoration: none;
+	border:none;
+}
+
+
+.bttn{
+	border:2px solid red;
+	color:red;
+	text-align: center;
+	padding:1px;
+	font-family:Monaco, monospace;
+	font-size:11px;
+	background-color:blue;
+}
+
+.bttn:hover{
+	cursor: pointer;
+	color:blue;
+	background-color: red;
+}
+
+.edit-mode .editable{
+	background-color:white;
+	color:blue;
+}
+
+
+
+.delete,
+.cancel{
+	display: none !important;
+}
+
+.edit-mode .delete,
+.edit-mode .cancel{
+	display:block !important;
+}
+
+.rel{
+	position: relative;
+}
+
+
+#mechanics{
+	position:fixed;
+	top:0;
+	left:0;
+	z-index: 4;
+}
+
+#mechanics .image{
+	position:absolute;
+	top:-3;
+	left:0;
+	z-index:8;
+	width:58px;
+	height:70px;
+	background:transparent url('/images/alchemyMechanics.png') no-repeat 0 0;
+}
+
+#mechanics .menu{
+	display: none;
+	position:absolute;
+	top:0;
+	left:0;
+	width:40px;
+	padding:77px 12px 12px 12px;
+	margin:0;
+	background-color:#9999ff;
+	z-index: 3;
+	text-align: center;
+}
+
+#mechanics .menu{
+	margin-bottom:7px;
+}
+
+#mechanics .menu li{
+	margin-bottom:27px;
+	border: 1px solid blue;
+	padding: 17px 7px;
+	width: 20px;
+}
+
+#mechanics .menu a{
+	color:blue;
+	text-decoration: none;
+	border:none;
+	font-size: 14px;
+	line-height: 1.25em !important;
+	position: relative;
+	z-index:8;
+}
+
+#mechanics .menu a:hover{
+	color:red;
+	text-decoration: none;
+	border:none;
+}
+
+#powered-by{
+	color:#9999ff;
+}
+
+#header{
+	text-align: center;
+}
+
+h1{
+	font-size:36px;
+	letter-spacing: 1px;
+	line-height: 1.25em;
+	color:black;
+}
+
+#header h6{
+  font-size:11px;
+  margin:20px auto;
+}
+
+#footer{
+	position:fixed;
+	bottom: 340px;
+	left: -270px;
+	color:#9999ff;
+}
+
+#footer a{
+	color:#9999ff;
+}
+
+#footer div{
+	font-family: Monaco, monospace;
+	font-size:11px;
+	margin:0;
+	padding:0;
+	text-align: left;
+	width:320px;
+	height:40px;
+	
+	transform-origin:100% 100%;
+	-webkit-transform-origin: 100% 100%;
+	-ms-transform-origin:100% 100%; /* IE 9 */
+	-moz-transform-origin:100% 100%; /* Firefox */
+	-o-transform-origin:100% 100%; /* Opera */
+
+	transform:rotate(-90deg);
+	-ms-transform:rotate(-90deg); /* IE 9 */
+	-moz-transform:rotate(-90deg); /* Firefox */
+	-webkit-transform:rotate(-90deg); /* Safari and Chrome */
+	-o-transform:rotate(-90deg); /* Opera */
+}
+
+.wrapper{
+	width:100%;
+	margin-bottom:100px;
+}
+
+#nav{
+	text-align: center;
+	height:177px;
+	z-index:2;
+	position: relative;
+}
+
+#nav ul,
+.menu{
+	list-style: none;
+}
+
+#nav li{
+	font-size:18px;
+	line-height: 1.25em !important;
+	color:black;
+}
+
+#nav .menu{
+	padding:20px;
+}
+
+#nav .menu .menu-option{
+	display: none;
+}
+
+#nav .menu.open .menu-option,
+#nav .menu.active-trail .menu-option{
+	display: block;
+}
+
+#nav .menu .menu-option a,
+#nav .menu .menu-option a:visited,
+#nav .menu .menu-option a:active{
+	color:blue;
+	text-decoration: none;
+	border:none;
+}
+
+#nav .menu .menu-option a:hover,
+#nav .menu .menu-option a.active{
+	cursor:pointer;
+	color:red;
+	text-decoration: none;
+	border:none;
+}
+
+#nav .menu.open,
+#nav .menu.active-trail{
+	background-color:white;
+	-moz-box-shadow: 10px 10px 0px #f00;
+	-webkit-box-shadow: 10px 10px 0px #f00;
+	box-shadow: 10px 10px 0px #f00;
+}
+
+
+#nav .menu-header{
+	margin-bottom:7px;
+}
+
+#sub-nav{
+	margin-bottom:37px;
+}
+
+.button{
+	height:27px;
+	width:100% !important;
+}
+
+.architecture{
+	color:#ff00ff;
+}
+
+.fashion{
+	color:#FFFF00;
+}
+.tech{
+	color:#00FFFF;
+}
+
+.design{
+	color:#FF7F7F;
+}
+
+.women{
+	color:#aaa;
+}
+
+.material{
+	color:#ffb000;
+}
+
+.light{
+	color:#0FFF00;
+}
+
+.architecture .architecture,
+.fashion .fashion,
+.tech .tech,
+.design .design,
+.women .women,
+.material .material,
+.light .light{
+	color:black;
+}
+
+
+#sources .sources-heading{
+	text-align: center;
+	margin:0 0 27px;
+	color:black;
+}
+
+#sources h6{
+	color:white;
+}
+
+
+.categoriesio #chart{
+	width:600px;
+	height:600px;
+	position: relative;
+}
+
+.categoriesio #chart #total-posts-in-chart{
+	position: absolute;
+	text-align: center;
+	height:36px;
+	width:200px;
+	margin-top:-18px;
+	margin-left:-100px;
+	top:50%;
+	left:50%;
+}
+
+
+#categories-io-i{
+	text-align: center;
+}
+
+
+
+#sources{
+	margin-top: 27px;
+}
+
+#sources .number-of-sources,
+.categories-io-value{
+	font-size:90px;
+	line-height: 1;
+}
+
+.categories-io-value,
+.fragment-quote-wrapper .quote-count{
+	font-size:67px;
+	line-height: 1;
+}
+
+
+#overlay{
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:10;
+	overflow:scroll;
+	background:transparent;
+	overflow:hidden;
+}
+
+#overlaybg{
+	position:fixed;
+	min-height:100%;
+	min-width:100%;
+	top:0;
+	left:0;
+	z-index:9;
+	background-color:blue;
+}
+
+#overlay-close{
+	position:fixed;
+	top:40px;
+	right:40px;
+	color:red;
+	z-index:11;
+	font-size:24px;
+}
+
+#overlay-close:hover{
+	cursor:pointer;
+	color:white;
+}
+
+#overlay-post{
+	position:relative;
+	z-index:10;
+	margin-top:70px;
+}
+
+#overlay-post h1{
+	font-size:42px;
+	letter-spacing: 1px;
+	line-height: 1em;
+	color:white;
+}
+
+#overlay .post-left img{
+	margin-bottom:7px;
+}
+
+#overlay .post-tags,
+#overlay-post-url{
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+
+#overlay-post-url a{
+	border:none !important;
+}
+
+#overlay-post a{
+	border-bottom:1px dotted;
+	text-decoration: none;
+}
+
+#overlay-post a:hover{
+	text-decoration: none;
+	border:none;
+}
+
+
+.glossaryterms .term,
+.glossaryquotes .term{
+	margin-right:48px;
+	font-size:30px;
+	line-height: 60px;
+}
+
+#sources .source-link-wrapper,
+#sources-magazines .source-link{
+	margin-right:28px;
+	font-size:18px;
+	line-height: 36px;
+}
+
+#sources .source-link:first-child{
+	margin-left:0;
+}
+
+.glossaryquotes .terms{
+	text-align: center;
+}
+
+.glossaryterms .term a:hover,
+.glossaryquotes .term a:hover,
+#sources .source-link:hover{
+	text-decoration: none;
+	border-bottom:2px dotted;
+}
+
+.glossaryterms .total-posts,
+.glossaryquotes .total-posts{
+	text-align: center;
+	margin: 27px 0;
+	color:black;
+}
+
+.glossaryterms .total-posts .number,
+.glossaryquotes .total-posts .number{
+	font-size:90px;
+	line-height: 1;
+}
+
+.tag-elements,
+.tag-elements a{
+	color:black;
+	margin-bottom:7px;
+	clear:both;
+}
+
+.tag-elements h6{
+	color:white;
+}
+
+.tag-elements-icons{
+	float:left;
+	margin:17px 0 27px;
+}
+
+.tag-elements-icon{
+	font-size:18px;
+	float:left;
+	margin:0 7px 7px 0;
+	position: relative;
+}
+
+.tag-elements-icon img{
+	display: none;
+	position: absolute;
+	width:auto;
+	height:auto;
+	z-index:1;
+}
+
+.tag-elements-icon a:hover{
+	cursor:pointer;
+	position:relative;
+	z-index:2;
+}
+
+
+.fragment-quote-wrapper{
+	clear:both;
+	margin-bottom:77px;
+}
+
+
+.fragment-container{
+	float:left;
+	color:blue !important;
+	margin-bottom:17px;
+	text-align: left;
+	background-color: white;
+	width:250px;
+	position: relative;
+}
+
+.featured-container{
+
+}
+
+.fragment-container .fragment-quote-text{
+	margin:15px;
+}
+
+.fragment-container .fragment-url,
+.fragment-container .fragment-tags{
+	text-align: right;
+}
+
+.fragment-container .fragment-url a{
+	margin:0 15px 7px 0;
+	font-size:13px;
+	color:black;
+}
+
+.fragment-container .fragment-tags{
+	margin:0 15px 15px 0;
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+
+
+.fragment-quote-wrapper .quote-count{
+	margin-bottom:27px;
+	color:black;
+}
+
+.fragment-container.architecture{
+	background-color:#ff00ff;
+}
+
+.fragment-container.fashion{
+	background-color:#FFFF00;
+}
+.fragment-container.tech{
+	background-color:#00FFFF;
+}
+
+.fragment-container.design{
+	background-color:#FF7F7F;
+}
+
+.fragment-container.women{
+	background-color:#aaa;
+}
+
+.fragment-container.material{
+	background-color:#ffb000;
+}
+
+.fragment-container.light{
+	background-color:#0FFF00;
+}
+
+.fragment{
+	position: relative;
+}
+
+.insight-container .fragment-delete,
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
+	display: none;
+}
+
+.insight-container.edit-mode .fragment-delete,
+.insight-container.edit-mode .fragment-feature,
+.insight-container.edit-mode .fragment-unfeature{
+	display:block;
+}
+
+.tumblr-post-media{
+	position: relative;
+}
+
+.tumblr-post-media .insight-menu-icon,
+.fragment .insight-menu-icon,
+.insight-container .fragment-delete,
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
+	position: absolute;
+	top:5px;
+	right:5px;
+	color:blue;
+	font-size:14px;
+	z-index:100;
+}
+
+.insight-container .fragment-feature,
+.insight-container .fragment-unfeature{
+	right:25px;
+}
+
+.insight-menu-icon:hover,
+.insight-container .fragment-delete:hover,
+.insight-container .fragment-feature:hover,
+.insight-container .fragment-unfeature:hover{
+	color:red;
+	cursor:pointer;
+}
+
+
+
+/* insights */
+.insight-container{
+	text-align: center;
+	margin-top:80px;
+}
+
+.insight-container .description{
+	text-align: left;
+}
+
+.insight-container .row-fluid{
+	margin-bottom:10px;
+}
+
+.insight-container ul{
+	list-style: none;
+	margin:0;
+	padding:0;
+}
+
+.insight-container .categories{
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+
+.section select{
+	display: none;
+}
+
+.edit-mode .section select{
+	display:block;
+}
+
+.edit-mode .section .selected{
+	display: none;
+}
+
+
+
+/* insights menu */
+#insights-menu{
+	display: none;
+}
+.insights-menu{
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+	background-color:white;
+	color:red;
+	font-size:10px;
+	padding:0;
+	z-index:101;
+	border-bottom:3px solid red;
+	text-align: center;
+}
+
+.insights-menu h6{
+	margin-top:10px;
+}
+
+.insights-menu ul{
+	width: 90%;
+	border-top:1px dotted red;
+	margin:5px auto;
+	padding:10px 0 5px;
+	text-align: center;
+}
+
+.insights-menu ul li{
+	margin-bottom:3px;
+}
+
+.insights-menu ul li:hover{
+	cursor:pointer;
+	color:blue;
+}
+
+
+

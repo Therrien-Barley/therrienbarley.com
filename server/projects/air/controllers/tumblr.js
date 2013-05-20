@@ -9,7 +9,7 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('audiinnovationresearch', server, {safe:false});
+var db = new Db('audiinnovationresearch', server, {safe:false});
 
 db.open(function(err, db) {
 	console.log('opening DB audiinnovationresearch');
