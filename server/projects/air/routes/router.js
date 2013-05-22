@@ -202,11 +202,6 @@ exports.insightairget = function(req, res){
 			                title: 'Insights - Insights | Therrien-Barley'
 			            });
 						break;
-					case 'material':
-						res.render('../projects/air/views/insights/insights', {
-			                title: 'Insights - Material | Therrien-Barley'
-			            });
-						break;
 					default:
 						res.render('../projects/air/views/insights/insights', {
 			                title: 'Insights - Insights | Therrien-Barley'

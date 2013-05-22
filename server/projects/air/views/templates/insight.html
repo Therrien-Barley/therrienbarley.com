@@ -1,4 +1,4 @@
-<div<% if(typeof data._id != 'undefined'){ %> id="insight-<%= data._id %>"<% } %> class="insight-container">
+<div<% if(typeof data._id != 'undefined'){ %> id="insight-<%= data._id %>"<% } %> class="insight-container<% if(data.position){ %> position-<%= data.position %><% } %>">
 	<div class="controls row-fluid">
 		<div class="bttn edit span1 offset7">Edit</div>
 		<div class="bttn cancel span1 pull-left">Cancel</div>
@@ -11,16 +11,12 @@
 		</div>
 	</div>
 	<div class="content row-fluid">
-		<div class="section span6 offset5" contenteditable="false">
-			<% if(data.section){ %>
-				<h4 class="selected"><%= data.section %></h4>
+		<div class="position span6 offset5" contenteditable="false">
+			<% if(data.position){ %>
+				<h4>#<span class="number"><%= data.position %></span></h4>
+			<% }else{ %>
+				<h4>#<span class="number">1</span></h4>
 			<% } %>
-			<select>
-				<option value="material">Material</option>
-				<option value="light">Light</option>
-				<option value="air">Air</option>
-				<option value="sound">Sound</option>
-			</select>
 		</div>
 	</div>
 	<div class="content row-fluid">

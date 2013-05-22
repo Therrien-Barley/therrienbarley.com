@@ -136,7 +136,6 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                 break; 
             default:
                 Alchemy.renderInsights(url_array[4]);
-
                 break;
             }
             break;

@@ -28,7 +28,7 @@ db.open(function(err, db) {
 });
 
 
-var SECTIONS = ['material', 'light', 'air', 'sound'];
+var SECTIONS = ['topten', 'toptwenty', 'other'];
 
 exports.get = function(req, res, _id){
     var _id = _id || false;
@@ -37,7 +37,7 @@ exports.get = function(req, res, _id){
     if(_id == false){
         //get all projects
         db.collection(col, function(err, collection) {
-            collection.find({'type': 'insight' }).limit(GET_LIMIT).toArray(function(err, items) {
+            collection.find({'type': 'insight' }).limit(GET_LIMIT).sort('position').toArray(function(err, items) {
                 if (err) {
                     console.log('error: insights.js::create()');
                     console.log(err);
@@ -52,9 +52,29 @@ exports.get = function(req, res, _id){
     }else{
         //is one of the sections
         if(SECTIONS.indexOf(_id) > -1){
+            var limit, offset;
+
+            switch(_id){
+                case 'topten':
+                    limit = 10;
+                    offset = 0;
+                    break;
+                case 'toptwenty':
+                    limit = 10;
+                    offset = 10;
+                    break;
+                case 'other':
+                    limit = 500;
+                    offset = 20;
+                    break;
+                default:
+                    limit = 0;
+                    offset = 0;
+                    break;
+            }
             //get single project by _id
             db.collection(col, function(err, collection) {
-                collection.find({"section": _id }).limit(GET_LIMIT).toArray(function(err, items) {
+                collection.find().limit(limit).skip(offset).sort('position').toArray(function(err, items) {
                     if (err) {
                         console.log('error: insights.js::create()');
                         console.log(err);
@@ -69,7 +89,7 @@ exports.get = function(req, res, _id){
         }else{//is an _id
             //get single project by _id
             db.collection(col, function(err, collection) {
-                collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
+                collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).sort('position').toArray(function(err, items) {
                     if (err) {
                         console.log('error: insights.js::create()');
                         console.log(err);
@@ -115,7 +135,8 @@ exports.update = function(req, res, _id){
         description: req.body.description,
         questions: req.body.questions,
         fragments: req.body.fragments,
-        section: req.body.section
+        section: req.body.section,
+        position: req.body.position
     };
 
     db.collection(col, function(err, collection) {
@@ -135,9 +156,6 @@ exports.update = function(req, res, _id){
 
 
 
-
-
-
 //post request
 exports.create = function(req, res){
     var insight = {
@@ -151,19 +169,20 @@ exports.create = function(req, res){
     };
 
     db.collection(col, function(err, collection) {
-        collection.insert(insight, function(err, docs) {
-            if (err) {
-                console.log('error: insights.js::create()');
-                console.log(err);
-                res.send(500, 'Error attempting to create insight with error message: '+ err);
-            } else {
-                console.log('Success: created new insight');
-                console.log(docs);
-                res.json(200, docs[0]);
-            }
-        });
+        collection.count(function(err, count) {
+            insight.position = parseInt(count)+1;
+
+            collection.insert(insight, function(err, docs) {
+                if (err) {
+                    console.log('error: insights.js::create()');
+                    console.log(err);
+                    res.send(500, 'Error attempting to create insight with error message: '+ err);
+                } else {
+                    console.log('Success: created new insight');
+                    console.log(docs);
+                    res.json(200, docs[0]);
+                }
+            });
+        });  
     });
 }
-
-
-

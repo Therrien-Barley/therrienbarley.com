@@ -166,15 +166,14 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 
             var categories = $('.categories', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"").split(',');
 
-            var section = $('.section select', this_selector).val();
-
-            $('.section .selected').text(section);
+            var position = $('.position .number', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
+            position = parseInt(position);
 
             this.model.set({
-                'title': title, 
+                'title': title,
                 'categories' : categories,
                 'description': description,
-                'section': section
+                'position': position
             });
 
             this.model.save({}, {
