@@ -17,6 +17,7 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    template: template,
 	    _fragmentsView: null,
 	    _fragments: null,
+	    _insightsView: null,
 
 	    events: {
 	    	'click .delete': 'delete',
@@ -35,6 +36,9 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    		}else{
 	    			this._fragments = new Fragments();
 	    		}
+	    		if(vars._insightsView){
+	    			this._insightsView = vars._insightsView;
+	    		}
 	    	}else{
 	    		this._fragments = new Fragments();
 	    	}
@@ -51,6 +55,19 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    	$('.position .number', this_selector).text(votes);
 	    	this.model.set({ 'position': votes });
 	    	this.model.save();
+
+	    	$this = $(this_selector);
+	    	var $prev = $(this_selector).closest('.insight').prev();
+	    	var prev_votes = parseInt( $prev.find('.number').text() );
+
+	    	while(votes > prev_votes){
+	    		$prev.before( $this );
+	    		$prev = $(this_selector).closest('.insight').prev();
+	    		if($prev.length <= 0){ break; }//if at top of list already
+	    		prev_votes = parseInt( $prev.find('.number').text() );
+	    		if(isNaN(prev_votes)){ break; }
+	    	}
+	    	//this._insightsView.collection.sort();
 	    },
 
 	    voteDown: function(){
@@ -63,6 +80,19 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    	$('.position .number', this_selector).text(votes);
 	    	this.model.set({ 'position': votes });
 	    	this.model.save();
+
+	    	$this = $(this_selector);
+	    	var $next = $(this_selector).closest('.insight').next();
+	    	var next_votes = parseInt( $next.find('.number').text() );
+
+	    	while(votes < next_votes){
+	    		$next.after( $this );
+	    		$next = $(this_selector).closest('.insight').next();
+	    		if($next.length <= 0){ break; }//if at top of list already
+	    		next_votes = parseInt( $next.find('.number').text() );
+	    		if(isNaN(next_votes)){ break; }
+	    	}
+	    	//this._insightsView.collection.sort();
 	    },
 
 	    clone: function(){

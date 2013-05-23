@@ -28,9 +28,12 @@ function(Backbone, InsightView, template, Fragments) {
                 that._insightViews.push(new InsightView({
                     model: model,
                     tagName: 'div',
-                    el: this._insightViewEl
+                    el: this._insightViewEl,
+                    _insightsView: that
                 }));
             });
+
+            this.collection.on('reset', this.render, this);
 		},
 		 
 		render: function(vars) {
