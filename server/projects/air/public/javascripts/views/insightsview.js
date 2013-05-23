@@ -24,12 +24,7 @@ function(Backbone, InsightView, template, Fragments) {
 		    	_insightViewEl = '.insights-list-el';
 		    }
 
-		    console.log('insightsView.js:: this.collection.models = should have 2!: '+ this.collection.models.length);
-		    console.dir(this.collection.models);
-
 		    _.each(this.collection.models, function(model, index){
-		    	console.log('index: '+ index);
-		    	console.dir(model);
                 that._insightViews.push(new InsightView({
                     model: model,
                     tagName: 'div',
@@ -51,12 +46,6 @@ function(Backbone, InsightView, template, Fragments) {
 	    	fragments.fetch({
 	    		success: function(collection, response, options){
 			    	var frags;//will be the array of models that match the given insight _id
-
-			    	console.log('that._insightViews length: '+ that._insightViews.length);
-			    	console.dir(that._insightViews);
-
-			    	console.log("COLLECTION");
-			    	console.dir(collection);
 
 			    	// Render each sub-view and append it to the parent view's element.
 				    _.each(that._insightViews, function(insightView) {

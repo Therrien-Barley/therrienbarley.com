@@ -23,7 +23,9 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    	'click .cancel': 'cancel',
 	    	'click .edit': 'edit',
 	    	'click .save': 'save',
-	    	'click .clone': 'clone'
+	    	'click .clone': 'clone',
+	    	'click .vote-up': 'voteUp',
+	    	'click .vote-down': 'voteDown'
 	    },
 
 	    initialize: function(vars){
@@ -39,9 +41,31 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    	
 	    },
 
-	    clone: function(){
+	    voteUp: function(){
+	    	var votes = parseInt(this.model.get('position'));
+	    	if(isNaN(votes)){
+	    		votes = 1;
+	    	}
+	    	votes++;
+	    	var this_selector = '#insight-'+this.model.get('_id');
+	    	$('.position .number', this_selector).text(votes);
+	    	this.model.set({ 'position': votes });
+	    	this.model.save();
+	    },
 
-	    	console.log('cloning');
+	    voteDown: function(){
+	    	var votes = parseInt(this.model.get('position'));
+	    	if(isNaN(votes)){
+	    		votes = 1;
+	    	}
+	    	votes--;
+			var this_selector = '#insight-'+this.model.get('_id');
+	    	$('.position .number', this_selector).text(votes);
+	    	this.model.set({ 'position': votes });
+	    	this.model.save();
+	    },
+
+	    clone: function(){
 
 	    	var that = this;
 
@@ -58,19 +82,9 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 	    	clone.save({}, {
 	    		success: function(model, response, options){
 
-	    			console.log('success!!');
-	    			console.dir(model);
-	    			console.log('_id: '+ model.get('_id'));
-
 		    		var frags = new Fragments();
 
-		    		console.log('that._fragments');
-		    		console.dir(that._fragments);
-
 		            _.each(that._fragments, function(fragment, index){
-		            	console.log('frag tags: '+fragment.get('tags'));
-		    			console.dir(fragment.get('tags'));
-
 
 		            	var frag = new Fragment({
 		            		type: fragment.get('type'),
@@ -178,9 +192,7 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 
             this.model.save({}, {
             	success:function(model, response, options){
-            		console.log('insightview.js::model saved! with newInsight = '+newInsight);
             		if(newInsight == true){
-            			console.log('was a new insight, cleaning up with this.model id: '+ response[0]._id);
 
 	            		$(this_selector).attr('id', '#insight-'+ response[0]._id);
 	            		var $this = $(this_selector).detach();
@@ -245,17 +257,12 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 
 		render: function(vars, fragments){
 			var that = this;
-			console.log('RENDERING!!!!!!! with fragments: ');
-			console.dir(fragments);
 
 
 			if(fragments){
-				console.log('setting this._fragments');
 				this._fragments = fragments;
 			}else{
 				fragments = this._fragments;
-				console.log('just set this._fragments with');
-				console.dir(this._fragments);
 			}
 			//use Underscore template, pass it the attributes from this model
 			var attributes = this.model.attributes;

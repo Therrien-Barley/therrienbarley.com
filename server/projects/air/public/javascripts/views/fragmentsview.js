@@ -40,11 +40,6 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 
 		    	if(typeof(featured) != 'undefined'){
 		    		if(featured == true){
-		    			console.log('found a featured! vars');
-		    			console.log('that._featuredViewEl: '+ that._featuredViewEl);
-		    			console.log('this._fragmentViewEl: '+ this._fragmentViewEl);
-		    			console.log('that._fragmentViewEl: '+ that._fragmentViewEl);
-
 		    			that._featuredViews.push( new FragmentView({
 		                    model: model,
 		                    tagName: 'li',
@@ -77,13 +72,11 @@ function(Backbone, masonry, FragmentView, template, featuredTemplate) {
 	    },
 
 		saveFeatured: function(){
-			console.log('fragmentsView.js::saveFeatured with _featuredViews.length: '+ this._featuredViews.length);
 			var that = this;
 
 			_.each(this._featuredViews, function(featuredView, index){
 				var selector = '#insight-'+that._insightView.model.get('_id')+' #featured-'+featuredView.model.get('_id');
 				var index = $(selector).parent().index();
-				console.log(selector + ' has index: '+ index);
 
 				featuredView.saveFeatured( parseInt(index) );
 			});

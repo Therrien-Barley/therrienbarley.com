@@ -6,17 +6,19 @@
 		<div class="bttn clone span1 pull-left">Clone</div>
 	</div>
 	<div class="content row-fluid">
-		<div class="title span6 offset5 editable" contenteditable="false">
-			<h2><%= data.title %></h2>
+		<div class="position span6 offset5" contenteditable="false">
+			<div><i class="icon-caret-up vote-up"></i></div>
+			<% if(data.position){ %>
+				<h4><span class="number"><%= data.position %></span> votes</h4>				
+			<% }else{ %>
+				<h4><span class="number">1</span> votes</h4>
+			<% } %>
+			<div><i class="icon-caret-down vote-down"></i></div>
 		</div>
 	</div>
 	<div class="content row-fluid">
-		<div class="position span6 offset5" contenteditable="false">
-			<% if(data.position){ %>
-				<h4>#<span class="number"><%= data.position %></span></h4>
-			<% }else{ %>
-				<h4>#<span class="number">1</span></h4>
-			<% } %>
+		<div class="title span6 offset5 editable" contenteditable="false">
+			<h2><%= data.title %></h2>
 		</div>
 	</div>
 	<div class="content row-fluid">

@@ -37,7 +37,7 @@ exports.get = function(req, res, _id){
     if(_id == false){
         //get all projects
         db.collection(col, function(err, collection) {
-            collection.find({'type': 'insight' }).limit(GET_LIMIT).sort('position').toArray(function(err, items) {
+            collection.find({'type': 'insight' }).limit(GET_LIMIT).sort({'position': -1}).toArray(function(err, items) {
                 if (err) {
                     console.log('error: insights.js::create()');
                     console.log(err);
@@ -152,6 +152,7 @@ exports.update = function(req, res, _id){
         });
     });
 }
+
 
 
 
