@@ -62,8 +62,8 @@ function($, TAXONOMIES) {
 					case 'other':
 						$('#insights-nav').addClass('active-trail').find('li.insights-other a').addClass('active');
 						break;
-					case 'all':
-						$('#insights-nav').addClass('active-trail').find('li.insights-all a').addClass('active');
+					case 'insights':
+						$('#insights-nav').addClass('active-trail').find('li.insights-insights a').addClass('active');
 						break;
 				}
 				break;
