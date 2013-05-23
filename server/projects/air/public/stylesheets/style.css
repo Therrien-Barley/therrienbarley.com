@@ -651,7 +651,25 @@ h1{
 	display: none;
 }
 
+.insight .vote-up,
+.insight .vote-down{
+	font-size:24px;
+}
 
+.insight .vote-up:hover,
+.insight .vote-down:hover{
+	cursor: pointer;
+	color:red;
+}
+
+.insight .caption{
+	line-height: 21px;
+	text-align: left;
+}
+
+.featured .fragment{
+	margin-top:24px;
+}
 
 /* insights menu */
 #insights-menu{

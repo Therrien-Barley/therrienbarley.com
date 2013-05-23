@@ -9,8 +9,8 @@ function(Backbone, Insight) {
 	url:'/insights/air/api/insight',
 	initialize: function(vars){
 		if(vars){
-			if(vars.section){
-				this.url = '/insights/air/api/insight/' + vars.section;
+			if(vars.segment){
+				this.url = '/insights/air/api/insight/' + vars.segment;
 			}
 		}
 		this.sort_key = 'position';

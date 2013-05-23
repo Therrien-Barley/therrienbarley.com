@@ -108,11 +108,11 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
             }
         },
 
-        renderInsights: function(section){
-            if(section){
-                console.log('Alchemy.js::renderInsights('+ section + ')');
+        renderInsights: function(segment){
+            if(segment){
+                console.log('Alchemy.js::renderInsights('+ segment + ')');
                 var insights = new Insights({
-                    section: section
+                    segment: segment
                 });
                 insights.fetch({
                     success: function(collection, response, options){

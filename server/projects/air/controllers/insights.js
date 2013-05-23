@@ -74,7 +74,7 @@ exports.get = function(req, res, _id){
             }
             //get single project by _id
             db.collection(col, function(err, collection) {
-                collection.find().limit(limit).skip(offset).sort('position').toArray(function(err, items) {
+                collection.find().limit(limit).skip(offset).sort({'position': -1}).toArray(function(err, items) {
                     if (err) {
                         console.log('error: insights.js::create()');
                         console.log(err);
@@ -89,7 +89,7 @@ exports.get = function(req, res, _id){
         }else{//is an _id
             //get single project by _id
             db.collection(col, function(err, collection) {
-                collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).sort('position').toArray(function(err, items) {
+                collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).sort({'position': -1}).toArray(function(err, items) {
                     if (err) {
                         console.log('error: insights.js::create()');
                         console.log(err);

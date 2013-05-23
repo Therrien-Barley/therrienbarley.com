@@ -53,20 +53,17 @@ function($, TAXONOMIES) {
 				break;
 			case 'insights':
 				switch(path_array[4]){
-					case 'insights':
-						$('#insights-nav').addClass('active-trail').find('li.insights-insights a').addClass('active');
+					case 'topten':
+						$('#insights-nav').addClass('active-trail').find('li.insights-topten a').addClass('active');
 						break;
-					case 'material':
-						$('#insights-nav').addClass('active-trail').find('li.insights-material a').addClass('active');
+					case 'toptwenty':
+						$('#insights-nav').addClass('active-trail').find('li.insights-toptwenty a').addClass('active');
 						break;
-					case 'light':
-						$('#insights-nav').addClass('active-trail').find('li.insights-light a').addClass('active');
+					case 'other':
+						$('#insights-nav').addClass('active-trail').find('li.insights-other a').addClass('active');
 						break;
-					case 'air':
-						$('#insights-nav').addClass('active-trail').find('li.insights-air a').addClass('active');
-						break;
-					case 'sound':
-						$('#insights-nav').addClass('active-trail').find('li.insights-sound a').addClass('active');
+					case 'all':
+						$('#insights-nav').addClass('active-trail').find('li.insights-all a').addClass('active');
 						break;
 				}
 				break;
