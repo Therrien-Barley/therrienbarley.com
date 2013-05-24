@@ -7,9 +7,11 @@ function(Backbone, Insight) {
   var Insights = Backbone.Collection.extend({
 	model: Insight,
 	url:'/insights/air/api/insight',
+	segment: null,
 	initialize: function(vars){
 		if(vars){
 			if(vars.segment){
+				this.segment = vars.segment;
 				this.url = '/insights/air/api/insight/' + vars.segment;
 			}
 		}

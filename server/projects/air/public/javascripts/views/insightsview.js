@@ -13,6 +13,7 @@ function(Backbone, InsightView, template, Fragments) {
 		_insightViewEl: null,
 		collection: null,
 		template: template,
+		segment: null,//topten, toptwenty, other, default: all
 
 	    initialize: function(vars) {
 		    var that = this;
@@ -44,15 +45,38 @@ function(Backbone, InsightView, template, Fragments) {
 		    var content = _.template(this.template);
 			$(this.el).html(content);
 
-	    	var fragments = new Fragments();
+			var segment = this.collection.segment;
+			console.log('segment: '+ segment);
+			console.dir(this);
+
+	    	var fragments = new Fragments({
+	    		segment: segment
+	    	});
+
+	    	//only get the fragments from the models in the collection
+	    	var insight_ids = [];
+	    	_.each(this.collection.models, function(model){
+	    		insight_ids.push(model.get('_id'));
+	    	});
+
+	    	var params = { 'insight_ids' : insight_ids };
+
 
 	    	fragments.fetch({
+	    		data: params,
+	    		type: 'POST',
+
 	    		success: function(collection, response, options){
 			    	var frags;//will be the array of models that match the given insight _id
 
 			    	// Render each sub-view and append it to the parent view's element.
 				    _.each(that._insightViews, function(insightView) {
 				    	frags = collection.where({ insight_id : insightView.model.get('_id') });
+
+				    	if((insightView.model.get('_id') == '5181471e2d6723084b00005b')  ){
+				    		console.log('PRINTS ARE NO LONGER CHEAP FRAGS');
+				    		console.dir(frags);
+				    	}
 
 				    	$(that._insightViewEl).append(insightView.render(null, frags).el);
 				    });

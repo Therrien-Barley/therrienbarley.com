@@ -13,7 +13,7 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 var db = new Db('audiinnovationresearch', server, {safe:false});
 var col = 'airfragments';
 
-var GET_LIMIT = 500;
+var GET_LIMIT = 600;
 
 db.open(function(err, db) {
 	console.log('opening DB audiinnovationresearch');
@@ -27,12 +27,33 @@ db.open(function(err, db) {
     }
 });
 
+var SEGMENTS = ['topten', 'toptwenty', 'other'];
 
-exports.get = function(req, res, _id){
-    var _id = _id || false;
-    console.log('fragments.js::get() with _id: '+ _id);
+exports.get = function(req, res, designator){
+    var designator = designator || false;
+    console.log('fragments.js::get() with designator: '+ designator);
 
-    if(_id == false){
+    if(SEGMENTS.indexOf(designator) > -1){
+        console.log('req.body.INSIGHT_IDS:');
+        console.dir(req.body.insight_ids);
+
+        //get topten, toptwenty, or other
+        db.collection(col, function(err, collection) {
+            //@todo: sort by insight_id then order?
+            collection.find({ 'insight_id': { $in: req.body.insight_ids} }).limit(GET_LIMIT).sort('order').toArray(function(err, items) {
+                if (err) {
+                    console.log('error: fragments.js::create()');
+                    console.log(err);
+                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
+                } else {
+                    console.log('Success: got fragments');
+                    console.dir(items);
+                    res.json(200, items);
+                }
+            });
+        });
+
+    }else if(designator == 'all' || designator == false){
         //get all projects
         db.collection(col, function(err, collection) {
             collection.find().limit(GET_LIMIT).sort('order').toArray(function(err, items) {
@@ -42,7 +63,6 @@ exports.get = function(req, res, _id){
                     res.send(500, 'Error attempting to get fragment with error message: '+ err);
                 } else {
                     console.log('Success: got fragment');
-                    console.log(items);
                     res.json(200, items);
                 }
             });
@@ -50,14 +70,13 @@ exports.get = function(req, res, _id){
     }else{
         //get single project by _id
         db.collection(col, function(err, collection) {
-            collection.find({'_id': new ObjectID(_id) }).limit(GET_LIMIT).toArray(function(err, items) {
+            collection.find({'_id': new ObjectID(designator) }).limit(GET_LIMIT).toArray(function(err, items) {
                 if (err) {
                     console.log('error: fragments.js::create()');
                     console.log(err);
                     res.send(500, 'Error attempting to get fragment with error message: '+ err);
                 } else {
                     console.log('Success: g0t fragment');
-                    console.log(items);
                     res.json(200, items[0]);
                 }
             });
@@ -86,7 +105,7 @@ exports.delete = function(req, res, _id){
 
 
 exports.update = function(req, res, _id){
-    console.log('fragments.js::create()');
+    console.log('fragments.js::create() with featured: '+ req.body.featured);
 
     var fragment = {
         type: req.body.type,
@@ -123,6 +142,16 @@ exports.update = function(req, res, _id){
 
 //post request
 exports.create = function(req, res){
+    var featured;
+    console.log('fragments.js::create()');
+    if(req.body.featured){
+        console.log('featured exists!');
+        featured = req.body.featured;
+    }else{
+        console.log('no featured exists');
+        featured = false;
+    }
+
     var fragment = {
         type: req.body.type,
         element: req.body.element,
@@ -133,7 +162,7 @@ exports.create = function(req, res){
         content: req.body.content,
         caption: req.body.caption,
         order: req.body.order,
-        featured: false
+        featured: featured
     };
 
     db.collection(col, function(err, collection) {

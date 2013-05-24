@@ -28,7 +28,7 @@ db.open(function(err, db) {
 });
 
 
-var SECTIONS = ['topten', 'toptwenty', 'other'];
+var SEGMENTS = ['topten', 'toptwenty', 'other'];
 
 exports.get = function(req, res, _id){
     var _id = _id || false;
@@ -44,14 +44,13 @@ exports.get = function(req, res, _id){
                     res.send(500, 'Error attempting to get insight with error message: '+ err);
                 } else {
                     console.log('Success: got insight');
-                    console.log(items);
                     res.json(200, items);
                 }
             });
         });
     }else{
-        //is one of the sections
-        if(SECTIONS.indexOf(_id) > -1){
+        //is one of the SEGMENTS
+        if(SEGMENTS.indexOf(_id) > -1){
             var limit, offset;
 
             switch(_id){
@@ -81,7 +80,6 @@ exports.get = function(req, res, _id){
                         res.send(500, 'Error attempting to get insight with error message: '+ err);
                     } else {
                         console.log('Success: g0t insight');
-                        console.log(items);
                         res.json(200, items);
                     }
                 });
@@ -96,7 +94,6 @@ exports.get = function(req, res, _id){
                         res.send(500, 'Error attempting to get insight with error message: '+ err);
                     } else {
                         console.log('Success: g0t insight');
-                        console.log(items);
                         res.json(200, items[0]);
                     }
                 });
@@ -159,6 +156,17 @@ exports.update = function(req, res, _id){
 
 //post request
 exports.create = function(req, res){
+    var position;
+    console.log('insights.js::create()');
+    if(req.body.position){
+        console.log('position exists!');
+        position = req.body.position;
+    }else{
+        console.log('no position exists');
+        position = 0;
+    }
+
+
     var insight = {
         type: 'insight',
         title: req.body.title,
@@ -166,24 +174,21 @@ exports.create = function(req, res){
         description: req.body.description,
         questions: req.body.questions,
         fragments: [],
-        section: req.body.section
+        section: req.body.section,
+        position: position
     };
 
     db.collection(col, function(err, collection) {
-        collection.count(function(err, count) {
-            insight.position = parseInt(count)+1;
-
-            collection.insert(insight, function(err, docs) {
-                if (err) {
-                    console.log('error: insights.js::create()');
-                    console.log(err);
-                    res.send(500, 'Error attempting to create insight with error message: '+ err);
-                } else {
-                    console.log('Success: created new insight');
-                    console.log(docs);
-                    res.json(200, docs[0]);
-                }
-            });
-        });  
+        collection.insert(insight, function(err, docs) {
+            if (err) {
+                console.log('error: insights.js::create()');
+                console.log(err);
+                res.send(500, 'Error attempting to create insight with error message: '+ err);
+            } else {
+                console.log('Success: created new insight');
+                console.log(docs);
+                res.json(200, docs[0]);
+            }
+        });
     });
 }

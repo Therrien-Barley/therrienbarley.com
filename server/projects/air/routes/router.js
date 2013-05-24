@@ -79,6 +79,15 @@ exports.insightairpost = function(req, res){
 				case 'fragment':
 					fragments.create(req, res);
 					break;
+				case 'fragments':
+					if(typeof url_array[5] == 'undefined'){
+						console.log('yes! trying to get all fragments');
+						fragments.get(req, res);
+					}else{
+						console.log('calling tumblr.getFragments() with : '+ url_array[5]);
+						fragments.get(req, res, url_array[5]);
+					}	
+					break;
 				default:
 					res.send(501, 'Invalid api request to '+req.url);
 					break;
@@ -107,13 +116,22 @@ exports.insightairget = function(req, res){
 					case 'insight':
 						insights.get(req, res, url_array[5]);
 						break;
+					case 'fragments':
+						if(typeof url_array[5] == 'undefined'){
+							console.log('yes! trying to get all fragments');
+							fragments.get(req, res);
+						}else{
+							console.log('calling tumblr.getFragments() with : '+ url_array[5]);
+							fragments.get(req, res, url_array[5]);
+						}	
+						break;
 					case 'fragment':
 						if(typeof url_array[5] == 'undefined'){
 							console.log('yes! trying to get all fragments');
 							fragments.get(req, res);
 						}else{
-							console.log('calling tumblr.getFragments() with : '+ url_array[6]);
-							tumblr.getFragments(req, res, 'categories', url_array[5], unescape(url_array[6]));
+							console.log('calling tumblr.getFragments() with : '+ url_array[5]);
+							fragments.get(req, res, url_array[5]);
 						}	
 						break;
 

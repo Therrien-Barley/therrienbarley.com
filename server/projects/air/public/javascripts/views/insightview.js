@@ -99,14 +99,17 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 
 	    	var that = this;
 
+	    	console.log('clone() with position: '+ this.model.get('position'));
+
 	    	var clone = new Insight({
 	    		type: 'insight',
                 title: this.model.get('title'),
                 categories: this.model.get('categories'),
                 description: this.model.get('description'),
                 questions: this.model.get('questions'),
-                fragments: this.model.get('fragments'),
-                section: this.model.get('section')
+                //fragments: this.model.get('fragments'),//set to [] in insights.js::create() anyways
+                section: this.model.get('section'),
+                position: this.model.get('position')
 	    	});
 
 	    	clone.save({}, {
@@ -114,6 +117,7 @@ function(_, Backbone, template, Fragment, FragmentView, Fragments, FragmentsView
 
 		    		var frags = new Fragments();
 
+		    		//want to duplicate the current fragments to make new ones with unique _ids
 		            _.each(that._fragments, function(fragment, index){
 
 		            	var frag = new Fragment({
