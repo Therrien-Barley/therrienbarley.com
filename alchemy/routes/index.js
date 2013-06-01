@@ -4,98 +4,184 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+  console.log('getting index!!!!!!!!');
+
+  if(req.headers.host.indexOf('new-habit.at') >= 0){
+    res.render('habitatindex', { title: 'New Habitat' });
+  }else{
+    res.render('index', { title: 'Therrien–Barley' });
+  }
+  
+};
+
+
+exports.projectyap = function(req, res){
+  res.render('projectyap', { 
+  	title: 'Young Architects Program Review',
+  	category: 'Curating',
+  	tags: 'tag1 tag2 tag3',
+  	year: '2009',
+  	month: '11',
+  	day: '30',
+  	published: true,
+  	summary: 'The exhibition celebrated the legacy of architectural invention fueled by the exuberance of generations of young architects who took part in P.S.1  Contemporary Art Center and The Museum of Modern Art’s Young Architects Program, one of the most acclaimed architectural arenas for emerging talent of the last decade.', 
+  	monoimage: 'yap_blue.png',
+  	slug: 'yap'
+  });
+};
+
+exports.alchemy = function(req, res){
+  console.log('getting alchemy');
+  res.render('alchemy', { 
+    title: 'Alchemy | Therrien–Barley'
+  });
 };
 
 
 
+var insightairrouter = require('../projects/air/routes/router');
+var newhabitatrouter = require('../projects/new-habitat/routes/router');
+var tcttoptenrouter = require('../projects/tcttopten/routes/router');
 
 
 
 
+exports.put = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          switch(url_array[2]){
+            case 'air':
+              switch(url_array[3]){
+                case 'api':
+                  insightairrouter.insightairput(req, res);
+                  break;
+              }
+              break;
+          }
+          break;
+        case 'research':
+          switch(url_array[2]){
+            case 'topten':
+              switch(url_array[3]){
+                case 'api':
+                  tcttoptenrouter.tcttoptenput(req, res);
+                  break;
+              }
+              break;
+          }
+          break;
+      }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatput(req, res);
+      break;
+    case 'troyconradtherrien.com':
+      //migrate here later
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
+}
 
-var mongo = require('mongodb');
-var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('ifthisthenth-eydb', server, {safe:false});
+exports.post = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          insightairrouter.insightairpost(req, res);
+          break;
+        case 'research':
+          tcttoptenrouter.tcttoptenpost(req, res);
+          break;
+      }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatpost(req, res);
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
 
-db.open(function(err, db) {
-	console.log('opening DB ifthisthenth-eydb');
-    if(!err) {
-        console.log("Connected to 'ifthisthenth-eydb' database");
-        db.collection('posts', {safe:true}, function(err, collection) {
-            if (err) {
-                console.log("Error trying to open posts collection with error: " + err);
-            }
-        });
-    }
-});
-
-
-
-exports.tags = function(req, res){
-
-	db.collection('posts', function(err, collection) {
-        collection.find().toArray(function(err, items) {
-        	if(err){
-        		console.log('Error: showAll() fired an error:');
-        		console.log(err);
-        		res.render('tags', { title: 'Tag Breakdown', posts: null, error: err, tags: null });
-        	}else{
-            	console.log('total posts found: ' + items.length);
-
-            	var tags = [];
+}
 
 
-            	for(var i = 0; i < items.length; i++){
-            		for(var j = 0; j < items[i].tags.length; j++){
-            			if(tags[ items[i].tags[j] ] != undefined){
-            				tags[ items[i].tags[j] ].instances++;
-            			}else{
-            				tags[ items[i].tags[j] ] = {
-            					tag: items[i].tags[j],
-            					instances: 1
-            				};
-            			}
-            		}
-            	}
+exports.delete = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          insightairrouter.insightairdelete(req, res);
+          break;
+        case 'research':
+          tcttoptenrouter.tcttoptendelete(req, res);
+          break;
+      }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatpost(req, res);
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
 
-				res.render('tags', { title: 'Tag Breakdown', posts: items, error: null, tags: tags });
-            }
-        });
-    });
+}
 
-	
+exports.get = function(req, res){
+  var url_array = req.url.split('/');
+  switch(req.headers.host){
+    case 'therrienbarley.com':
+      switch(url_array[1]){
+        case 'insights':
+          switch(url_array[2]){
+            case 'air':
+              insightairrouter.insightairget(req, res);
+              break;
+            default:
+              res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+              break;
+          }
+          break;
+        case 'research':
+          switch(url_array[2]){
+            case 'topten':
+              tcttoptenrouter.tcttoptenget(req, res);
+              break;
+            default:
+              res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+              break;
+          }
+          break;
+        case 'alchemy':
+          res.render('index', { title: 'Therrien–Barley' });
+          break;
+        default:
+          break;
+      }
+      break;
+    case 'new-habit.at':
+      console.log('routing for new-habit.at');
+      newhabitatrouter.newhabitatget(req, res);
+      break;
+    default:
+      res.send(501, 'This IP does not serve the host domain');//501 = not implemented
+      break;
+  }
 };
 
-exports.posts = function(req, res){
-
-	var posts;
-
-	db.collection('posts', function(err, collection) {
-        collection.find().toArray(function(err, items) {
-        	if(err){
-        		console.log('Error: showAll() fired an error:');
-        		console.log(err);
-        	}else{
-            	console.log('total posts found: ' + items.length);
-            	posts = items;
-            	console.log(posts[0]);
 
 
-            	
-
-            	
-				res.render('tags', { title: 'Tag Breakdown', post: items[0], posts: items });
-            }
-        });
-    });
-
-	
-};
 
 
 
