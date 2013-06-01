@@ -88,12 +88,29 @@ function populateArrayPhoto(a,url){
 		}
 
 		var pathname = __dirname + '/photos/' + filename;
-		a.push( 'Users:troytherrien:Insync:info@th-ey.co:GIT:therrienbarley.com:server:routes:tumblr-air:photos:'+filename );
+		a.push( 'Users:troytherrien:Insync:info@th-ey.co:GIT:therrienbarley.com:server:projects:air:controllers:photos:'+filename );
+
+		console.log('***************photo url: '+ url);
 
 		if(!fs.existsSync(pathname)){
 			setTimeout(function(){
 				request( url ).pipe(fs.createWriteStream( pathname ));
-			}, 150);
+			}, 500);
+		}else{
+			console.log('file exists ------- looking for size now');
+			
+
+			  fs.stat(pathname, function (err, stats) {
+			  	console.log('++++++++ SIZE: '+ stats.size);
+			    if(stats.size == 0 || stats.size == '0'){
+			        	console.log('!!!!!!!FETCHING AGAIN!!!!!!!');
+			        	console.log('url: '+ url)
+			        	setTimeout(function(){
+							request( url ).pipe(fs.createWriteStream( pathname ));
+						}, 500);
+			        }
+			  });
+	
 		}
 
 	}else{
@@ -303,10 +320,118 @@ function populateCSVHeaders(comp_array){
 
 	
 
+	
+function forLoop(res, comp_array, components, items, i){
+	console.log('i: '+ i);
+
+					var components_array = [];
+
+					components_array = populateArray(components_array, items.length-i+1);//give oldest item = 1
+					components_array = populateArray(components_array, items[i].id);
+					components_array = populateArray(components_array, items[i].date);
+					components_array = populateArray(components_array, items[i].post_url);
+					components_array = populateArray(components_array, items[i].type);
+					//components_array = populateArray(components_array, items[i].note_count);
+					components_array = populateArray(components_array, items[i].title);
+
+					//strips out photos and puts in inline_images array
+					switch(items[i].type){
+						case 'text':
+							components_array = populateBodyCaption(components_array, items[i].body);
+							break;
+						case 'photo':
+							components_array = populateBodyCaption(components_array, items[i].caption);
+							break;
+						case 'video':
+							components_array = populateBodyCaption(components_array, items[i].caption);
+							break;
+						case 'link':
+							components_array = populateBodyCaption(components_array, items[i].description);
+							break;
+						case 'quote':
+							components_array = populateBodyCaption(components_array, items[i].source);
+							break;
+					}
+					//populate quote
+					switch(items[i].type){
+						case 'text':
+							components_array = populateBodyCaption(components_array, null);
+							break;
+						case 'photo':
+							components_array = populateBodyCaption(components_array, null);
+							break;
+						case 'video':
+							components_array = populateBodyCaption(components_array, 'Video');
+							break;
+						case 'link':
+							components_array = populateBodyCaption(components_array, '<p>'+items[i].title+'</p>');
+							break;
+						case 'quote':
+							components_array = populateBodyCaption(components_array, '<p>'+items[i].text+'</p>');
+							break;
+					}
+					//components_array = populateArray(components_array, items[i].timestamp);
+
+					var tags_length = (items[i].tags.length < MAX_TAGS) ? items[i].tags.length : MAX_TAGS;
+					
+					for(var k = 0; k < MAX_TAGS; k++){
+						if(k < tags_length){
+							populateArray(components_array, items[i].tags[k]);
+						}else{
+							populateArray(components_array, null);
+						}
+					}
+					
+					//if photo post, fill photos columns with photos
+					if(items[i].type == 'photo'){
+						var photos_length = (items[i].photos.length < MAX_PHOTOS) ? items[i].photos.length : MAX_PHOTOS;
+					
+						for(var x = 0; x < MAX_PHOTOS; x++){
+							if(x < photos_length){
+								populateArrayPhoto(components_array, items[i].photos[x].alt_sizes[0].url);
+							}else{
+								populateArray(components_array, null);
+							}
+						}
+					}else{//if not photo post, fill with empty strings
+						for(var k = 0; k < MAX_PHOTOS; k++){
+							components_array.push( 'none' );
+						}
+					}
+
+					var inline_image_array = inline_images.pop();
+					if(inline_image_array != undefined){
+						for(var p = 0; p < MAX_INLINE_PHOTOS; p++){
+							if(inline_image_array[p] != undefined){
+								populateArrayPhoto(components_array, inline_image_array[p]);
+							}else{
+								populateArray(components_array, null);
+							}
+						}
+					}else{
+						for(var p = 0; p < MAX_INLINE_PHOTOS; p++){
+							populateArray(components_array, null);
+						}
+					}
+					
+					components.push( components_array.join(',') );
+
+					i++;
+					if(i < items.length){
+						setTimeout(function(){
+							forLoop(res, comp_array, components, items, i);
+						}, 500);
+					}else{
+						comp_array.push( components.join('\n') );//main storage array
+
+						var final_string = comp_array.join('\n');
+						createCSV(final_string, res);
+					}
+}
 
 
 function getTumblrPosts(req, res){
-	var col = req.params.collection;
+	var col = 'tumblrposts';
 	var comp_array = [];
 
 	comp_array = populateCSVHeaders(comp_array);
@@ -319,108 +444,14 @@ function getTumblrPosts(req, res){
 			var components = [];
 
 			//cycle through all the posts returned
-			for(var i = 0; i < items.length; i++){
-				var components_array = [];
+		
+				setTimeout(function(){
+					forLoop(res, comp_array, components, items, 0);
+				}, 500);
+					
+			
 
-				components_array = populateArray(components_array, items.length-i+1);//give oldest item = 1
-				components_array = populateArray(components_array, items[i].id);
-				components_array = populateArray(components_array, items[i].date);
-				components_array = populateArray(components_array, items[i].post_url);
-				components_array = populateArray(components_array, items[i].type);
-				//components_array = populateArray(components_array, items[i].note_count);
-				components_array = populateArray(components_array, items[i].title);
-
-				//strips out photos and puts in inline_images array
-				switch(items[i].type){
-					case 'text':
-						components_array = populateBodyCaption(components_array, items[i].body);
-						break;
-					case 'photo':
-						components_array = populateBodyCaption(components_array, items[i].caption);
-						break;
-					case 'video':
-						components_array = populateBodyCaption(components_array, items[i].caption);
-						break;
-					case 'link':
-						console.log('link: description');
-						components_array = populateBodyCaption(components_array, items[i].description);
-						break;
-					case 'quote':
-						console.log('quote: source');
-						components_array = populateBodyCaption(components_array, items[i].source);
-						break;
-				}
-				//populate quote
-				switch(items[i].type){
-					case 'text':
-						components_array = populateBodyCaption(components_array, null);
-						break;
-					case 'photo':
-						components_array = populateBodyCaption(components_array, null);
-						break;
-					case 'video':
-						components_array = populateBodyCaption(components_array, 'Video');
-						break;
-					case 'link':
-						console.log('link: title');
-						components_array = populateBodyCaption(components_array, '<p>'+items[i].title+'</p>');
-						break;
-					case 'quote':
-						console.log('quote: text');
-						components_array = populateBodyCaption(components_array, '<p>'+items[i].text+'</p>');
-						break;
-				}
-				//components_array = populateArray(components_array, items[i].timestamp);
-
-				var tags_length = (items[i].tags.length < MAX_TAGS) ? items[i].tags.length : MAX_TAGS;
-				
-				for(var k = 0; k < MAX_TAGS; k++){
-					if(k < tags_length){
-						populateArray(components_array, items[i].tags[k]);
-					}else{
-						populateArray(components_array, null);
-					}
-				}
-				
-				//if photo post, fill photos columns with photos
-				if(items[i].type == 'photo'){
-					var photos_length = (items[i].photos.length < MAX_PHOTOS) ? items[i].photos.length : MAX_PHOTOS;
-				
-					for(var x = 0; x < MAX_PHOTOS; x++){
-						if(x < photos_length){
-							populateArrayPhoto(components_array, items[i].photos[x].alt_sizes[0].url);
-						}else{
-							populateArray(components_array, null);
-						}
-					}
-				}else{//if not photo post, fill with empty strings
-					for(var k = 0; k < MAX_PHOTOS; k++){
-						components_array.push( 'none' );
-					}
-				}
-
-				var inline_image_array = inline_images.pop();
-				if(inline_image_array != undefined){
-					for(var p = 0; p < MAX_INLINE_PHOTOS; p++){
-						if(inline_image_array[p] != undefined){
-							populateArrayPhoto(components_array, inline_image_array[p]);
-						}else{
-							populateArray(components_array, null);
-						}
-					}
-				}else{
-					for(var p = 0; p < MAX_INLINE_PHOTOS; p++){
-						populateArray(components_array, null);
-					}
-				}
-				
-				components.push( components_array.join(',') );
-			}
-
-			comp_array.push( components.join('\n') );//main storage array
-
-			var final_string = comp_array.join('\n');
-			createCSV(final_string, res);
+			
 			
         });//end find
     });//end collection open
@@ -444,7 +475,6 @@ function fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_po
 	fetched_total_posts++;
 	//if fetched everything, finish by sending 205 status
 	if(fetched_total_posts >= total_posts){
-		console.log('finished fetching, returning 205');
 		fetched_total_posts = 0;//reset for the next sync
 		res.send(205);//status 205 = Reset Content
 	}else{
@@ -463,7 +493,6 @@ function fetchTumblr(limit, offset, req, res){
 		
 		if(json.posts.length == 0){
 			//incase private posts, total_posts will never be reached
-			console.log('finished fetching with no posts returned returning 205');
 			fetched_total_posts = 0;//reset for the next sync
 			res.send(205);//status 205 = Reset Content
 		}else{
