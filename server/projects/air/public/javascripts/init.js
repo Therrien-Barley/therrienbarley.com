@@ -110,7 +110,7 @@ function($, TAXONOMIES) {
 		});
 
 		if($('#overlay').length > 0){
-			$('#overlaybg').css('opacity', 0.7);
+			$('#overlaybg').css('opacity', 0.95);
 			$('#overlay-close').bind('click', function(){
 				$('#overlay').hide();
 			});

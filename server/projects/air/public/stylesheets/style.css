@@ -2,10 +2,16 @@ body{
 	font-family:"Apercu Regular", Calibri, sans-serif; font-size-adjust:0.508; font-weight:normal; font-style:normal;
 	font-size:15px;
 	line-height: 21px;
+	color:blue;
+	background-color: whitesmoke;
 }
 
 .bold{
 	font-family:"Apercu Bold", Calibri, sans-serif; font-size-adjust:0.508; font-weight:bold; font-style:normal;
+}
+
+a, a:hover{
+	color:blue;
 }
 
 ul{
@@ -27,6 +33,10 @@ h6 a:hover{
 	border:none;
 }
 
+blockquote{
+	border-left: 5px solid blue;
+}
+
 
 .bttn{
 	border:2px solid red;
@@ -35,18 +45,18 @@ h6 a:hover{
 	padding:1px;
 	font-family:Monaco, monospace;
 	font-size:11px;
-	background-color:blue;
+	background-color:whitesmoke;
 }
 
 .bttn:hover{
 	cursor: pointer;
-	color:blue;
+	color:whitesmoke;
 	background-color: red;
 }
 
 .edit-mode .editable{
-	background-color:white;
-	color:blue;
+	background-color:blue;
+	color:whitesmoke;
 }
 
 
@@ -230,6 +240,7 @@ h1{
 
 #nav .menu.open,
 #nav .menu.active-trail{
+	opacity:0.85;
 	background-color:white;
 	-moz-box-shadow: 10px 10px 0px #f00;
 	-webkit-box-shadow: 10px 10px 0px #f00;
@@ -255,7 +266,7 @@ h1{
 }
 
 .fashion{
-	color:#FFFF00;
+	color:#EFFF00;
 }
 .tech{
 	color:#00FFFF;
@@ -295,7 +306,7 @@ h1{
 }
 
 #sources h6{
-	color:white;
+	color:blue;
 }
 
 
@@ -357,7 +368,7 @@ h1{
 	top:0;
 	left:0;
 	z-index:9;
-	background-color:blue;
+	background-color:whitesmoke;
 }
 
 #overlay-close{
@@ -371,7 +382,7 @@ h1{
 
 #overlay-close:hover{
 	cursor:pointer;
-	color:white;
+	color:blue;
 }
 
 #overlay-post{
@@ -384,7 +395,7 @@ h1{
 	font-size:42px;
 	letter-spacing: 1px;
 	line-height: 1em;
-	color:white;
+	color:blue;
 }
 
 #overlay .post-left img{
@@ -462,7 +473,7 @@ h1{
 }
 
 .tag-elements h6{
-	color:white;
+	color:blue;
 }
 
 .tag-elements-icons{
@@ -503,7 +514,7 @@ h1{
 	color:blue !important;
 	margin-bottom:17px;
 	text-align: left;
-	background-color: white;
+	background-color: blue;
 	width:250px;
 	position: relative;
 }
@@ -544,7 +555,7 @@ h1{
 }
 
 .fragment-container.fashion{
-	background-color:#FFFF00;
+	background-color:#EFFF00;
 }
 .fragment-container.tech{
 	background-color:#00FFFF;

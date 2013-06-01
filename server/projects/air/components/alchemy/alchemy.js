@@ -70,7 +70,7 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
                         }, 500);
 
                         if($('#overlay').length > 0){
-                            $('#overlaybg').css('opacity', 0.7);
+                            $('#overlaybg').css('opacity', 0.95);
                             $('#overlay-close').bind('click', function(){
                                 _this.data.tumblr_post_view.unrender();
                                 _this.data.tumblr_post = null;
