@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- partial('partials/head', {title:title}) %>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+
+	<%- partial('partials/alchemymenu') %>
+
+	<div class="wrapper">
+		<%- partial('partials/header', { user: user }) %>
+
+		<%- partial('partials/nav') %>
+
+		
+
+		<div id="main">
+			<div class="row-fluid">
+				<div class="span2 offset7 bttn add">Add Collection</div>
+			</div>
+
+			<ul id="new-collections-el"></ul>
+
+			<ul id="collections-el"></ul>
+			
+		</div><!-- /#main -->
+
+		<%- partial('partials/footer') %>
+
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%- partial('partials/scripts') %>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
