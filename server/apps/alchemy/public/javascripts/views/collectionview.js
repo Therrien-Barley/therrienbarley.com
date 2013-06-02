@@ -11,10 +11,46 @@ function(Backbone, template, TAXONOMIES, Collection) {
 	    tagName: 'li',
 		template: template,
 		events: {
-	    	'click .edit': 'edit',
+	    	'click .editbutton': 'edit',
 	    	'click .save': 'save',
 	    	'click .cancel': 'cancel',
-	    	'click .delete': 'delete'
+	    	'click .delete': 'delete',
+	    	'click .addsource': 'addSource',
+	    	'click .deletesource': 'deleteSource',
+	    	'mouseenter .inner': 'showEditButton',
+	    	'mouseleave .inner': 'hideEditButton'
+	    },
+
+	    showEditButton: function(){
+	    	if(!this.model.isNew()){
+	    		var this_selector = '#collection-'+this.model.get('_id');
+	    		$(this_selector).addClass('showeditbutton');
+	    	}	
+	    },
+
+	    hideEditButton: function(){
+	    	if(!this.model.isNew()){
+	    		var this_selector = '#collection-'+this.model.get('_id');
+	    		$(this_selector).removeClass('showeditbutton');
+	    	}	
+	    },
+
+	    addSource: function(){
+	    	var this_selector;
+	    	if(this.model.isNew()){
+	    		this_selector = '#collection-new';
+	    	}else{
+	    		this_selector = '#collection-'+this.model.get('_id');
+	    	}
+
+	    	$('.sources', this_selector).append('<li class="row-fluid source-container"><ul class="source-type-menu span2"><li class="selected" type="tumblr"><i class="icon-tumblr"></i></li></ul><div class="editable source-source span9" contenteditable="true">source</div><div class="span4 editable source-tags" contenteditable="true">tag</div><div class="span1 deletesource"><i class="icon-remove"></i></div></li>');
+
+	    },
+
+	    deleteSource: function(event){
+	    	console.log('deleteSource()');
+	    	console.dir(event.target);
+	    	$(event.target).closest('.source-container').remove();
 	    },
 
 	    delete: function(){
@@ -51,10 +87,21 @@ function(Backbone, template, TAXONOMIES, Collection) {
 	    		this_selector = '#collection-'+this.model.get('_id');
 	    	}
 
-	    	console.log('this_selector: '+ this_selector);
+	    	var sources = [];
+	    	$('.source-container', this_selector).each(function(i){
+	    		var new_source = {
+		    		type: $('.source-type-menu .selected', this).attr('type'),
+		    		source: $('.source-source', this).text(),
+		    		tags: $('.source-tags', this).text().split(',')
+		    	};
+		    	sources.push(new_source);
+	    	});
+
 
 	    	this.model.set({
 	    		title: $('.title', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
+	    		description: $('.description', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
+	    		sources: sources
 
 	    	});
 
@@ -126,6 +173,7 @@ function(Backbone, template, TAXONOMIES, Collection) {
 			// return ```this``` so calls can be chained.
 			return this;
 	    },
+
 	    unrender: function(){
 			//use Underscore template, pass it the attributes from this model
 			$(this.el).html('');

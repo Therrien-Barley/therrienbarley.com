@@ -75,6 +75,27 @@ blockquote{
 	color:red;
 }
 
+.editbutton{
+	display: none;
+	position: absolute;
+	top:0;
+	right:0;
+	color:red;
+}
+
+.editbutton:hover{
+	color:blue;
+	cursor: pointer;
+}
+
+.showeditbutton .editbutton{
+	display: block;
+}
+
+.edit-mode .editbutton{
+	display: none !important;
+}
+
 .bttn{
 	border:2px solid red;
 	color:red;
@@ -100,17 +121,20 @@ blockquote{
 .edit-mode .editable{
 	background-color:blue;
 	color:whitesmoke;
+	outline: none;
 }
 
 
 
 .delete,
+.deletesource,
 .cancel,
 .save{
 	display: none !important;
 }
 
 .edit-mode .delete,
+.edit-mode .deletesource,
 .edit-mode .cancel,
 .edit-mode .save{
 	display:block !important;
@@ -126,6 +150,16 @@ blockquote{
 
 .rel{
 	position: relative;
+}
+
+.deletesource{
+	padding:7px 0;
+	color:red;
+}
+
+.deletesource:hover{
+	color:blue;
+	cursor: pointer;
 }
 
 
@@ -780,4 +814,90 @@ h1{
 }
 
 
+/* COLLECTIONS */
+#collections-el,
+#new-collections-el{
+	margin-top:20px;
+}
+
+.collection,
+#collection-new{
+	text-align: center;
+	margin-bottom:60px;
+}
+
+.collection .inner,
+#collection-new{
+	position: relative;
+}
+
+.collection .source-container .editable{
+	text-align: left;
+	overflow: auto;
+}
+
+.collection .edit-mode .source-container .editable{
+	padding: 5px;
+}
+.collection .sources{
+	text-align: left;
+}
+
+.collection .source-container{
+	margin-bottom:0;
+}
+
+.collection .edit-mode .source-container{
+	margin-bottom:10px;
+}
+
+.collection .source-container .source-type-menu li{
+	padding: 1px 10%;
+	text-align: left;
+	line-height: 16px;
+}
+
+.collection .edit-mode .source-container .source-type-menu li{
+	padding: 3px 20%;
+	background-color: blue;
+}
+
+.collection .source-container .source-type-menu li i{
+	font-size: 16px;
+	line-height: 21px;
+}
+
+.collection .edit-mode .source-container .source-type-menu li i{
+	color: white;
+}
+
+.collection .description{
+	text-align: left;
+}
+
+.collection .addsource,
+.collection .addcollaborator{
+	display: none;
+}
+.collection .edit-mode .addsource,
+.collection .edit-mode .addcollaborator{
+	display: block;
+}
+
+.collection .sources-wrapper,
+.collection .collaborators-wrapper{
+	margin-top:20px;
+	color:black;
+}
+
+.edit-mode{
+	padding:10px;
+	-moz-box-shadow: 0px 0px 7px #aaa;
+	-webkit-box-shadow: 0px 0px 7px #aaa;
+	box-shadow: 0px 0px 7px #aaa;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=7, Direction=0, Color='#AAAAAA')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=7, Direction=0, Color='#AAAAAA');
+}
 

@@ -1,11 +1,72 @@
-<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="span6 offset5">
-
+<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="span6 offset5 inner">
+	<div class="editbutton"><i class="icon-edit"></i></div>
 	<div class="row-fluid">
-		<div class="span2 bttn delete">Delete</div>
+		<div class="span2 offset5 bttn delete">Delete</div>
 		<div class="span2 bttn cancel">Cancel</div>
-		<div class="span2 bttn edit">Edit</div>
 		<div class="span2 bttn save">Save</div>
+
 	</div>
 
-	<h2><div class="title editable" contenteditable="false"><%= data.title %></div></h2>
+	<h2><div class="title editable" contenteditable="false">
+		<% if(data.title){ %>
+			<%= data.title %>
+		<% }else{ %>
+			Title
+		<% } %>
+	</div></h2>
+
+	<div class="description editable" contenteditable="false">
+		<% if(data.description){ %>
+			<%= data.description %>
+		<% }else{ %>
+			Description
+		<% } %>
+	</div>
+
+	<div class="row-fluid sources-wrapper">
+		<h6>Sources</h6>
+		
+		<ul class="sources">
+			<li class="row-fluid source-header">
+				<h5 class="span2">type</h5>
+				<h5 class="span9">source</h5>
+				<h5 class="span4">tags</h5>
+			</li>
+			<% if(data.sources){ %>
+				<% for(var s = 0; s < data.sources.length; s++){ %>
+					<li class="row-fluid source-container">
+						<ul class="source-type-menu span2">
+							<li class="selected" type="<%= data.sources[s].type %>"><i class="icon-<%= data.sources[s].type %>"></i></li>
+						</ul>
+						<div class="editable source-source span9" contenteditable="false"><%= data.sources[s].source %></div>
+						<div class="span4 editable source-tags" contenteditable="false"><%= data.sources[s].tags %></div>
+						<div class="span1 deletesource"><i class="icon-remove"></i></div>
+					</li>
+				<% } %>
+			<% } %>
+		</ul>
+	</div>
+	<div class="row-fluid">
+		<div class="span6 offset5 bttn addsource">Add Source</div>
+	</div>
+
+	<div class="row-fluid collaborators-wrapper">
+		<h6>Collaborators</h6>
+		
+		<ul class="collaborators">
+			<% if(data.collaborators){ %>
+				<% for(var c = 0; c < data.collaborators.length; c++){ %>
+					<li class="row-fluid collaborator-container">
+						<i class="icon-user <%= data.collaborators[c].color %>"></i>
+						<div class="name"><%= data.collaborators[c].name %></div>
+						<div class="role"><%= data.collaborators[c].role %></div>
+					</li>
+				<% } %>
+			<% } %>
+		</ul>
+	</div><!-- /.collaborators-wrapper -->
+
+	<div class="row-fluid">
+		<div class="span6 offset5 bttn addcollaborator">Add Collaborator</div>
+	</div>
 </div>

@@ -91,8 +91,10 @@ exports.update = function(req, res, _id){
     var updated_collection = {
         type: 'collection',
         title: req.body.title,
+        description: req.body.description,
         updated_by: req.user.id,
-        updated: timestamp
+        updated: timestamp,
+        sources: req.body.sources
     };
 
     db.collection(col, function(err, collection) {
@@ -124,11 +126,13 @@ exports.create = function(req, res){
     var new_collection = {
         type: 'collection',
         title: req.body.title,
+        description: req.body.description,
         creator: req.user.id,
         created: timestamp,
         updated_by: req.user.id,
         updated: timestamp,
-        status: 'private'
+        status: 'private',
+        sources: []
     };
 
     console.dir(new_collection);

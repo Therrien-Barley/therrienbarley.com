@@ -207,9 +207,6 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
                     $(this).addClass('disabled');
 
                     var collection = new Collection();
-                    collection.set({
-                        title: "Add title"
-                    });
 
                     var collection_view = new CollectionView({
                         model: collection,
