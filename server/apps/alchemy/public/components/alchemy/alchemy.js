@@ -201,19 +201,26 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
             });
 
             $('#main .add').click(function(event){
-                console.log('clicked add');
+                
+                if(!$(this).hasClass('disabled')){
+                    console.log('clicked add');
+                    $(this).addClass('disabled');
 
-                var collection = new Collection();
-                collection.set({
-                    title: "Add title"
-                });
+                    var collection = new Collection();
+                    collection.set({
+                        title: "Add title"
+                    });
 
-                var collection_view = new CollectionView({
-                    model: collection,
-                    el: '#new-collections-el'
-                });
+                    var collection_view = new CollectionView({
+                        model: collection,
+                        el: '#new-collections-el'
+                    });
 
-                collection_view.render();
+                    if(typeof collection_view.render() !== 'undefined'){
+                        $('#new-collections-el #collection-new').addClass('edit-mode new');
+                        $('#new-collections-el #collection-new .editable').attr('contenteditable', 'true');
+                    }
+                }
 
 
             });

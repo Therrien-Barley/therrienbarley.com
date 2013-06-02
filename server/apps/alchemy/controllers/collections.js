@@ -33,7 +33,7 @@ exports.get = function(req, res, id){
         if(req.user.collections){
             if(req.user.collections.indexOf('all') >= 0){//get all collections
                 db.collection(col, function(err, collection) {
-                    collection.find().limit(GET_LIMIT).sort('title').toArray(function(err, items) {
+                    collection.find().limit(GET_LIMIT).sort('updated').toArray(function(err, items) {
                         if (err) {
                             console.log('error: collections.js::get() all');
                             console.log(err);
@@ -67,16 +67,16 @@ exports.get = function(req, res, id){
 
 
 exports.delete = function(req, res, _id){
-    console.log('insights.js::delete()');
+    console.log('collections.js::delete()');
 
     db.collection(col,function(err, collection){
         collection.remove({ '_id': new ObjectID(_id) },function(err, removed){
             if (err) {
-                console.log('error: insights.js::delete()');
+                console.log('error: collections.js::delete()');
                 console.log(err);
-                res.send(500, 'Error attempting to delete insight with error message: '+ err);
+                res.send(500, 'Error attempting to delete collection with error message: '+ err);
             } else {
-                console.log('Success: deleted insight');
+                console.log('Success: deleted collection');
                 res.json(200, removed);
             }
         });
@@ -85,27 +85,24 @@ exports.delete = function(req, res, _id){
 
 
 exports.update = function(req, res, _id){
-    console.log('insights.js::create()');
+    console.log('collections.js::update()');
+    var timestamp = new Date().getTime();
 
-    var insight = {
-        type: 'insight',
+    var updated_collection = {
+        type: 'collection',
         title: req.body.title,
-        categories: req.body.categories,
-        description: req.body.description,
-        questions: req.body.questions,
-        fragments: req.body.fragments,
-        section: req.body.section,
-        position: req.body.position
+        updated_by: req.user.id,
+        updated: timestamp
     };
 
     db.collection(col, function(err, collection) {
-        collection.update({'_id': new ObjectID(_id) }, insight, {safe:true}, function(err) {
+        collection.update({'_id': new ObjectID(_id) }, updated_collection, {safe:true}, function(err) {
             if (err) {
-                console.log('error: insights.js::create()');
+                console.log('error: collections.js::update()');
                 console.log(err);
-                res.send(500, 'Error attempting to update insight with error message: '+ err);
+                res.send(500, 'Error attempting to update collection with error message: '+ err);
             } else {
-                console.log('Success: updated insight');
+                console.log('Success: updated collection');
                 res.json(200);
             }
         });
@@ -129,6 +126,8 @@ exports.create = function(req, res){
         title: req.body.title,
         creator: req.user.id,
         created: timestamp,
+        updated_by: req.user.id,
+        updated: timestamp,
         status: 'private'
     };
 

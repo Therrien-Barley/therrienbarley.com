@@ -28,7 +28,6 @@ function(Backbone, CollectionView, template, Collections) {
                 that._collectionViews.push(new CollectionView({
                     model: model,
                     tagName: 'div',
-                    el: this._collectionViewEl,
                     _collectionView: that
                 }));
             });

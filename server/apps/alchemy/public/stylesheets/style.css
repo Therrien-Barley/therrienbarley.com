@@ -91,6 +91,12 @@ blockquote{
 	background-color: red;
 }
 
+.bttn.disabled{
+	cursor: auto;
+	color:whitesmoke;
+	background-color: red;
+}
+
 .edit-mode .editable{
 	background-color:blue;
 	color:whitesmoke;
@@ -99,13 +105,23 @@ blockquote{
 
 
 .delete,
-.cancel{
+.cancel,
+.save{
 	display: none !important;
 }
 
 .edit-mode .delete,
-.edit-mode .cancel{
+.edit-mode .cancel,
+.edit-mode .save{
 	display:block !important;
+}
+
+.edit-mode .edit{
+	display: none !important;
+}
+
+.edit-mode.new .delete{
+	display: none !important;
 }
 
 .rel{

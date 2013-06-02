@@ -1,8 +1,11 @@
-<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="edit-mode span6 offset5">
+<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="span6 offset5">
 
 	<div class="row-fluid">
+		<div class="span2 bttn delete">Delete</div>
+		<div class="span2 bttn cancel">Cancel</div>
+		<div class="span2 bttn edit">Edit</div>
 		<div class="span2 bttn save">Save</div>
 	</div>
 
-	<h2><div class="title editable" contenteditable="<% if(data._id){ %>false<% }else{ %>true<% } %>"><%= data.title %></div></h2>
+	<h2><div class="title editable" contenteditable="false"><%= data.title %></div></h2>
 </div>

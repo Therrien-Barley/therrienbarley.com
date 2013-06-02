@@ -8,7 +8,7 @@ function(Backbone, Collection) {
 	model: Collection,
 	url:'/insights/api/collection',
 	initialize: function(vars){
-		this.sort_key = 'title';
+		this.sort_key = 'updated';
 	},
 	comparator: function(a, b) {
 	    // Assuming that the sort_key values can be compared with '>' and '<',

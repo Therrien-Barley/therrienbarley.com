@@ -17,6 +17,10 @@ exports.put = function(req, res){
 	switch(url_array[2]){
 		case 'api':
 			switch(url_array[3]){
+				case 'collection':
+					console.log('/insights/api/collection::update');
+					collections.update(req, res, url_array[4]);
+					break;
 				case 'insight':
 					console.log('/insights/api/insight::update');
 					insights.update(req, res, url_array[4]);
@@ -45,6 +49,10 @@ exports.delete = function(req, res){
 	switch(url_array[2]){
 		case 'api':
 			switch(url_array[3]){
+				case 'collection':
+					console.log('/insights/api/collection::delete');
+					collections.delete(req, res, url_array[4]);
+					break;
 				case 'insight':
 					console.log('/insights/air/api/insight::delete');
 					insights.delete(req, res, url_array[4]);
