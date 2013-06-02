@@ -4,6 +4,7 @@ var fetchtumblr = require('../controllers/fetchtumblr');
 var insights = require('../controllers/insights');
 var fragments = require('../controllers/fragments');
 var collections = require('../controllers/collections');
+var users = require('../controllers/users');
 
 
 //url_array[1] is insights
@@ -17,6 +18,10 @@ exports.put = function(req, res){
 	switch(url_array[2]){
 		case 'api':
 			switch(url_array[3]){
+				case 'user':
+					console.log('/insights/api/user::update');
+					users.update(req, res, url_array[4]);
+					break;
 				case 'collection':
 					console.log('/insights/api/collection::update');
 					collections.update(req, res, url_array[4]);
@@ -143,8 +148,14 @@ exports.get = function(req, res){
 				console.log('--->api');
 
 				switch(url_array[3]){
+					case 'user':
+						users.get(req, res);
+						break;
 					case 'collection':
 						collections.get(req, res);
+						break;
+					case 'user':
+						users.get(req, res);
 						break;
 					case 'insight':
 						insights.get(req, res, url_array[4]);

@@ -33,6 +33,19 @@ db.open(function(err, db) {
 
 var users_collection = 'users';
 
+function updateLastLogin(id, fn){
+  var timestamp = new Date().getTime();
+
+  db.collection(users_collection, function(err, collection) {
+    collection.update({ id: id }, {$set: {last_login: timestamp}}, {safe:true}, function(err, user) {
+      if(err){
+        fn(new Error('User ' + id + ' does not exist'));
+      }else{
+        fn(null, user);
+      }
+    });//end find
+  });//end collection open
+}
 
 function findById(id, fn) {
   db.collection(users_collection, function(err, collection) {
@@ -151,7 +164,15 @@ app.get('/login', function(req, res){
 app.post('/login', 
   passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
   function(req, res) {
-    res.redirect('/insights/collections');
+
+    updateLastLogin(req.user.id, function(err, user){
+      if(err){
+        console.log('app.js::Error: User last_login not set');
+      }
+      res.redirect('/insights/collections');
+    });
+
+    
   });
 
 

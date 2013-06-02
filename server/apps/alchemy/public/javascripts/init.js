@@ -11,7 +11,10 @@ function($, TAXONOMIES) {
 		$('#nav .active').removeClass('active');
 		var pathname = window.location.pathname;
 		var path_array = pathname.split('/');
-		switch(path_array[3]){
+
+
+
+		switch(path_array[1]){
 			case 'sources':
 				switch(path_array[4]){
 					case 'blogs':
@@ -52,7 +55,17 @@ function($, TAXONOMIES) {
 				}
 				break;
 			case 'insights':
-				switch(path_array[4]){
+				switch(path_array[2]){
+					case 'collections':
+						$('#user-nav').addClass('active-trail').find('li.user-collections a').addClass('active');
+						break;
+					case 'user':
+						$('#user-nav').addClass('active-trail').find('li.user-account a').addClass('active');
+						break;
+					case 'admin':
+						$('#user-nav').addClass('active-trail').find('li.user-admin a').addClass('active');
+						break;
+					/*
 					case 'topten':
 						$('#insights-nav').addClass('active-trail').find('li.insights-topten a').addClass('active');
 						break;
@@ -65,6 +78,7 @@ function($, TAXONOMIES) {
 					case 'insights':
 						$('#insights-nav').addClass('active-trail').find('li.insights-insights a').addClass('active');
 						break;
+						*/
 				}
 				break;
 			default:
@@ -73,14 +87,23 @@ function($, TAXONOMIES) {
 
 		
 
-		
+		function verticallyCenterNav(){
+			var nav_height = 0;
 
+			$('#nav .menu').each(function(i){
+				nav_height += $(this).height() + parseInt($(this).css('paddingTop')) + parseInt($(this).css('paddingBottom'));
+				if(i > 0){
+					nav_height += parseInt($(this).css('marginBottom'));
+				}
+			});
 
-			
-
-
-
-
+			if(window.innerHeight > nav_height){
+				var vertical_padding = (window.innerHeight - nav_height) / 2;
+				$('#nav').css('paddingTop', vertical_padding);
+			}
+			$('#nav').css('opacity', 1);
+		}
+		verticallyCenterNav();
 
 
 
@@ -91,15 +114,6 @@ function($, TAXONOMIES) {
 			location.pathname = 'login';
 		});
 
-		$('#nav .menu').hover(function(){
-			if(!$(this).hasClass('active-menu')){
-				$(this).addClass('open');
-			}
-		}, function(){
-			if(!$(this).hasClass('active-menu')){
-				$(this).removeClass('open');
-			}
-		});
 
 		$('.tag-elements-icon i').hover(function(){
 			var $img = $(this).closest('.tag-elements-icon').find('img');
@@ -124,6 +138,9 @@ function($, TAXONOMIES) {
 			$(this).toggleClass('open');
 			$('#mechanics .menu').toggle();
 		});
+
+
+		$(window).resize(verticallyCenterNav);
 
 	/*
 		$('#mechanics .menu a').click(function(event){

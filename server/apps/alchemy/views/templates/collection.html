@@ -1,9 +1,9 @@
-<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="span6 offset5 inner">
+<div id="collection-<% if(data._id){ %><%= data._id %><% }else{ %>new<% } %>" class="span8 offset4 inner">
 	<div class="editbutton"><i class="icon-edit"></i></div>
 	<div class="row-fluid">
-		<div class="span2 offset5 bttn delete">Delete</div>
-		<div class="span2 bttn cancel">Cancel</div>
-		<div class="span2 bttn save">Save</div>
+		<div class="span4 offset2 bttn delete">Delete</div>
+		<div class="span4 bttn cancel">Cancel</div>
+		<div class="span4 bttn save">Save</div>
 
 	</div>
 
@@ -47,19 +47,24 @@
 		</ul>
 	</div>
 	<div class="row-fluid">
-		<div class="span6 offset5 bttn addsource">Add Source</div>
+		<div class="span4 offset6 bttn addsource">Add Source</div>
 	</div>
 
 	<div class="row-fluid collaborators-wrapper">
 		<h6>Collaborators</h6>
 		
 		<ul class="collaborators">
+			<li class="row-fluid source-header">
+				<h5 class="span9 offset2">name</h5>
+				<h5 class="span4">role</h5>
+			</li>
 			<% if(data.collaborators){ %>
 				<% for(var c = 0; c < data.collaborators.length; c++){ %>
 					<li class="row-fluid collaborator-container">
-						<i class="icon-user <%= data.collaborators[c].color %>"></i>
-						<div class="name"><%= data.collaborators[c].name %></div>
-						<div class="role"><%= data.collaborators[c].role %></div>
+						<div class="span2"><i class="icon-user" style="color:<%= data.collaborators[c].color %>;"></i></div>
+						<div class="name span9"><%= data.collaborators[c].name %></div>
+						<div class="role span4"><%= data.collaborators[c].role %></div>
+						<div class="span1 deletecollaborator"><i class="icon-remove"></i></div>
 					</li>
 				<% } %>
 			<% } %>
@@ -67,6 +72,6 @@
 	</div><!-- /.collaborators-wrapper -->
 
 	<div class="row-fluid">
-		<div class="span6 offset5 bttn addcollaborator">Add Collaborator</div>
+		<div class="span4 offset6 bttn addcollaborator">Add Collaborator</div>
 	</div>
 </div>

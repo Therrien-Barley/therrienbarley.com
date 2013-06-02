@@ -37,6 +37,13 @@ blockquote{
 	border-left: 5px solid blue;
 }
 
+.pagetitle{
+	color:black;
+	text-align: center;
+	text-transform: uppercase;
+	margin-bottom:20px;
+}
+
 #user{
 	position:absolute;
 	top:20px;
@@ -224,9 +231,6 @@ blockquote{
 	color:#9999ff;
 }
 
-#header{
-	text-align: center;
-}
 
 h1{
 	font-size:36px;
@@ -235,23 +239,20 @@ h1{
 	color:black;
 }
 
-#header h6{
-  font-size:11px;
-  margin:20px auto;
-}
-
-#footer{
+#header{
 	position:fixed;
-	bottom: 340px;
-	left: -270px;
+	bottom: 50%;
+	left: -250px;
 	color:#9999ff;
+	z-index: -1;
 }
 
+#header a,
 #footer a{
 	color:#9999ff;
 }
 
-#footer div{
+#header div{
 	font-family: Monaco, monospace;
 	font-size:11px;
 	margin:0;
@@ -259,6 +260,9 @@ h1{
 	text-align: left;
 	width:320px;
 	height:40px;
+	position: relative;
+	bottom: 150px;
+	text-align: center;
 	
 	transform-origin:100% 100%;
 	-webkit-transform-origin: 100% 100%;
@@ -273,6 +277,18 @@ h1{
 	-o-transform:rotate(-90deg); /* Opera */
 }
 
+#footer{
+	font-family: Monaco, monospace;
+	font-size:11px;
+	color:#9999ff;
+	margin:0;
+	padding:0;
+	position: fixed;
+	bottom: 10px;
+	text-align: center;
+	z-index: -1;
+}
+
 .wrapper{
 	width:100%;
 	margin-bottom:100px;
@@ -282,7 +298,9 @@ h1{
 	text-align: center;
 	height:177px;
 	z-index:2;
-	position: relative;
+	position: fixed;
+	opacity: 0;
+	top:0;
 }
 
 #nav .login-container{
@@ -301,7 +319,7 @@ h1{
 }
 
 #nav .menu{
-	padding:20px;
+	padding:20px 0;
 }
 
 #nav .menu .menu-option{
@@ -346,6 +364,10 @@ h1{
 
 #sub-nav{
 	margin-bottom:37px;
+}
+
+#main{
+	margin-top:50px;
 }
 
 .button{
@@ -817,7 +839,7 @@ h1{
 /* COLLECTIONS */
 #collections-el,
 #new-collections-el{
-	margin-top:20px;
+	margin-top:5px;
 }
 
 .collection,
@@ -839,7 +861,8 @@ h1{
 .collection .edit-mode .source-container .editable{
 	padding: 5px;
 }
-.collection .sources{
+.collection .sources,
+.collection .collaborators{
 	text-align: left;
 }
 

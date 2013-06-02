@@ -1,64 +1,20 @@
 define([
 	'backbone',
-	'text!../../../views/templates/collection.html',
+	'text!../../../views/templates/user.html',
 	'taxonomies',
-	'models/collection'
+	'models/user'
 ],
-function(Backbone, template, TAXONOMIES, Collection) {
+function(Backbone, template, TAXONOMIES, User) {
 
-	var CollectionView = Backbone.View.extend({
-	    className: 'collection row-fluid',
+	var UserView = Backbone.View.extend({
+	    className: 'user',
 	    tagName: 'li',
 		template: template,
 		events: {
 	    	'click .editbutton': 'edit',
 	    	'click .save': 'save',
 	    	'click .cancel': 'cancel',
-	    	'click .delete': 'delete',
-	    	'click .addsource': 'addSource',
-	    	'click .deletesource': 'deleteSource',
-	    	'mouseenter .inner': 'showEditButton',
-	    	'mouseleave .inner': 'hideEditButton'
-	    },
-
-	    showEditButton: function(){
-	    	if(!this.model.isNew()){
-	    		var this_selector = '#collection-'+this.model.get('_id');
-	    		$(this_selector).addClass('showeditbutton');
-	    	}	
-	    },
-
-	    hideEditButton: function(){
-	    	if(!this.model.isNew()){
-	    		var this_selector = '#collection-'+this.model.get('_id');
-	    		$(this_selector).removeClass('showeditbutton');
-	    	}	
-	    },
-
-	    addCollaborator: function(){
-
-	    	var name_array;
-	    	var names = '';
-
-	    	var html = '<li class="row-fluid collaborator-container"><div class="span2"><i class="icon-user" style="color:black;"></i></div><div class="name span9">'+names+'</div><div class="role span4"><select class="roles-list"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div><div class="span1 deletecollaborator"><i class="icon-remove"></i></div></li>;'
-	    },
-
-	    addSource: function(){
-	    	var this_selector;
-	    	if(this.model.isNew()){
-	    		this_selector = '#collection-new';
-	    	}else{
-	    		this_selector = '#collection-'+this.model.get('_id');
-	    	}
-
-	    	$('.sources', this_selector).append('<li class="row-fluid source-container"><ul class="source-type-menu span2"><li class="selected" type="tumblr"><i class="icon-tumblr"></i></li></ul><div class="editable source-source span9" contenteditable="true">source</div><div class="span4 editable source-tags" contenteditable="true">tag</div><div class="span1 deletesource"><i class="icon-remove"></i></div></li>');
-
-	    },
-
-	    deleteSource: function(event){
-	    	console.log('deleteSource()');
-	    	console.dir(event.target);
-	    	$(event.target).closest('.source-container').remove();
+	    	'click .delete': 'delete'
 	    },
 
 	    delete: function(){
@@ -132,16 +88,10 @@ function(Backbone, template, TAXONOMIES, Collection) {
 		                    tagName: 'div'
 		                });
 
-		                $('.collections-list-el').append(new_view.render().el);
+		                $('.collections-list-el').prepend(new_view.render().el);
 
 		                that = null;
-/*
-	    				var $cn = $('#collection-new').detach();
-	    				var $newWrapper = $('<div class="collection row-fluid"></div>');
-	    				$newWrapper.append($cn);
-	    				$('.collections-list-el').prepend($newWrapper);
-	    				$('#collection-new').attr('id', 'collection-'+model.get('_id'));
-	    				*/
+
 	    				//remove disabling from Add Collection button
 	    				$('#main .add').removeClass('disabled');
 	    			}
@@ -191,6 +141,6 @@ function(Backbone, template, TAXONOMIES, Collection) {
 	    },
 	});
 
-	return CollectionView;
+	return UserView;
 
 });

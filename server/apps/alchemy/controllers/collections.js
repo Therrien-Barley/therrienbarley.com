@@ -94,6 +94,8 @@ exports.update = function(req, res, _id){
         description: req.body.description,
         updated_by: req.user.id,
         updated: timestamp,
+        editors: req.body.editors,
+        viewers: req.body.viewers,
         sources: req.body.sources
     };
 
@@ -132,6 +134,8 @@ exports.create = function(req, res){
         updated_by: req.user.id,
         updated: timestamp,
         status: 'private',
+        editors: [],
+        viewers: [],
         sources: []
     };
 
