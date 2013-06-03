@@ -1,6 +1,7 @@
 var mongo = require('mongodb');
 var Tumblr = require('tumblrwks');
 var request = require('request');
+var ObjectID = require('mongodb').ObjectID;
 
 var util = require('util');
 
@@ -28,15 +29,15 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-var db = new Db('audiinnovationresearch', server, {safe:false});
+var db = new Db('insights', server, {safe:false});
 
 db.open(function(err, db) {
-	console.log('opening DB audiinnovationresearch');
+	console.log('opening DB insights');
     if(!err) {
-        console.log("Connected to audiinnovationresearch database");
-        db.collection('tumblrposts', {safe:true}, function(err, collection) {
+        console.log("Connected to insights database");
+        db.collection('elements', {safe:true}, function(err, collection) {
             if (err) {
-                console.log("Error trying to open tumblrposts collection with error: " + err);
+                console.log("Error trying to open elements collection with error: " + err);
             }
         });
     }
@@ -466,12 +467,35 @@ exports.download = function(req, res){
 
 
 exports.sync = function(req, res){
-	fetchTumblr(20, 0, req, res);
+	var _id = '51ab71c4b3886afd0300000d';
+
+	db.collection('collections', function(err, collection) {
+        collection.findOne({ '_id': new ObjectID(_id) }, function(err, collect) {
+            var flag = false;
+            if( req.user.role != 'admin' ){
+                for(var i = 0; i < collect.collaborators.length; i++){
+                    if(collect.collaborators[i].id == req.user.id){
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if( (req.user.role == 'admin') || flag == true){
+                
+                fetchTumblr(20, 0, req, res, collect.database_collection);
+            }else{
+                res.send(404, 'Error, you dont have permission to sync this collection');
+            }
+        });
+
+    });
+
+	
 }
 
 var fetched_total_posts = 0;
 
-function fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts){
+function fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts, col){
 	fetched_total_posts++;
 	//if fetched everything, finish by sending 205 status
 	if(fetched_total_posts >= total_posts){
@@ -481,13 +505,12 @@ function fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_po
 		//if not fetched everything, check to see if inserted everything in present fetch
 		//and call fetch again
 		if(inserted_posts >= fetched_posts){
-			fetchTumblr(limit, fetched_total_posts, req, res);
+			fetchTumblr(limit, fetched_total_posts, req, res, col);
 		}
 	}
 }
 
-function fetchTumblr(limit, offset, req, res){
-	var col = 'tumblrposts';
+function fetchTumblr(limit, offset, req, res, col){
 
 	tumblr.get('/posts', {hostname: 'ifthisthenth-ey.tumblr.com', offset: offset, limit: limit}, function(json){
 		
@@ -544,7 +567,7 @@ function fetchTumblr(limit, offset, req, res){
 	                    } else {
 	                        console.log('Success: added a post to to '+col+' collection with id '+ post.id);
 	                    	inserted_posts++;
-	                    	fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts);
+	                    	fetchTumblrCallback(limit, offset, req, res, fetched_posts, inserted_posts, total_posts, col);
 	                    }
 	                });
 	            });
