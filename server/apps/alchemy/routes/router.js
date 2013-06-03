@@ -169,6 +169,12 @@ exports.get = function(req, res){
 					case 'user':
 						users.get(req, res, url_array[4]);
 						break;
+					case 'element':
+						console.log('collections.getElements(req, res)');
+						if(req.query._id){
+							collections.getElements(req, res);
+						}
+						break;
 					case 'collection':
 						console.log('collections.get(req, res)');
 						collections.get(req, res);

@@ -47,7 +47,7 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                     Alchemy.renderUsers();
                     break;
                 case 'collection':
-                    Alchemy.renderCollection(url_array[3]);
+                    Alchemy.renderCollectionContent(url_array[3]);
                     break;
             }
             break;

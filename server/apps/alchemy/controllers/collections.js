@@ -92,6 +92,47 @@ exports.get = function(req, res){
 }//end get
 
 
+exports.getElements = function(req, res){
+    console.log('collections.js::getElements() from collection with _id: '+req.query._id+' and req.user.username: '+req.user.username);
+    var _id = null;
+    if(typeof req.query._id !== 'undefined'){
+        console.log('********* NOT NULL********');
+        _id = req.query._id;
+    }
+
+    if(_id != null){//get all collections for the user
+        console.log('apparently, _id != null');
+
+
+        db.collection(col, function(err, collection) {
+            collection.findOne({ '_id': new ObjectID(_id) }, function(err, collect) {
+                var flag = false;
+                if( req.user.role != 'admin' ){
+                    for(var i = 0; i < collect.collaborators.length; i++){
+                        if(collect.collaborators[i].id == req.user.id){
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if( (req.user.role == 'admin') || flag == true){
+                    db.collection( collect.database_collection, function(err, collection_two){
+                        collection_two.find().limit(GET_LIMIT).sort('timestamp').toArray(function(err, elements){
+                            res.json(200, elements);
+                        });
+                    });
+                }else{
+                    res.send(404, 'Error, you dont have permission for this collection');
+                }
+            });
+
+        });
+    }else{
+        res.send(404, 'Error, no _id for getElements()');
+    }
+}//end getElements
+
+
 
 exports.delete = function(req, res, _id){
     console.log('collections.js::delete()');
@@ -165,7 +206,8 @@ exports.create = function(req, res){
         editors: [],
         viewers: [],
         sources: [],
-        collaborators: []
+        collaborators: [],
+        database_collection: req.body.title+Math.floor(Math.random()*10000)
     };
 
     console.dir(new_collection);

@@ -20,9 +20,11 @@ define([
     'views/collectionview',
     'models/user',
     'collections/users',
-    'views/usersview'
+    'views/usersview',
+    'collections/elements',
+    'views/elementsview'
 ],
-function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionStreamView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
+function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionStreamView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView, Elements, ElementsView) {
 
     
     var Alchemy = {
@@ -195,15 +197,16 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
             });
         },
 
-        renderCollection: function(_id){
-            console.log('Alchemy.js::renderCollection()');
-            var collection = new Collection();
-            collection.fetch({
+        renderCollectionContent: function(_id){
+            console.log('Alchemy.js::renderCollectionContent()');
+            var elements = new Elements();
+            elements.fetch({
                 data: $.param({ _id: _id}),
-                success: function(model){
-                    var collection_view = new CollectionStreamView({
-                        model: model,
-                        el: '#collection-el'
+                success: function(collection){
+                    var collection_view = new ElementsView({
+                        collection: collection,
+                        el: '#collection-el',
+                        _elementViewEl: '.elements-list-el'
                     });
 
                     console.log('about to call render collection_view');

@@ -4,7 +4,7 @@ define(
 ], function(Backbone){
 
 	var TumblrPost = Backbone.Model.extend({
-		urlRoot: "/insights/air/api/get/tumblrpost"
+		urlRoot: "/insights/api/tumblrpost"
 	});
 
 	return TumblrPost;

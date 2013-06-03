@@ -1,6 +1,5 @@
 <div id="nav" class="span3 offset12 bold">
 	<% if(typeof user !== 'undefined'){ %>
-		
 		<div id="user-nav" class="menu row-fluid open">
 			<ul>
 				<li class="menu-header"><%= user.name %></li>
@@ -20,6 +19,7 @@
 			</ul>
 		</div>
 	<% } %>
+	
 	<% if(typeof collection !== 'undefined'){ %>
 		<div id="collection-nav" class="menu row-fluid open">
 			<ul>
