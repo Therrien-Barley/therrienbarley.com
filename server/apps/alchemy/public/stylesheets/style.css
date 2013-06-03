@@ -878,6 +878,11 @@ h1{
 	position: relative;
 }
 
+.collection .opencollection{
+	font-family: Monaco, monospace;
+	font-size:11px;
+}
+
 .collection .source-container .editable{
 	text-align: left;
 	overflow: auto;

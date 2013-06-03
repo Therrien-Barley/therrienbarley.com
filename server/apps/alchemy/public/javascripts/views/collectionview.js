@@ -41,7 +41,9 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 	    deleteCollaborator: function(event){
 	    	console.log('deleteCollaborator()');
 	    	console.dir(event.target);
-	    	$(event.target).closest('.collaborator-container').remove();
+	    	var $cc = $(event.target).closest('.collaborator-container');
+	    	$cc.remove();
+	    	this._collaborators[$cc.find('.name').attr('userid')].status = 'deleted';
 
 	    },
 
@@ -137,18 +139,22 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 	    	$('.collaborator-container', this_selector).each(function(i){
 	    		if($(this).hasClass('new')){
 		    		var new_collaborator = {
-			    		id: $('.collaborator-select', this).val(),
+			    		id: parseInt($('.collaborator-select', this).val()),
 			    		role: $('.roles-list', this).val()
 			    	};
+			    	console.log('role: '+ $('.roles-list', this).val());
 			    	collaborators.push(new_collaborator);
 			    }else{
 			    	var new_collaborator = {
-			    		id: $('.name', this).attr('userid'),
+			    		id: parseInt($('.name', this).attr('userid')),
 			    		role: $('.roles', this).text()
 			    	};
+
+			    	console.log('role: '+ $('.roles', this).text());
 			    	collaborators.push(new_collaborator);
 			    }
 	    	});
+
 
 
 	    	this.model.set({
@@ -156,7 +162,6 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 	    		description: $('.description', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
 	    		sources: sources,
 	    		collaborators: collaborators
-
 	    	});
 
 	    	var that = this;
@@ -181,13 +186,7 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 		                $('.collections-list-el').append(new_view.render().el);
 
 		                that = null;
-/*
-	    				var $cn = $('#collection-new').detach();
-	    				var $newWrapper = $('<div class="collection row-fluid"></div>');
-	    				$newWrapper.append($cn);
-	    				$('.collections-list-el').prepend($newWrapper);
-	    				$('#collection-new').attr('id', 'collection-'+model.get('_id'));
-	    				*/
+
 	    				//remove disabling from Add Collection button
 	    				$('#main .add').removeClass('disabled');
 	    			}

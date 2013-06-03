@@ -12,6 +12,8 @@ define([
     'views/insightview',
     'collections/insights',
     'views/insightsview',
+    'models/collection',
+    'views/collectionview',
     'collections/collections',
     'views/collectionsview',
     'models/collection',
@@ -20,7 +22,7 @@ define([
     'collections/users',
     'views/usersview'
 ],
-function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
+function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
 
 	
 	var Alchemy = {
@@ -189,6 +191,24 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 						});
                     }
 	                	
+                }
+            });
+        },
+
+        renderCollection: function(_id){
+            console.log('Alchemy.js::renderCollection()');
+            var collection = new Collection({
+                _id: _id
+            });
+            collection.fetch({
+                success: function(model){
+                    var collection_view = new CollectionView({
+                        model: model,
+                        el: '#collection-el'
+                    });
+
+                    console.log('about to call render collection_view');
+                    collection_view.render();
                 }
             });
         },

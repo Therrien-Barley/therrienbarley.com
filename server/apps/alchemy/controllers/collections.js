@@ -29,9 +29,10 @@ exports.get = function(req, res, id){
     id = id || null;
 
     if(id == null){//get all collections for the user
+        console.log('apparently, id == null');
 
         if(req.user.collections){
-            if(req.user.collections.indexOf('all') >= 0){//get all collections
+            if(req.user.role == 'admin'){//get all collections
                 db.collection(col, function(err, collection) {
                     collection.find().limit(GET_LIMIT).sort('updated').toArray(function(err, items) {
                         if (err) {
@@ -44,15 +45,16 @@ exports.get = function(req, res, id){
                         }
                     });
                 });
-            }else{
+            }else{//not admin
+                console.log('return all collections for NON ADMIN');
                 db.collection(col, function(err, collection) {
-                    collection.find({ title: { $in: req.user.collections } }).limit(GET_LIMIT).sort('title').toArray(function(err, items) {
+                    collection.find({$or: [{ creator: req.user.id }, { "collaborators.id": req.user.id }]}).limit(GET_LIMIT).sort('title').toArray(function(err, items) {
                         if (err) {
                             console.log('error: collections.js::get() in user collections');
                             console.log(err);
                             res.send(500, 'Error: attempting to get user collections with message: '+ err);
                         } else {
-                            console.log('Success: got user collections');
+                            console.log('Success: got user collections, totalling: '+items.length);
                             res.json(200, items);
                         }
                     });
@@ -61,6 +63,28 @@ exports.get = function(req, res, id){
         }else{//user has no collections
             res.json(404, null);
         }
+    }else{
+        console.log('collections.js::get() with an id');
+        if(req.user.collections){
+            if(eq.user.role == 'admin'){//get all collections
+                console.log('user has all, so make it happen');
+                db.collection(col, function(err, collection) {
+                    collection.findOne({ '_id': new ObjectID(id) }, function(err, collect) {
+                        if (err) {
+                            console.log('error: collections.js::get()');
+                            console.log(err);
+                            res.send(500, 'Error: attempting to get a collections with message: '+ err);
+                        } else {
+                            console.log('Success: got the collection');
+                            res.json(200, collect);
+                        }
+                    });
+                });
+            }
+        }else{
+            res.json(404, 'Error: req.user.collections not present');
+        }
+
     }
 }//end get
 

@@ -31,22 +31,18 @@ exports.get = function(req, res, id){
 
     if(id == null){//get all users
         if(req.user){
-            if(req.user.role == 'admin'){
-                db.collection(col, function(err, collection) {
-                    collection.find().limit(GET_LIMIT).sort('id').toArray(function(err, items) {
-                        if (err) {
-                            console.log('error: users.js::get()');
-                            console.log(err);
-                            res.send(500, 'Error: attempting to get all users with message: '+ err);
-                        } else {
-                            console.log('Success: got all users');
-                            res.json(200, items);
-                        }
-                    });
+            db.collection(col, function(err, collection) {
+                collection.find().limit(GET_LIMIT).sort('id').toArray(function(err, items) {
+                    if (err) {
+                        console.log('error: users.js::get()');
+                        console.log(err);
+                        res.send(500, 'Error: attempting to get all users with message: '+ err);
+                    } else {
+                        console.log('Success: got all users');
+                        res.json(200, items);
+                    }
                 });
-            }else{
-                res.send(404, "Forbidden: you are not admin users.js");
-            }
+            });
         }else{
             res.send(404, "Forbidden: no req.user users.js");
         }

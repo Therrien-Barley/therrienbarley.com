@@ -21,7 +21,7 @@ function(Backbone, CollectionView, template, Collections) {
 		    if(vars._collectionViewEl){
 		    	this._collectionViewEl = vars._collectionViewEl;
 		    }else{
-		    	_collectionViewEl = '.collections-list-el';
+		    	this._collectionViewEl = '.collections-list-el';
 		    }
 
 		    _.each(this.collection.models, function(model, index){

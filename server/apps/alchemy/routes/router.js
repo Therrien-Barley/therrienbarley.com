@@ -144,6 +144,12 @@ exports.get = function(req, res){
 					user: req.user
 				});
 				break;
+			case 'collection':
+				res.render('collections/stream', { 
+					title: 'Therrien–Barley Insights',
+					user: req.user
+				});
+				break;
 			case 'users':
 				res.render('users', { 
 					title: 'Therrien–Barley Insights',
@@ -158,7 +164,7 @@ exports.get = function(req, res){
 						users.get(req, res, url_array[4]);
 						break;
 					case 'collection':
-						collections.get(req, res);
+						collections.get(req, res, url_array[4]);
 						break;
 					case 'user':
 						users.get(req, res);
