@@ -105,6 +105,7 @@ function($, TAXONOMIES) {
 		}
 
 		function verticallyCenterNav(){
+			console.log('verticallyCenterNav()');
 			var nav_height = 0;
 
 			$('#nav .menu').each(function(i){
@@ -118,6 +119,9 @@ function($, TAXONOMIES) {
 				var vertical_padding = (window.innerHeight - nav_height) / 2;
 				$('#nav').css('paddingTop', vertical_padding);
 			}
+
+			console.log('nav_height: '+ nav_height);
+			console.log('vertical_padding: '+ vertical_padding);
 			$('#nav').css('opacity', 1);
 		}
 

@@ -23,10 +23,13 @@ db.open(function(err, db) {
   }
 });
 
-exports.get = function(req, res, id){
-    console.log('collections.js::get(id) with id: '+id+' and req.user.username: '+req.user.username);
-
-    id = id || null;
+exports.get = function(req, res){
+    console.log('collections.js::get(id) with id: '+req.query._id+' and req.user.username: '+req.user.username);
+    var id = null;
+    if(typeof req.query._id !== 'undefined'){
+        console.log('********* NOT NULL********');
+        id = req.query._id;
+    }
 
     if(id == null){//get all collections for the user
         console.log('apparently, id == null');
@@ -66,7 +69,7 @@ exports.get = function(req, res, id){
     }else{
         console.log('collections.js::get() with an id');
         if(req.user.collections){
-            if(eq.user.role == 'admin'){//get all collections
+            if(req.user.role == 'admin'){//get all collections
                 console.log('user has all, so make it happen');
                 db.collection(col, function(err, collection) {
                     collection.findOne({ '_id': new ObjectID(id) }, function(err, collect) {

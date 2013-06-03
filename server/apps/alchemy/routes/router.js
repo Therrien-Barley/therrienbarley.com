@@ -5,6 +5,7 @@ var insights = require('../controllers/insights');
 var fragments = require('../controllers/fragments');
 var collections = require('../controllers/collections');
 var users = require('../controllers/users');
+var url = require('url');
 
 
 //url_array[1] is insights
@@ -122,16 +123,19 @@ exports.post = function(req, res){
 
 exports.get = function(req, res){
 	
-	console.log('insightairroute()');
-	console.log(req.url);
-	var url_array = req.url.split('/');//gets rid of the preceding empty string
+	console.log('alchemy::route()');
+	var url_parts = url.parse(req.url, true);
+	console.dir(url_parts);
+	var url_array = url_parts.pathname.split('/');//gets rid of the preceding empty string
 	console.dir(url_array);
+
 
 	var uid = req.params.uid;
 
 	console.log('the UID: '+ uid);
 
 	console.log('req.user.id: '+ req.user.id);
+	console.log('');console.log('');console.log('');
 
 
 
@@ -145,9 +149,10 @@ exports.get = function(req, res){
 				});
 				break;
 			case 'collection':
-				res.render('collections/stream', { 
+				res.render('collection/content', { 
 					title: 'Therrien–Barley Insights',
-					user: req.user
+					user: req.user,
+					collection: url_array[3]
 				});
 				break;
 			case 'users':
@@ -158,13 +163,15 @@ exports.get = function(req, res){
 				break;
 			case 'api':
 				console.log('--->api');
+				console.log('url_array[3]: '+ url_array[3]);
 
 				switch(url_array[3]){
 					case 'user':
 						users.get(req, res, url_array[4]);
 						break;
 					case 'collection':
-						collections.get(req, res, url_array[4]);
+						console.log('collections.get(req, res)');
+						collections.get(req, res);
 						break;
 					case 'user':
 						users.get(req, res);

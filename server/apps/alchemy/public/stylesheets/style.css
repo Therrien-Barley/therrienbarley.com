@@ -324,10 +324,7 @@ h1{
 
 #nav .menu{
 	padding:20px 0;
-}
-
-#nav .menu .menu-option{
-	display: none;
+	margin-bottom:40px;
 }
 
 #nav .menu.open .menu-option,
@@ -351,7 +348,7 @@ h1{
 	border:none;
 }
 
-#nav .menu.open,
+#nav .menu,
 #nav .menu.active-trail{
 	opacity:0.85;
 	background-color:white;

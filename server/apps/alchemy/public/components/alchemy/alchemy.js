@@ -1,8 +1,8 @@
 define([
-	'jquery',
-	'underscore',
-	'backbone',
-	'jquery-masonry',
+    'jquery',
+    'underscore',
+    'backbone',
+    'jquery-masonry',
     'globals',
     'collections/fragments',
     'views/fragmentsview',
@@ -13,7 +13,7 @@ define([
     'collections/insights',
     'views/insightsview',
     'models/collection',
-    'views/collectionview',
+    'views/collectionstreamview',
     'collections/collections',
     'views/collectionsview',
     'models/collection',
@@ -22,12 +22,12 @@ define([
     'collections/users',
     'views/usersview'
 ],
-function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
+function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionStreamView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
 
-	
-	var Alchemy = {
+    
+    var Alchemy = {
 
-		data: {},//used to de-scope (to pass values between functions) and persist
+        data: {},//used to de-scope (to pass values between functions) and persist
 
         init: function(){
             console.log('alchemy.js::init()');
@@ -66,10 +66,10 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 
         },
 
-		//renders a single tumblr post into the #overlay div
-		getTumblrPost: function(id){
-			var _this = this;
-			_this.data.tumblr_post = new TumblrPost({ id: id });
+        //renders a single tumblr post into the #overlay div
+        getTumblrPost: function(id){
+            var _this = this;
+            _this.data.tumblr_post = new TumblrPost({ id: id });
             _this.data.tumblr_post.fetch({
                 success: function(model, response, options){
 
@@ -98,7 +98,7 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
                 }
             });
 
-		},
+        },
 
         createInsight: function(){
             var insight = new Insight({
@@ -158,12 +158,12 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 
         },
 
-		renderFragments: function(fragmentType, tag){
+        renderFragments: function(fragmentType, tag){
             console.log('renderFragments with type: '+ fragmentType+ ' and tag: '+ tag);
             console.dir(tag);
 
-			var _this = this;
-			_this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
+            var _this = this;
+            _this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
             _this.data.fragments.fetch({
                 success: function(collection, response, options){
 
@@ -186,23 +186,22 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
                             gutterWidth:17
                         });
 
-						$container.imagesLoaded( function(){
-						  	$container.masonry();
-						});
+                        $container.imagesLoaded( function(){
+                            $container.masonry();
+                        });
                     }
-	                	
+                        
                 }
             });
         },
 
         renderCollection: function(_id){
             console.log('Alchemy.js::renderCollection()');
-            var collection = new Collection({
-                _id: _id
-            });
+            var collection = new Collection();
             collection.fetch({
+                data: $.param({ _id: _id}),
                 success: function(model){
-                    var collection_view = new CollectionView({
+                    var collection_view = new CollectionStreamView({
                         model: model,
                         el: '#collection-el'
                     });

@@ -20,8 +20,18 @@
 			</ul>
 		</div>
 	<% } %>
-	<% if(typeof collections !== 'undefined'){ %>
-
+	<% if(typeof collection !== 'undefined'){ %>
+		<div id="collection-nav" class="menu row-fluid open">
+			<ul>
+				<li class="menu-header">Collection</li>
+				<li class="menu-option collection-content" value="collection-content"><a>Content</a></li>
+				<li class="menu-option collection-elements" value="collection-elements"><a>Elements</a></li>
+				<li class="menu-option collection-analytics" value="collection-analytics"><a>Analytics</a></li>
+				<li class="menu-option collection-annotations" value="collection-annotations"><a>Annotations</a></li>
+				<li class="menu-option collection-timelines" value="collection-timelines"><a>Timelines</a></li>
+				<li class="menu-option collection-search" value="collection-search"><a>Search</a></li>
+			</ul>
+		</div>
 	<% } %>
 	
 </div><!-- /#nav -->
