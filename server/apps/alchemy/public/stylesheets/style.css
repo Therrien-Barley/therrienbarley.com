@@ -135,6 +135,7 @@ blockquote{
 
 .delete,
 .deletesource,
+.deletecollaborator,
 .cancel,
 .save{
 	display: none !important;
@@ -142,6 +143,7 @@ blockquote{
 
 .edit-mode .delete,
 .edit-mode .deletesource,
+.edit-mode .deletecollaborator,
 .edit-mode .cancel,
 .edit-mode .save{
 	display:block !important;
@@ -159,12 +161,14 @@ blockquote{
 	position: relative;
 }
 
-.deletesource{
+.deletesource,
+.deletecollaborator{
 	padding:7px 0;
 	color:red;
 }
 
-.deletesource:hover{
+.deletesource:hover,
+.deletecollaborator:hover{
 	color:blue;
 	cursor: pointer;
 }
@@ -464,6 +468,27 @@ h1{
 	line-height: 1;
 }
 
+#intro-text{
+	opacity: 0;
+}
+
+#login-form{
+	text-align: center;
+	opacity: 0;
+}
+
+#login-form input{
+	width:100%;
+}
+
+#login-form #submit-button{
+	margin-top:20px;
+}
+
+.select-container select{
+	float:left;
+	width:100%;
+}
 
 #overlay{
 	position:absolute;

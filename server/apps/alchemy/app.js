@@ -195,7 +195,7 @@ function ensureAuthenticated(req, res, next) {
 
 //A.I.R. 2.0
 app.get('/', function(req, res){
-  res.render('home', { title: 'Therrien–Barley Research'});
+  res.render('home', { title: 'Therrien–Barley Research', user: req.user });
 });
 
 app.get('/insights*', ensureAuthenticated, routes.get);

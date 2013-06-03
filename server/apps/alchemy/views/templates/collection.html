@@ -61,8 +61,8 @@
 			<% if(data.collaborators){ %>
 				<% for(var c = 0; c < data.collaborators.length; c++){ %>
 					<li class="row-fluid collaborator-container">
-						<div class="span2"><i class="icon-user" style="color:<%= data.collaborators[c].color %>;"></i></div>
-						<div class="name span9"><%= data.collaborators[c].name %></div>
+						<div class="span2"><i class="icon-user" style="color:black;"></i></div>
+						<div class="name span9" userid="<%= data.collaborators[c].id %>"><%= users[data.collaborators[c].id].name %></div>
 						<div class="role span4"><%= data.collaborators[c].role %></div>
 						<div class="span1 deletecollaborator"><i class="icon-remove"></i></div>
 					</li>

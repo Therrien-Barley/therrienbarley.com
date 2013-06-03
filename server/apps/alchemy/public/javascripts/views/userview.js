@@ -119,6 +119,7 @@ function(Backbone, template, TAXONOMIES, User) {
 		render: function(){
 			//use Underscore template, pass it the attributes from this model
 
+			console.log('userview::render()');
 			var attributes = this.model.attributes;
 
 			var attr = {

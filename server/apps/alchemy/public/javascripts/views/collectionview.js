@@ -1,10 +1,11 @@
 define([
 	'backbone',
+	'globals',
 	'text!../../../views/templates/collection.html',
 	'taxonomies',
 	'models/collection'
 ],
-function(Backbone, template, TAXONOMIES, Collection) {
+function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 
 	var CollectionView = Backbone.View.extend({
 	    className: 'collection row-fluid',
@@ -18,7 +19,9 @@ function(Backbone, template, TAXONOMIES, Collection) {
 	    	'click .addsource': 'addSource',
 	    	'click .deletesource': 'deleteSource',
 	    	'mouseenter .inner': 'showEditButton',
-	    	'mouseleave .inner': 'hideEditButton'
+	    	'mouseleave .inner': 'hideEditButton',
+	    	'click .addcollaborator': 'addCollaborator',
+	    	'click .deletecollaborator': 'deleteCollaborator'
 	    },
 
 	    showEditButton: function(){
@@ -35,12 +38,36 @@ function(Backbone, template, TAXONOMIES, Collection) {
 	    	}	
 	    },
 
+	    deleteCollaborator: function(event){
+	    	console.log('deleteCollaborator()');
+	    	console.dir(event.target);
+	    	$(event.target).closest('.collaborator-container').remove();
+
+	    },
+
 	    addCollaborator: function(){
+	    	console.log('addcollaborator()');
+	    	var this_selector;
+	    	if(this.model.isNew()){
+	    		this_selector = '#collection-new';
+	    	}else{
+	    		this_selector = '#collection-'+this.model.get('_id');
+	    	}
 
-	    	var name_array;
-	    	var names = '';
 
-	    	var html = '<li class="row-fluid collaborator-container"><div class="span2"><i class="icon-user" style="color:black;"></i></div><div class="name span9">'+names+'</div><div class="role span4"><select class="roles-list"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div><div class="span1 deletecollaborator"><i class="icon-remove"></i></div></li>;'
+	    	var $names_select = $('<div><select class="collaborator-select"></select></div>');//wrap in div b/c .html() will strip the outer
+
+	    	_.each(GLOBAL.USERS.models, function(model){
+	    		if( (model.get('id') != GLOBAL.SELF.get('id')) && (model.get('username') != 'admin') ){//don't include self
+		    		var $option = $('<option value="'+ model.get("id") +'">'+ model.get("name")+'</option>');
+		    		$names_select.find('select').append( $option );
+		    	}
+	    	});
+
+
+	    	var html = '<li class="row-fluid collaborator-container new"><div class="span2"><i class="icon-user" style="color:black;"></i></div><div class="name span9 select-container">'+ $names_select.html() +'</div><div class="role span4 select-container"><select class="roles-list"><option value="editor">Editor</option><option value="viewer">Viewer</option></select></div><div class="span1 deletecollaborator"><i class="icon-remove"></i></div></li>';
+
+	    	$('.collaborators', this_selector).append(html);
 	    },
 
 	    addSource: function(){
@@ -105,11 +132,30 @@ function(Backbone, template, TAXONOMIES, Collection) {
 		    	sources.push(new_source);
 	    	});
 
+	    	var collaborators = [];
+
+	    	$('.collaborator-container', this_selector).each(function(i){
+	    		if($(this).hasClass('new')){
+		    		var new_collaborator = {
+			    		id: $('.collaborator-select', this).val(),
+			    		role: $('.roles-list', this).val()
+			    	};
+			    	collaborators.push(new_collaborator);
+			    }else{
+			    	var new_collaborator = {
+			    		id: $('.name', this).attr('userid'),
+			    		role: $('.roles', this).text()
+			    	};
+			    	collaborators.push(new_collaborator);
+			    }
+	    	});
+
 
 	    	this.model.set({
 	    		title: $('.title', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
 	    		description: $('.description', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
-	    		sources: sources
+	    		sources: sources,
+	    		collaborators: collaborators
 
 	    	});
 
@@ -171,8 +217,21 @@ function(Backbone, template, TAXONOMIES, Collection) {
 
 			var attributes = this.model.attributes;
 
+			
+
+			var users = [];
+
+			_.each(GLOBAL.USERS.models, function(model, i){
+				users[model.id] = model.attributes;
+			});
+
+			console.log('&& users: ');
+			console.dir(users);
+
+
 			var attr = {
-				data: attributes
+				data: attributes,
+				users: users
 			};
 
 			var content = _.template(this.template, attr);

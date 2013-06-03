@@ -43,8 +43,12 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
                 case 'collections':
                     Alchemy.renderCollections();
                     break;
+                case 'users':
+                    Alchemy.renderUsers();
+                    break;
             }
             break;
+
     }
 /*
 

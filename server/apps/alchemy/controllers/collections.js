@@ -96,7 +96,8 @@ exports.update = function(req, res, _id){
         updated: timestamp,
         editors: req.body.editors,
         viewers: req.body.viewers,
-        sources: req.body.sources
+        sources: req.body.sources,
+        collaborators: req.body.collaborators
     };
 
     db.collection(col, function(err, collection) {
@@ -136,7 +137,8 @@ exports.create = function(req, res){
         status: 'private',
         editors: [],
         viewers: [],
-        sources: []
+        sources: [],
+        collaborators: []
     };
 
     console.dir(new_collection);

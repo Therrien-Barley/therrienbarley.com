@@ -3,6 +3,7 @@ define([
 	'underscore',
 	'backbone',
 	'jquery-masonry',
+    'globals',
     'collections/fragments',
     'views/fragmentsview',
     'models/tumblrpost',
@@ -14,9 +15,12 @@ define([
     'collections/collections',
     'views/collectionsview',
     'models/collection',
-    'views/collectionview'
+    'views/collectionview',
+    'models/user',
+    'collections/users',
+    'views/usersview'
 ],
-function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collections, CollectionsView, Collection, CollectionView) {
+function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView) {
 
 	
 	var Alchemy = {
@@ -26,6 +30,10 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
         init: function(){
             console.log('alchemy.js::init()');
             var that = this;
+
+            //populate the GLOBAL.USERS collection and GLOBAL.SELF model
+            this.getUsers();
+            this.getSelf();
 
             //@todo: later, do this with the insights collection (fetch at site load) and a new InsightsMenuView
             $.ajax({
@@ -186,7 +194,7 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
         },
 
         renderCollections: function(){
-            console.log('Alchemy.js::renderInsights()');
+            console.log('Alchemy.js::renderCollections()');
             var collections = new Collections();
             collections.fetch({
                 success: function(collection, response, options){
@@ -221,7 +229,65 @@ function($, _, Backbone, masonry, Fragments, FragmentsView, TumblrPost, TumblrPo
 
 
             });
-        }
+        },
+
+        getSelf: function(){
+            GLOBAL.SELF = new User({
+                isSelf: true
+            });
+
+            console.log("SELF ROOT: "+ GLOBAL.SELF.urlRoot);
+            GLOBAL.SELF.fetch({
+                success: function(model){
+                    console.log('*** SELF!');
+                    console.dir(model);
+                }
+            });
+        },
+
+        getUsers: function(){
+            GLOBAL.USERS = new Users();
+            GLOBAL.USERS.fetch();
+        },
+
+        renderUsers: function(){
+            //@todo: just use GLOBAL.users, but make sure it's fresh
+            console.log('Alchemy.js::renderUsers()');
+            var users = new Users();
+            users.fetch({
+                success: function(collection, response, options){
+                    var users_view = new UsersView({
+                        collection: collection,
+                        el: '#users-el',
+                        _userViewEl: '.users-list-el'
+                    });
+
+                    users_view.render();
+                }
+            });
+
+            $('#main .add').click(function(event){
+                
+                if(!$(this).hasClass('disabled')){
+                    console.log('clicked add');
+                    $(this).addClass('disabled');
+
+                    var user = new User();
+
+                    var user_view = new UserView({
+                        model: collection,
+                        el: '#new-users-el'
+                    });
+
+                    if(typeof user_view.render() !== 'undefined'){
+                        $('#new-users-el #user-new').addClass('edit-mode new');
+                        $('#new-users-el #user-new .editable').attr('contenteditable', 'true');
+                    }
+                }
+
+
+            });
+        },
 
 
     };//end Alchemy

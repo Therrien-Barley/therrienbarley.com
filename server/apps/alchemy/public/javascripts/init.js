@@ -54,6 +54,9 @@ function($, TAXONOMIES) {
 						break;
 				}
 				break;
+			case 'login':
+				$('#user-nav').addClass('active-trail').find('li.user-login a').addClass('active');
+				break;
 			case 'insights':
 				switch(path_array[2]){
 					case 'collections':
@@ -61,6 +64,9 @@ function($, TAXONOMIES) {
 						break;
 					case 'user':
 						$('#user-nav').addClass('active-trail').find('li.user-account a').addClass('active');
+						break;
+					case 'users':
+						$('#user-nav').addClass('active-trail').find('li.user-users a').addClass('active');
 						break;
 					case 'admin':
 						$('#user-nav').addClass('active-trail').find('li.user-admin a').addClass('active');
@@ -85,7 +91,18 @@ function($, TAXONOMIES) {
 				break;
 		}
 
-		
+		function verticallyCenter(selector){
+			console.log('verticallyCenter('+selector+')')
+			if($(selector).length > 0){
+				var it_height = $(selector).height();
+
+				if(window.innerHeight > it_height){
+					var vertical_padding = (window.innerHeight - parseInt($('#main').css('marginTop')) - it_height) / 2;
+					$(selector).css('paddingTop', vertical_padding);
+				}
+				$(selector).css('opacity', 1);
+			}
+		}
 
 		function verticallyCenterNav(){
 			var nav_height = 0;
@@ -103,8 +120,14 @@ function($, TAXONOMIES) {
 			}
 			$('#nav').css('opacity', 1);
 		}
-		verticallyCenterNav();
 
+		function resizeFunc(){
+			verticallyCenter('#intro-text');
+			verticallyCenter('#login-form');
+			verticallyCenterNav();
+		}
+
+		resizeFunc();
 
 
 
@@ -140,7 +163,7 @@ function($, TAXONOMIES) {
 		});
 
 
-		$(window).resize(verticallyCenterNav);
+		$(window).resize(resizeFunc);
 
 	/*
 		$('#mechanics .menu a').click(function(event){
