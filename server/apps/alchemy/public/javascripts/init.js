@@ -62,6 +62,13 @@ function($, TAXONOMIES) {
 					case 'collections':
 						$('#user-nav').addClass('active-trail').find('li.user-collections a').addClass('active');
 						break;
+					case 'collection':
+						switch(path_array[4]){
+							case 'content':
+								$('#collection-nav').addClass('active-trail').find('li.collection-content a').addClass('active');
+								break;
+						}
+						break;
 					case 'user':
 						$('#user-nav').addClass('active-trail').find('li.user-account a').addClass('active');
 						break;

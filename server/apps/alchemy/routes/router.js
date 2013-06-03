@@ -149,11 +149,15 @@ exports.get = function(req, res){
 				});
 				break;
 			case 'collection':
-				res.render('collection/content', { 
-					title: 'Therrien–Barley Insights',
-					user: req.user,
-					collection: url_array[3]
-				});
+				switch(url_array[4]){
+					case 'content':
+						res.render('collection/content', { 
+							title: 'Therrien–Barley Insights',
+							user: req.user,
+							collection: url_array[3]
+						});
+						break;
+				}
 				break;
 			case 'users':
 				res.render('users', { 
