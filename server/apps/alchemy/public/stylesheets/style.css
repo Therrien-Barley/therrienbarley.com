@@ -37,6 +37,16 @@ blockquote{
 	border-left: 5px solid blue;
 }
 
+.source-link{
+	font-family: Monaco, monospace;
+	font-size:11px;
+	margin:0;
+	padding:0;
+	color:black;
+	border:none !important;
+	text-decoration: none !important;
+}
+
 .pagetitle{
 	color:black;
 	text-align: center;
@@ -951,3 +961,67 @@ h1{
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=7, Direction=0, Color='#AAAAAA');
 }
 
+
+
+/* STREAM */
+.element{
+	margin-bottom:100px;
+	word-break: break-word;
+}
+
+.element a{
+	text-decoration: none !important;
+	border-bottom:1px dotted;
+}
+.element a:hover{
+	border:none;
+}
+.element .photos{
+	list-style: none;
+}
+
+.element .photos .photo{
+	margin-bottom:10px;
+}
+
+.element .left-col img,
+.element .left-col iframe,
+.element .left-col object{
+	margin-bottom:10px;
+	max-width: 100%;
+	height: auto;
+}
+
+.element .right-col img,
+.element .right-col iframe,
+.element .right-col object{
+	width:80%;
+	margin-right:20%;
+	text-align: left;
+	height:auto;
+	margin-bottom:7px;
+}
+
+.element .tags{
+	font-family:Monaco, monospace;
+	font-size:11px;
+	margin-top:10px;
+}
+
+.element .annotations{/*pale blue 153, 153, 255*/
+	height:100%;
+	background-image: linear-gradient(left , rgb(255,255,0) 6%, rgb(245, 245, 245) 90%, rgb(245, 245, 245) 100%);
+	background-image: -o-linear-gradient(left , rgb(255,255,0) 6%, rgb(245, 245, 245) 90%, rgb(245, 245, 245) 100%);
+	background-image: -moz-linear-gradient(left , rgb(255,255,0) 6%, rgb(245, 245, 245) 90%, rgb(245, 245, 245) 100%);
+	background-image: -webkit-linear-gradient(left , rgb(255,255,0) 6%, rgb(245, 245, 245) 90%, rgb(245, 245, 245) 100%);
+	background-image: -ms-linear-gradient(left , rgb(255,255,0) 6%, rgb(245, 245, 245) 90%, rgb(245, 245, 245) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		right bottom,
+		color-stop(0.06, rgb(255,255,0)),
+		color-stop(0.9, rgb(245, 245, 245)),
+		color-stop(1, rgb(245, 245, 245))
+	);
+}

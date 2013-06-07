@@ -721,5 +721,12 @@ h1{
 	color:blue;
 }
 
+.fragment-quote-wrapper .fragment-feature,
+.fragment-quote-wrapper .fragment-delete{
+	display: none;
+}
 
+.insight .insight-menu-icon{
+	display: none;
+}
 

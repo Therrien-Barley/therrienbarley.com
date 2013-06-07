@@ -13,7 +13,7 @@ var server = new Server('localhost', 27017, {auto_reconnect: true});
 var db = new Db('insights', server, {safe:false});
 var col = 'collections';
 
-var GET_LIMIT = 100;
+var GET_LIMIT = 40;
 
 db.open(function(err, db) {
 	if(!err) {
@@ -117,7 +117,7 @@ exports.getElements = function(req, res){
                 }
                 if( (req.user.role == 'admin') || flag == true){
                     db.collection( collect.database_collection, function(err, collection_two){
-                        collection_two.find().limit(GET_LIMIT).sort('timestamp').toArray(function(err, elements){
+                        collection_two.find().limit(GET_LIMIT).sort({'timestamp': -1}).toArray(function(err, elements){
                             res.json(200, elements);
                         });
                     });

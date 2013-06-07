@@ -28,8 +28,9 @@ db.open(function(err, db) {
 });
 
 var SEGMENTS = ['topten', 'toptwenty', 'other'];
+var FRAGMENTS = ['quotes', 'images', 'titles'];
 
-exports.get = function(req, res, designator){
+exports.get = function(req, res, designator, term){
     var designator = designator || false;
     console.log('fragments.js::get() with designator: '+ designator);
 
@@ -67,9 +68,32 @@ exports.get = function(req, res, designator){
                 }
             });
         });
+    }else if(FRAGMENTS.indexOf(designator) > -1){
+        if(designator == 'quotes'){ designator = 'quote'; }
+        if(designator == 'images'){ designator = 'image'; }
+        if(designator == 'titles'){ designator = 'title'; }
+console.log('');
+        console.log('**** term: ');
+        console.log(term);
+        console.log('');
+
+        db.collection(col, function(err, collection) {
+            collection.find({ type : designator, tags: term}).limit(GET_LIMIT).sort('order').toArray(function(err, items) {
+                if (err) {
+                    console.log('error: fragments.js::create()');
+                    console.log(err);
+                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
+                } else {
+                    console.dir(items[0]);
+                    console.log('Success: got fragment');
+                    res.json(200, items);
+                }
+            });
+        });
     }else{
         //get single project by _id
         db.collection(col, function(err, collection) {
+            console.log('designator: '+ designator);
             collection.find({'_id': new ObjectID(designator) }).limit(GET_LIMIT).toArray(function(err, items) {
                 if (err) {
                     console.log('error: fragments.js::create()');

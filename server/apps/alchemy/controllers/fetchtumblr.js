@@ -528,6 +528,7 @@ function fetchTumblr(limit, offset, req, res, col){
 			for(var i = 0; i < fetched_posts; i++){
 
 				var post = json.posts[i];
+				json.posts[i].input_type = "tumblr";
 
 				//align _id with tumblr id
 				json.posts[i].bson_id = json.posts[i].id

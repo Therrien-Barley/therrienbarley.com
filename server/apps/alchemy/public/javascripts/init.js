@@ -176,6 +176,7 @@ function($, TAXONOMIES) {
 
 		$(window).resize(resizeFunc);
 
+
 	/*
 		$('#mechanics .menu a').click(function(event){
 			console.log('clicked');

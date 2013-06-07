@@ -47,6 +47,8 @@ function(Backbone, ElementView, template, Elements) {
 			_.each(that._elementViews, function(elementView) {
 		    	$(that._elementViewEl).append(elementView.render().el);
 		    });
+
+		    $('.element').each(function(){ $('.annotations', this).height($(this).height()) } );
 		 
 		    return true;
 		}

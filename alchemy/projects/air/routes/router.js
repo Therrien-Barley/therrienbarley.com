@@ -122,7 +122,8 @@ exports.insightairget = function(req, res){
 							fragments.get(req, res);
 						}else{
 							console.log('calling tumblr.getFragments() with : '+ url_array[5]);
-							fragments.get(req, res, url_array[5]);
+
+							fragments.get(req, res, url_array[5], url_array[6]);
 						}	
 						break;
 					case 'fragment':

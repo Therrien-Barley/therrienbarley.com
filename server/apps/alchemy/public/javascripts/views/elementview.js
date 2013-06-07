@@ -2,9 +2,10 @@ define([
 	'backbone',
 	'text!../../../views/templates/element.html',
 	'taxonomies',
-	'models/element'
+	'models/element',
+	'text!../../../views/templates/elementtumblr.html',
 ],
-function(Backbone, template, TAXONOMIES, Element) {
+function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 	var ElementView = Backbone.View.extend({
 	    className: 'element',
@@ -118,6 +119,16 @@ function(Backbone, template, TAXONOMIES, Element) {
 
 		render: function(){
 			//use Underscore template, pass it the attributes from this model
+			/*
+			switch(this.model.get('input_type')){
+				case 'tumblr':
+					this.template = templateTumblr;
+					break;
+				default:
+					this.template = templateTumblr;
+					break;
+			}*/
+			this.template = templateTumblr;
 
 			console.log('element::render()');
 			var attributes = this.model.attributes;

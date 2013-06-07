@@ -1,5 +1,5 @@
-<div class="fragment-container <%= data.category %>">
-	<% if(typeof data.insight_id != "undefined"){ %><i class="fragment-feature icon-plus"></i><i class="fragment-delete icon-remove"></i><% }else{ %><i class="icon-idea-alt insight-menu-icon"></i><% } %>
+<div id="insight-<%= data.insight_id %>" class="fragment-container <%= data.category %>">
+	<i class="fragment-feature icon-plus"></i><i class="fragment-delete icon-remove"></i><i class="icon-idea-alt insight-menu-icon"></i>
 	<% if(data.type == "image"){ %>
 		<img src="<%= data.content %>" width="250px">
 	<% }else if(data.type == 'quote'){ %>
