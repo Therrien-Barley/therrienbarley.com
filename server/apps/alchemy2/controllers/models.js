@@ -32,8 +32,14 @@ var CollectionSchema = new Schema({
     description: String,
     updated_by: String,
     creator: String,
-    sources: [Schema.Types.Mixed],
-    collaborators: [Schema.Types.Mixed],
+    sources: {
+        type: Array,
+        'default': []
+    },
+    collaborators: {
+        type: Array,
+        'default': []
+    },
     visibility: String,
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }

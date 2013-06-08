@@ -35,9 +35,6 @@
 				<h5 class="span4">tag</h5>
 			</li>
 			<% if(data.sources){ %>
-				<%- console.log('********, length: ') %>
-				<%= console.dir( data.sources.length) %>
-				<%= console.dir( data.sources[0]) %>
 				<% for(var s = 0; s < data.sources.length; s++){ %>
 					<li class="row-fluid source-container">
 						<ul class="source-type-menu span2">
@@ -64,6 +61,9 @@
 				<h5 class="span4">role</h5>
 			</li>
 			<% if(data.collaborators){ %>
+				<%- console.log('********, users then collaborators: ') %>
+				<%= console.dir( users ) %>
+				<%= console.dir( data.collaborators) %>
 				<% for(var c = 0; c < data.collaborators.length; c++){ %>
 					<li class="row-fluid collaborator-container">
 						<div class="span2"><i class="icon-user" style="color:black;"></i></div>

@@ -144,7 +144,7 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 	    	$('.collaborator-container', this_selector).each(function(i){
 	    		if($(this).hasClass('new')){
 		    		var new_collaborator = {
-			    		id: parseInt($('.collaborator-select', this).val()),
+			    		id: $('.collaborator-select', this).val(),
 			    		role: $('.roles-list', this).val()
 			    	};
 			    	console.log('collaborator._id: '+ $('.collaborator-select', this).val());
@@ -152,8 +152,8 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 			    	collaborators.push(new_collaborator);
 			    }else{
 			    	var new_collaborator = {
-			    		id: parseInt($('.name', this).attr('userid')),
-			    		role: $('.roles', this).text()
+			    		id: $('.name', this).attr('userid'),
+			    		role: $('.role', this).text()
 			    	};
 
 			    	console.log('role: '+ $('.roles', this).text());
@@ -161,8 +161,8 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 			    }
 	    	});
 
-	    	console.log('sources!!!!!!!');
-	    	console.dir(sources);
+	    	console.log('collaborators!!!!!!!');
+	    	console.dir(collaborators);
 
 	    	this.model.set({
 	    		title: $('.title', this_selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,""),
@@ -232,14 +232,16 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 				users[model.get("_id")] = model.attributes;
 			});
 
-			console.log('&& users: ');
-			console.dir(users);
+			
 
 
 			var attr = {
 				data: attributes,
 				users: users
 			};
+
+			console.log('render with && attr: ');
+			console.dir(attr);
 
 			var content = _.template(this.template, attr);
 			$(this.el).html(content);

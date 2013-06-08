@@ -18,8 +18,8 @@ var GET_LIMIT = 40;
 exports.create = function(req, res){
     console.log('collections.js::create()');
 
-    console.log('sources: ');
-    console.dir(req.body.sources);
+    console.log('collaborators: ');
+    console.dir(req.body.collaborators);
 
     var new_collection = new Collection({
         title: req.body.title,
@@ -27,10 +27,13 @@ exports.create = function(req, res){
         creator: req.user.id,
         updated_by: req.user.id,
         visibility: 'private',
-        sources: req.body.sources,
         collaborators: req.body.collaborators,
         database_collection_name: req.body.title+'_'+Math.floor(Math.random()*100000)
     });
+
+    for(var i = 0; i < req.body.sources.length; i++){
+        new_collection.sources.addToSet(req.body.sources[i]);
+    }
 
     new_collection
         .save(function(err){
@@ -49,16 +52,54 @@ exports.update = function(req, res, _id){
     console.log('collections.js::update() with _id: '+ _id);
     var timestamp_now = new Date().getTime();
 
-    console.log('sources: ');
-    console.dir(req.body.sources);
+    console.log('collaborators: ');
+    console.dir(req.body.collaborators);
 
+
+    Collection
+        .findById(_id, function(err, doc){
+            doc.title = req.body.title;
+            doc.description = req.body.description;
+            doc.updated_by = req.user.id;
+            doc.visibility = req.body.visibility;
+            doc.updated = timestamp_now;
+
+            for(var i = doc.sources.length-1; i >= 0; i--){
+                doc.sources.splice(i, 1);
+            }
+
+            for(var i = 0; i < req.body.sources.length; i++){
+                doc.sources.addToSet(req.body.sources[i]);
+            }
+
+            for(var i = doc.collaborators.length-1; i >= 0; i--){
+                doc.collaborators.splice(i, 1);
+            }
+
+            for(var i = 0; i < req.body.collaborators.length; i++){
+                doc.collaborators.addToSet(req.body.collaborators[i]);
+            }
+
+
+            
+
+            doc.save(function(err){
+                if(err){
+                    console.log('error: collections.js::create() with msg: '+ err);
+                    res.send(500, 'Error attempting to update collection with error message: '+ err);
+                }else{
+                    console.log('Success: updated collection');
+                    res.json(200);
+                }
+            });
+        });
+
+/*
     Collection
         .update({ 'id': _id }, {
             title: req.body.title,
             description: req.body.description,
             updated_by: req.user.id,
-            editors: req.body.editors,
-            viewers: req.body.viewers,
             sources: req.body.sources,
             collaborators: req.body.collaborators,
             visibility: req.body.visibility,
@@ -71,7 +112,7 @@ exports.update = function(req, res, _id){
                 console.log('Success: updated collection');
                 res.json(200);
             }
-    });//end Collection.update()
+    });//end Collection.update()*/
 
 }
 
