@@ -1025,3 +1025,29 @@ h1{
 		color-stop(1, rgb(245, 245, 245))
 	);
 }
+
+.element .annotations .note{
+	width:80%;
+	margin: 7px 0 0 3%;
+}
+
+.element .video-drag-wrapper iframe,
+.element .video-drag-wrapper object{
+	float:left;
+	margin-right:2%;
+}
+.element .video-drag-wrapper i{
+	float:left;
+	width:18%;
+}
+
+.element .left-col .video-drag-wrapper iframe,
+.element .left-col .video-drag-wrapper object{
+	float:left;
+	margin-right:2%;
+	width:90%;
+}
+.element .left-col .video-drag-wrapper i{
+	float:left;
+	width:8%;
+}

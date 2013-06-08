@@ -19,29 +19,65 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .delete': 'delete'
 	    },
 
-	   	initDraggable: function(){
+	   	initDraggableImages: function(){
 	   		console.log('initDraggable()');
 	   		var this_selector = '#element-'+this.model.get('_id');
-	   		console.log('this_selector: '+ this_selector);
-	   		console.log('selector works: '+ $(this_selector).length);
 
 	   		$('img', this_selector).each(function(i){
-	   			console.log('draggable image: '+ i + ' with src: '+ $(this).attr('src'));
-	   			$(this).draggable();
+	   			$(this).attr('type', 'img').draggable({
+	   				revert: true
+	   			});
 	   		});
 
+	   	},
+
+	   	initDraggableObjects: function(){
+	   		console.log('initDraggableObjects()');
+	   		var this_selector = '#element-'+this.model.get('_id');
+
+	   		$('object', this_selector).each(function(i){
+	   			$(this).attr('type', 'object').draggable({
+	   				revert: true
+	   			});
+	   		});
+
+	   	},
+
+	   	initDraggableIframes: function(){
+	   		console.log('initDraggableIframes()');
+	   		var this_selector = '#element-'+this.model.get('_id');
+
+	   		$('iframe', this_selector).each(function(i){
+	   			$(this).wrap('<div class="video-drag-wrapper" type="iframe">');
+	   			$(this).parent('.video-drag-wrapper').append('<i class="icon-move"></i>').draggable({
+	   				revert: true
+	   			});
+	   		});
+	   	},
+
+	   	initDroppable: function(){
+	   		var this_selector = '#element-'+this.model.get('_id');
 	   		$('.annotations', this_selector).droppable({
 	   			drop: function( event, ui ) {
-	   				console.log('');console.log('');
-	   				console.log('dropped!');
-	   				console.log('event');
-	   				console.dir(event);
-	   				console.log('ui');
-	   				console.dir(ui);
-					$( this )
-						.addClass( "ui-state-highlight" )
-						.text( "Dropped!" );
-					}
+
+	   				var $note;
+
+	   				switch($(ui.draggable.context).attr('type')){
+	   					case 'img':
+	   						console.log('image dropped');
+			   				$note = $('<img class="note">');
+	   						$note.attr('src', $(ui.draggable.context).attr('src'));
+	   						break;
+	   					case 'iframe':
+	   						console.log('iframe dropped');
+	   						$note = $('<iframe class="note" frameborder="0"></iframe>');
+		   					$note.attr('src', $(ui.draggable.context).find('iframe').attr('src'));
+	   						break;
+	   				}
+
+	   				$('.list', this).append( $note );
+
+				}
 	   		});
 	   	},
 
@@ -171,7 +207,10 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 			var that = this;
 			setTimeout(function(){
-				that.initDraggable();
+				that.initDraggableImages();
+				that.initDraggableObjects();
+				that.initDraggableIframes();
+				that.initDroppable();
 			}, 100);
 
 			
