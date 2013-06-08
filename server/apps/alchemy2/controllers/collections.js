@@ -261,7 +261,7 @@ exports.getElements = function(req, res){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 exports.sync = function(req, res){
-    var _id = '51ab71c4b3886afd0300000d';
+    var _id = '51b33d266e80adbc55000001';
 
     Collection
         .findOne({ _id: _id })
@@ -278,7 +278,12 @@ exports.sync = function(req, res){
             }
             if( (req.user.role == 'admin') || flag == true){
 
+                console.log('collect.sources: ');
+                console.dir(collect.sources);
+
                 for(var i = 0; i < collect.sources.length; i++){
+                    console.log('source: '+ i);
+                    console.dir(collect.sources[i]);
                     //type, source, tag
                     switch(collect.sources[i].type){
                         case 'tumblr':
@@ -296,7 +301,7 @@ exports.sync = function(req, res){
 }
 
 exports.download = function(req, res){
-    var _id = '51ab71c4b3886afd0300000d';
+    var _id = '51b33d266e80adbc55000001';
 
     Collection
         .findOne({ _id: _id })

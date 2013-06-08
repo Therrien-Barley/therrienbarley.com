@@ -222,11 +222,11 @@ exports.get = function(req, res){
 						break;
 					//calls a fetch using the tumblr API to update the db
 					case 'sync':
-						fetchtumblr.sync(req, res);
+						collections.sync(req, res);
 						break;
 					//downloads a CSV
 					case 'download':
-						fetchtumblr.download(req, res);
+						collections.download(req, res);
 						break;
 				}
 				break;

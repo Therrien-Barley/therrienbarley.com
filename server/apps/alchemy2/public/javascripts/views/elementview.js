@@ -134,7 +134,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 			var attributes = this.model.attributes;
 
 			var attr = {
-				data: attributes
+				data: attributes.data
 			};
 
 			var content = _.template(this.template, attr);

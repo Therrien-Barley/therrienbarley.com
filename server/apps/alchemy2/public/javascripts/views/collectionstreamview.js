@@ -224,14 +224,14 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Collection) {
 				users[model.id] = model.attributes;
 			});
 
-			console.log('&& users: ');
-			console.dir(users);
-
-
+			
 			var attr = {
-				data: attributes,
+				data: attributes.data,
 				users: users
 			};
+
+			console.log('-------element && attr: ');
+			console.dir(attr);
 
 			var content = _.template(this.template, attr);
 			$(this.el).html(content);

@@ -477,14 +477,24 @@ function fetchCallback(host, tag, limit, offset, req, res, fetched_posts, insert
 }
 
 function fetch(host, tag, limit, offset, req, res, col){
+	console.log('fetchtumblr.js::fetch() from col: '+ col);
 
-	tumblr.get('/posts', {hostname: host+'.tumblr.com', offset: offset, limit: limit, tag: tag}, function(json){
-		
+	var query; 
+	if(tag == ''){
+		query = {hostname: host+'.tumblr.com', offset: offset, limit: limit};
+	}else{
+		query = {hostname: host+'.tumblr.com', offset: offset, limit: limit, tag: tag};
+	}
+
+	tumblr.get('/posts', query, function(json){
+		console.log('returned from fetch with:');
+		console.dir(json);
 		if(json.posts.length == 0){
 			//incase private posts, total_posts will never be reached
 			fetched_total_posts = 0;//reset for the next sync
 			res.send(205);//status 205 = Reset Content
 		}else{
+			console.log('got some posts! total: ' + json.total_posts);
 			var inserted_posts = 0;
 
 			var total_posts = json.total_posts;
@@ -507,23 +517,22 @@ function fetch(host, tag, limit, offset, req, res, col){
 	            }
 
 
-	            var element = new Element({
-					type: 'tumblr',
-					source: host,
-					source_tag: tag,
-					collection_id: col,//collection _id
-					source_id: json.posts[i].id,
-					source_timestamp: json.posts[i].timestamp,
-					data: json.posts[i]
-				});
 
 				Element
-					.udpate({ source_id: json.posts[i].id }, element, {upsert: true}, function(err, result) {
+					.update({ source_id: json.posts[i].id }, {
+						type: 'tumblr',
+						source: host,
+						source_tag: tag,
+						collection_id: col,//collection _id
+						source_id: json.posts[i].id,
+						source_timestamp: json.posts[i].timestamp,
+						data: json.posts[i]
+					}, {upsert: true}, function(err, result) {
 	                    if (err) {
 	                        console.log('error: An error has occurred in trying to upsert into the '+col+' collection with msg: '+ err);
 	                        res.send(500, 'error: An error has occurred in trying to upsert into the '+col+' collection with msg: '+ err);
 	                    } else {
-	                        console.log('Success: added a post to to '+col+' collection with post.id '+ post.id);
+	                        console.log('Success: added a post to to '+col+' collection');
 	                    	inserted_posts++;
 	                    	fetchCallback(host, tag, limit, offset, req, res, fetched_posts, inserted_posts, total_posts, col);
 	                    }
