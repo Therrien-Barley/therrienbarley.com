@@ -1,0 +1,38 @@
+<div id="nav" class="span3 offset12 bold">
+	<% if(typeof user !== 'undefined'){ %>
+		<div id="user-nav" class="menu row-fluid open">
+			<ul>
+				<li class="menu-header"><%= user.name %></li>
+				<li class="menu-option user-collections" value="user-collections"><a href="/insights/collections">Collections</a></li>
+				<li class="menu-option user-account" value="user-account"><a href="/insights/user/<%= user.id %>">My Account</a></li>
+				<% if(user.role == 'admin'){ %><li class="menu-option user-users" value="user-users"><a href="/insights/users">Users</a></li><% } %>
+				<% if(user.role == 'admin'){ %><li class="menu-option user-admin" value="user-admin"><a href="/insights/admin">Admin</a></li><% } %>
+				<li class="menu-option user-logout" value="user-logout"><a href="/logout">Logout</a></li>
+			</ul>
+		</div>
+	<% }else{ %>
+		<div id="user-nav" class="menu row-fluid open">
+			<ul>
+				<li class="menu-header">Account</li>
+				<li class="menu-option user-login" value="user-login"><a href="/login">Login</a></li>
+				<li class="menu-option user-request" value="user-request"><a href="/insights/request">Request Account</a></li>
+			</ul>
+		</div>
+	<% } %>
+	
+	<% if(typeof collection !== 'undefined'){ %>
+		<div id="collection-nav" class="menu row-fluid open">
+			<ul>
+				<li class="menu-header">Collection</li>
+				<li class="menu-option collection-content" value="collection-content"><a>Content</a></li>
+				<li class="menu-option collection-elements" value="collection-elements"><a>Elements</a></li>
+				<li class="menu-option collection-analytics" value="collection-analytics"><a>Analytics</a></li>
+				<li class="menu-option collection-annotations" value="collection-annotations"><a>Annotations</a></li>
+				<li class="menu-option collection-timelines" value="collection-timelines"><a>Timelines</a></li>
+				<li class="menu-option collection-search" value="collection-search"><a>Search</a></li>
+				<li class="menu-option collection-sync" value="collection-sync"><a href="/insights/api/sync">Sync</a></li>
+			</ul>
+		</div>
+	<% } %>
+	
+</div><!-- /#nav -->

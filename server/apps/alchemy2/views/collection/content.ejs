@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- partial('../partials/head', {title:title}) %>
+<body>
+	
+	<div class="wrapper row-fluid">
+		<%- partial('../partials/header') %>
+		<div id="main" class="span10 offset2">
+
+			<div id="views" class="row-fluid">
+				<div class="span4 offset6">
+					<select>
+						<option value="all">All</option>
+						<option value="titles">Titles</option>
+						<option value="media">Media</option>
+						<option value="images">Images</option>
+						<option value="video">Video</option>
+					</select>
+				</div>
+			</div>
+
+			<div id="collection-el"></div>
+			
+		</div><!-- /#main -->
+		<%- partial('../partials/nav', { 
+			user: user,
+			collection: null
+		}) %>
+
+		<%- partial('../partials/footer') %>
+
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%- partial('../partials/scripts') %>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

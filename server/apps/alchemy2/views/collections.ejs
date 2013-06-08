@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- partial('partials/head', {title:title}) %>
+<body>
+
+	
+	<div class="wrapper row-fluid">
+		<%- partial('partials/header') %>
+		<div id="main" class="span10 offset2">
+
+			<div id="collections-el"></div>
+
+			<div id="new-collections-el" class="row-fluid"></div>
+
+			<div class="row-fluid">
+				<div class="span2 offset7 bttn add">Add Collection</div>
+			</div>
+			
+		</div><!-- /#main -->
+		<%- partial('partials/nav', { user: user }) %>
+
+		<%- partial('partials/footer') %>
+
+		
+	</div><!-- /#wrapper -->
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%- partial('partials/scripts') %>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
