@@ -4,6 +4,7 @@ define([
 	'taxonomies',
 	'models/element',
 	'text!../../../views/templates/elementtumblr.html',
+	'jquery-ui'
 ],
 function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
@@ -17,6 +18,32 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .cancel': 'cancel',
 	    	'click .delete': 'delete'
 	    },
+
+	   	initDraggable: function(){
+	   		console.log('initDraggable()');
+	   		var this_selector = '#element-'+this.model.get('_id');
+	   		console.log('this_selector: '+ this_selector);
+	   		console.log('selector works: '+ $(this_selector).length);
+
+	   		$('img', this_selector).each(function(i){
+	   			console.log('draggable image: '+ i + ' with src: '+ $(this).attr('src'));
+	   			$(this).draggable();
+	   		});
+
+	   		$('.annotations', this_selector).droppable({
+	   			drop: function( event, ui ) {
+	   				console.log('');console.log('');
+	   				console.log('dropped!');
+	   				console.log('event');
+	   				console.dir(event);
+	   				console.log('ui');
+	   				console.dir(ui);
+					$( this )
+						.addClass( "ui-state-highlight" )
+						.text( "Dropped!" );
+					}
+	   		});
+	   	},
 
 	    delete: function(){
 	    	if(this.model.isNew()){
@@ -130,15 +157,24 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 			}*/
 			this.template = templateTumblr;
 
-			console.log('element::render()');
 			var attributes = this.model.attributes;
 
 			var attr = {
-				data: attributes.data
+				data: attributes.data,
+				_id: {
+					value: attributes._id
+				}
 			};
 
 			var content = _.template(this.template, attr);
 			$(this.el).html(content);
+
+			var that = this;
+			setTimeout(function(){
+				that.initDraggable();
+			}, 100);
+
+			
 
 			// return ```this``` so calls can be chained.
 			return this;
