@@ -19,6 +19,18 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .delete': 'delete'
 	    },
 
+	    initDraggableText: function(){
+	   		console.log('initDraggable()');
+	   		var this_selector = '#element-'+this.model.get('_id');
+
+	   		$('p', this_selector).each(function(i){
+	   			$(this).attr('type', 'p').draggable({
+	   				revert: true
+	   			});
+	   		});
+
+	   	},
+
 	   	initDraggableImages: function(){
 	   		console.log('initDraggable()');
 	   		var this_selector = '#element-'+this.model.get('_id');
@@ -48,21 +60,142 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   		var this_selector = '#element-'+this.model.get('_id');
 
 	   		$('iframe', this_selector).each(function(i){
-	   			$(this).wrap('<div class="video-drag-wrapper" type="iframe">');
-	   			$(this).parent('.video-drag-wrapper').append('<i class="icon-move"></i>').draggable({
+	   			$(this).wrap('<div class="video-drag-wrapper" type="iframe" draggable="true">');
+	   			$(this).parent('.video-drag-wrapper').append('<i class="icon-move"></i>');
+	   			$(this).parent('.video-drag-wrapper').height($(this).height());
+
+	   			/*.draggable({
 	   				revert: true
-	   			});
+	   			});*/
 	   		});
+	   	},
+
+	   	initDraggable: function(){
+	   		function startDrag (e) {
+				console.log('startDrag(), e');
+				console.dir(e);
+				console.log(e.dataTransfer.getData("text/html"));
+				console.log('');
+
+		
+				if (e.target.tagName == "IMG") {
+	   				var html = '<img class="note" src="'+ e.target.src + '">';
+
+					e.dataTransfer.setData("text/html", html);
+				}else if (e.target.textContent != ''){//typeof e.dataTransfer.getData("text/html") == "undefined") {
+
+					function getSelection(){
+						var text;
+						if (window.getSelection){
+							text = window.getSelection().toString();
+						} else if (document.getSelection) {
+							text = document.getSelection().toString()
+						} else if (document.selection) {
+							text = document.selection.createRange().text;
+						}
+						return text;
+					}
+
+					var text = '<blockquote class="note">'+getSelection()+'</blockquote>';
+					console.log('text: '+ text);
+
+					e.dataTransfer.setData("text/html", text);
+				}else if(e.target.className == "video-drag-wrapper"){
+
+					var src = '';
+					$(e.target.innerHTML).each(function(){
+						if($(this).prop("tagName") == 'IFRAME'){
+							src = $(this).attr('src');
+						}
+					});
+
+					var html = '<iframe class="note" frameborder="0" src="'+src+'"></iframe>';
+					e.dataTransfer.setData("text/html", html );
+				}
+
+			};
+
+			function stopDrag (e) {
+				console.log('stopDrag(), e: ');
+				console.dir(e);
+				//arena_div.style.display = "none";
+			}
+
+			document.addEventListener('dragstart', startDrag, true);
+			document.addEventListener('dragend', stopDrag, true);
+
 	   	},
 
 	   	initDroppable: function(){
 	   		var this_selector = '#element-'+this.model.get('_id');
+
+	   		function drop(e){
+	   			console.log('');console.log('');
+	   			console.log('-------drop(), e');
+	   			console.log(e);
+	   			console.log('');console.log('');
+
+	   			var data;
+	   			for (var i in e.dataTransfer.types) {
+			    	data = e.dataTransfer.getData(e.dataTransfer.types[i]);
+			    }
+
+			    console.log('data!!!!!!!');
+
+			    $(data).each(function(){
+			    	switch($(this).prop('tagName')){
+			    		case 'IFRAME':
+			    			$('.annotations', this_selector).append( $(this) );
+			    			break;
+			    		case 'IMG':
+			    			console.dir($(this));
+			    			$('.annotations', this_selector).append( $(this) );
+			    			break;
+			    		case 'BLOCKQUOTE':
+			    		console.dir($(this));
+			    			$('.annotations', this_selector).append( $(this) );
+			    			break;
+			    	}
+			    });
+
+	   			e.stopPropagation();
+			    e.preventDefault();
+			    return false
+	   		}
+
+	   		function dragOver(e){
+	   			e.stopPropagation();
+			    e.preventDefault();
+	   			console.log('');console.log('');
+	   			console.log('-------dragOver(), e');
+	   			console.log(e);
+	   			console.log('');console.log('');
+	   		}
+
+	   		function dragEnter(e){
+	   			console.log('');console.log('');
+	   			console.log('-------dragEnter(), e');
+	   			console.log(e);
+	   			console.log('');console.log('');
+	   			return false;
+	   		}
+
+
+	   		$('.annotations', this_selector).get(0).addEventListener("drop", drop, false);
+		    $('.annotations', this_selector).get(0).addEventListener("dragenter", dragEnter, false)
+		    $('.annotations', this_selector).get(0).addEventListener("dragover", dragOver, false)
+
+	   		/*
 	   		$('.annotations', this_selector).droppable({
 	   			drop: function( event, ui ) {
 
 	   				var $note;
 
 	   				switch($(ui.draggable.context).attr('type')){
+	   					case 'p':
+	   						console.log('p dropped');
+	   						console.dir(ui);
+	   						break;
 	   					case 'img':
 	   						console.log('image dropped');
 			   				$note = $('<img class="note">');
@@ -78,7 +211,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   				$('.list', this).append( $note );
 
 				}
-	   		});
+	   		});*/
 	   	},
 
 	    delete: function(){
@@ -207,8 +340,16 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 			var that = this;
 			setTimeout(function(){
-				that.initDraggableImages();
-				that.initDraggableObjects();
+				//that.initDraggableText();
+
+				
+
+
+    			that.initDraggable();
+
+
+				//that.initDraggableImages();
+				//that.initDraggableObjects();
 				that.initDraggableIframes();
 				that.initDroppable();
 			}, 100);
