@@ -19,42 +19,6 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .delete': 'delete'
 	    },
 
-	    initDraggableText: function(){
-	   		console.log('initDraggable()');
-	   		var this_selector = '#element-'+this.model.get('_id');
-
-	   		$('p', this_selector).each(function(i){
-	   			$(this).attr('type', 'p').draggable({
-	   				revert: true
-	   			});
-	   		});
-
-	   	},
-
-	   	initDraggableImages: function(){
-	   		console.log('initDraggable()');
-	   		var this_selector = '#element-'+this.model.get('_id');
-
-	   		$('img', this_selector).each(function(i){
-	   			$(this).attr('type', 'img').draggable({
-	   				revert: true
-	   			});
-	   		});
-
-	   	},
-
-	   	initDraggableObjects: function(){
-	   		console.log('initDraggableObjects()');
-	   		var this_selector = '#element-'+this.model.get('_id');
-
-	   		$('object', this_selector).each(function(i){
-	   			$(this).attr('type', 'object').draggable({
-	   				revert: true
-	   			});
-	   		});
-
-	   	},
-
 	   	initDraggableIframes: function(){
 	   		console.log('initDraggableIframes()');
 	   		var this_selector = '#element-'+this.model.get('_id');
@@ -63,21 +27,11 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   			$(this).wrap('<div class="video-drag-wrapper" type="iframe" draggable="true">');
 	   			$(this).parent('.video-drag-wrapper').append('<i class="icon-move"></i>');
 	   			$(this).parent('.video-drag-wrapper').height($(this).height());
-
-	   			/*.draggable({
-	   				revert: true
-	   			});*/
 	   		});
 	   	},
 
 	   	initDraggable: function(){
-	   		function startDrag (e) {
-				console.log('startDrag(), e');
-				console.dir(e);
-				console.log(e.dataTransfer.getData("text/html"));
-				console.log('');
-
-		
+	   		function startDrag (e) {		
 				if (e.target.tagName == "IMG") {
 	   				var html = '<img class="note" src="'+ e.target.src + '">';
 
@@ -115,14 +69,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 			};
 
-			function stopDrag (e) {
-				console.log('stopDrag(), e: ');
-				console.dir(e);
-				//arena_div.style.display = "none";
-			}
-
 			document.addEventListener('dragstart', startDrag, true);
-			document.addEventListener('dragend', stopDrag, true);
 
 	   	},
 
@@ -130,30 +77,38 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   		var this_selector = '#element-'+this.model.get('_id');
 
 	   		function drop(e){
-	   			console.log('');console.log('');
-	   			console.log('-------drop(), e');
-	   			console.log(e);
-	   			console.log('');console.log('');
 
 	   			var data;
 	   			for (var i in e.dataTransfer.types) {
 			    	data = e.dataTransfer.getData(e.dataTransfer.types[i]);
 			    }
 
-			    console.log('data!!!!!!!');
-
 			    $(data).each(function(){
 			    	switch($(this).prop('tagName')){
 			    		case 'IFRAME':
-			    			$('.annotations', this_selector).append( $(this) );
+			    			var src = $(this).attr('src');
+			    			if( $('.annotations iframe[src="'+src+'"]', this_selector).length <= 0){
+			    				$('.annotations', this_selector).append( $(this) );
+			    			}
 			    			break;
 			    		case 'IMG':
-			    			console.dir($(this));
-			    			$('.annotations', this_selector).append( $(this) );
+			    			var src = $(this).attr('src');
+			    			if( $('.annotations img[src="'+src+'"]', this_selector).length <= 0){
+			    				$('.annotations', this_selector).append( $(this) );
+			    			}
 			    			break;
 			    		case 'BLOCKQUOTE':
-			    		console.dir($(this));
-			    			$('.annotations', this_selector).append( $(this) );
+			    			console.dir($(this));
+			    			var dup = false;
+			    			var $this = $(this);
+			    			$('.annotations blockquote', this_selector).each(function(){
+			    				if($(this).text() == $this.text()){
+			    					dup = true;
+			    				}
+			    			});
+			    			if(dup == false){
+			    				$('.annotations', this_selector).append( $(this) );
+			    			}
 			    			break;
 			    	}
 			    });
@@ -340,16 +295,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 			var that = this;
 			setTimeout(function(){
-				//that.initDraggableText();
-
-				
-
-
     			that.initDraggable();
-
-
-				//that.initDraggableImages();
-				//that.initDraggableObjects();
 				that.initDraggableIframes();
 				that.initDroppable();
 			}, 100);
