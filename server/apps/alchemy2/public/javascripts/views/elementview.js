@@ -18,7 +18,8 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .cancel': 'cancel',
 	    	'click .delete': 'delete'
 	    },
-
+	    
+	    //wraps iframes in div and adds icon-move for draggable onto .annotations drop target
 	   	initDraggableIframes: function(){
 	   		console.log('initDraggableIframes()');
 	   		var this_selector = '#element-'+this.model.get('_id');
@@ -30,13 +31,14 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   		});
 	   	},
 
+	   	//initializes iframe, img, and selected text to be dragged onto .annotations drop target
 	   	initDraggable: function(){
 	   		function startDrag (e) {		
 				if (e.target.tagName == "IMG") {
 	   				var html = '<img class="note" src="'+ e.target.src + '">';
 
 					e.dataTransfer.setData("text/html", html);
-				}else if (e.target.textContent != ''){//typeof e.dataTransfer.getData("text/html") == "undefined") {
+				}else if (e.target.textContent != ''){
 
 					function getSelection(){
 						var text;
@@ -73,6 +75,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 	   	},
 
+	   	//initializes .annotations as a drop target for iframe, img, and selected text
 	   	initDroppable: function(){
 	   		var this_selector = '#element-'+this.model.get('_id');
 
@@ -127,38 +130,10 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   			return false;
 	   		}
 
-
+	   		//need to implement all three for drop to work
 	   		$('.annotations', this_selector).get(0).addEventListener("drop", drop, false);
 		    $('.annotations', this_selector).get(0).addEventListener("dragenter", dragEnter, false)
 		    $('.annotations', this_selector).get(0).addEventListener("dragover", dragOver, false)
-
-	   		/*
-	   		$('.annotations', this_selector).droppable({
-	   			drop: function( event, ui ) {
-
-	   				var $note;
-
-	   				switch($(ui.draggable.context).attr('type')){
-	   					case 'p':
-	   						console.log('p dropped');
-	   						console.dir(ui);
-	   						break;
-	   					case 'img':
-	   						console.log('image dropped');
-			   				$note = $('<img class="note">');
-	   						$note.attr('src', $(ui.draggable.context).attr('src'));
-	   						break;
-	   					case 'iframe':
-	   						console.log('iframe dropped');
-	   						$note = $('<iframe class="note" frameborder="0"></iframe>');
-		   					$note.attr('src', $(ui.draggable.context).find('iframe').attr('src'));
-	   						break;
-	   				}
-
-	   				$('.list', this).append( $note );
-
-				}
-	   		});*/
 	   	},
 
 	    delete: function(){
