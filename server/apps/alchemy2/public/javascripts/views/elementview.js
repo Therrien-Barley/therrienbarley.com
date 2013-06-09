@@ -77,7 +77,6 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   		var this_selector = '#element-'+this.model.get('_id');
 
 	   		function drop(e){
-
 	   			var data;
 	   			for (var i in e.dataTransfer.types) {
 			    	data = e.dataTransfer.getData(e.dataTransfer.types[i]);
@@ -121,17 +120,10 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	   		function dragOver(e){
 	   			e.stopPropagation();
 			    e.preventDefault();
-	   			console.log('');console.log('');
-	   			console.log('-------dragOver(), e');
-	   			console.log(e);
-	   			console.log('');console.log('');
+			    return false;
 	   		}
 
 	   		function dragEnter(e){
-	   			console.log('');console.log('');
-	   			console.log('-------dragEnter(), e');
-	   			console.log(e);
-	   			console.log('');console.log('');
 	   			return false;
 	   		}
 

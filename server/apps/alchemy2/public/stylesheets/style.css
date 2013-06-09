@@ -1051,3 +1051,9 @@ h1{
 	float:left;
 	width:8%;
 }
+
+.element .annotations blockquote.note{
+	font-size:18px;
+	line-height: 21px;
+}
+}
