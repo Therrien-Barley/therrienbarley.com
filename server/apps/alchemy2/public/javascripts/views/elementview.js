@@ -1,12 +1,13 @@
 define([
 	'backbone',
+	'globals',
 	'text!../../../views/templates/element.html',
 	'taxonomies',
 	'models/element',
 	'text!../../../views/templates/elementtumblr.html',
 	'jquery-ui'
 ],
-function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
+function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
 
 	var ElementView = Backbone.View.extend({
 	    className: 'element',
@@ -18,7 +19,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 	    	'click .cancel': 'cancel',
 	    	'click .delete': 'delete'
 	    },
-	    
+
 	    //wraps iframes in div and adds icon-move for draggable onto .annotations drop target
 	   	initDraggableIframes: function(){
 	   		console.log('initDraggableIframes()');
@@ -52,6 +53,12 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 						return text;
 					}
 
+					console.log('e');
+					console.dir(e);
+					console.log('');
+
+					//$(e.target).wrap('<span class="highlighted-limbo">');
+
 					var text = '<blockquote class="note">'+getSelection()+'</blockquote>';
 					console.log('text: '+ text);
 
@@ -71,7 +78,15 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 
 			};
 
+			function stopDrag(){
+				console.log('stopDrag');
+				setTimeout(function(){
+					//$('span.highlighted-limbo').unwrap();
+				},100);
+			};
+
 			document.addEventListener('dragstart', startDrag, true);
+			document.addEventListener('dragend', stopDrag, true);
 
 	   	},
 
@@ -90,12 +105,14 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 			    		case 'IFRAME':
 			    			var src = $(this).attr('src');
 			    			if( $('.annotations iframe[src="'+src+'"]', this_selector).length <= 0){
+			    				$('iframe[src="'+src+'"]', this_selector).closest('.video-drag-wrapper').addClass('highlighted');
 			    				$('.annotations', this_selector).append( $(this) );
 			    			}
 			    			break;
 			    		case 'IMG':
 			    			var src = $(this).attr('src');
 			    			if( $('.annotations img[src="'+src+'"]', this_selector).length <= 0){
+			    				$('img[src="'+src+'"]', this_selector).addClass('highlighted');
 			    				$('.annotations', this_selector).append( $(this) );
 			    			}
 			    			break;
@@ -109,6 +126,7 @@ function(Backbone, template, TAXONOMIES, Element, templateTumblr) {
 			    				}
 			    			});
 			    			if(dup == false){
+			    				//$('.highlighted-limbo', this_selector).addClass('highlighted').removeClass('highlighted-limbo');
 			    				$('.annotations', this_selector).append( $(this) );
 			    			}
 			    			break;

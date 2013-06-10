@@ -1056,4 +1056,23 @@ h1{
 	font-size:18px;
 	line-height: 21px;
 }
+
+.highlighted{
+	background-color: yellow;
 }
+
+.video-drag-wrapper.highlighted{
+	background-color:transparent;
+}
+
+img.highlighted,
+.video-drag-wrapper.highlighted iframe{
+	border: 5px solid yellow;
+	position: relative;
+	left: -5px;
+}
+
+.highlighted i.icon-move{
+	display: none;
+}
+

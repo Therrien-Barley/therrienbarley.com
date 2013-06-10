@@ -11,16 +11,7 @@ var SEGMENTS = ['topten', 'toptwenty', 'other'];
 
 //post request
 exports.create = function(req, res){
-    var featured;
     console.log('fragments.js::create()');
-    if(req.body.featured){
-        console.log('featured exists!');
-        featured = req.body.featured;
-    }else{
-        console.log('no featured exists');
-        featured = false;
-    }
-
     var fragment = new Fragment({
         type: req.body.type,
         element: parseInt(req.body.element),
@@ -29,8 +20,7 @@ exports.create = function(req, res){
         post_url: req.body.post_url,
         content: req.body.content,
         caption: req.body.caption,
-        order: parseInt(req.body.order),
-        featured: featured
+        order: parseInt(req.body.order)
         //dates are set automatically to now
     });
 
@@ -48,16 +38,7 @@ exports.create = function(req, res){
 
 
 exports.update = function(req, res, _id){
-    var featured;
-    console.log('fragments.js::create()');
-    if(req.body.featured){
-        console.log('featured exists!');
-        featured = req.body.featured;
-    }else{
-        console.log('no featured exists');
-        featured = false;
-    }
-    console.log('fragments.js::update() with featured: '+ featured);
+    console.log('fragments.js::update()');
 
     var timestamp_now = new Date().getTime();
 
@@ -71,7 +52,6 @@ exports.update = function(req, res, _id){
             content: req.body.content,
             caption: req.body.caption,
             order: parseInt(req.body.order),
-            featured: featured,
             updated: timestamp_now
         }, function(err, user) {
             if(err){
