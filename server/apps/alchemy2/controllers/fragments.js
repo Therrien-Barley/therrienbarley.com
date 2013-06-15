@@ -14,12 +14,10 @@ exports.create = function(req, res){
     console.log('fragments.js::create()');
     var fragment = new Fragment({
         type: req.body.type,
-        element: parseInt(req.body.element),
-        tags: req.body.tags,//should be an array
-        insight_ids: req.body.insight_ids,//should be an array
-        post_url: req.body.post_url,
         content: req.body.content,
-        caption: req.body.caption,
+        element_id: req.body.element,
+        post_url: req.body.post_url,
+        annotation: req.body.annotation,
         order: parseInt(req.body.order)
         //dates are set automatically to now
     });
@@ -44,14 +42,11 @@ exports.update = function(req, res, _id){
 
     Fragment
         .update({ 'id': _id }, {
-            type: req.body.type,
-            element: parseInt(req.body.element),
-            tags: req.body.tags,//should be an array
             insight_ids: req.body.insight_ids,//should be an array
-            post_url: req.body.post_url,
-            content: req.body.content,
-            caption: req.body.caption,
+            annotation: req.body.annotation,
             order: parseInt(req.body.order),
+            caption: req.body.caption,
+            featured: req.body.featured,
             updated: timestamp_now
         }, function(err, user) {
             if(err){
@@ -86,57 +81,35 @@ exports.delete = function(req, res, _id){
 
 //This is necessary because I load all fragments at the beginning of an insights page load
 //to save time
-exports.get = function(req, res, designator){
-    var designator = designator || false;
-    console.log('fragments.js::get() with designator: '+ designator);
+exports.get = function(req, res, designator, _id){
+    console.log('fragments.js::get() with designator: '+ designator + ' and _id: '+ _id);
 
-    if(SEGMENTS.indexOf(designator) > -1){
-        console.log('req.body.INSIGHT_IDS:');
-        console.dir(req.body.insight_ids);
-
-        //get topten, toptwenty, or other
-        Fragment
-            .find({ 'insight_id': { $in: req.body.insight_ids} })
-            .limit(GET_LIMIT)
-            .sort('order')
-            .exec(function(err, items) {
-                if (err) {
-                    console.log('error: fragments.js::create() with msg: '+ err);
-                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
-                } else {
-                    console.log('Success: got '+ items.length + ' fragments');
-                    res.json(200, items);
-                }
-            });
-
-    }else if(designator == 'all' || designator == false){
-        //get all projects
-        Fragment
-            .find()
-            .limit(GET_LIMIT)
-            .sort('order')
-            .exec(function(err, items) {
-                if (err) {
-                    console.log('error: fragments.js::create() with msg: '+ err);
-                    res.send(500, 'Error attempting to get fragment with error message: '+ err);
-                } else {
-                    console.log('Success: got '+ items.length + ' fragments');
-                    res.json(200, items);
-                }
-            });
-    }else{
-        //get single fragment by _id
-        Fragment
-            .findOne({ _id: designator })
-            .exec(function(err, item) {
-                if (err) {
-                    console.log('error: fragments.js::create() with msg: '+ err);
-                    res.send(500, 'Error attempting to get a fragment with error message: '+ err);
-                } else {
-                    console.log('Success: got a fragment');
-                    res.json(200, item);
-                }
-            });
+    switch(designator){
+        case 'fragment_id':
+            Fragment
+                .findById(_id, function(err, item) {
+                    if (err) {
+                        res.send(500, 'Error attempting to get fragment by fragment_id with error message: '+ err);
+                    } else {
+                        console.log('Success: got fragment');
+                        res.json(200, item);
+                    }
+                });
+            break;
+        case 'element_id':
+            Fragment
+                .find({ 'element_id': element_id })
+                .sort('order')
+                .exec(function(err, items){
+                    if (err) {
+                        console.log('error: fragments.js::get() by element_id with msg: '+ err);
+                        res.send(500, 'Error attempting to get fragment by element_id with error message: '+ err);
+                    } else {
+                        console.log('Success: got '+ items.length + ' fragments');
+                        res.json(200, items);
+                    }
+                });
+            break;
     }
 }
 

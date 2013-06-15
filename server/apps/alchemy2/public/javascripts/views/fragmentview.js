@@ -3,125 +3,28 @@ define([
 	'backbone',
 	'jquery-masonry',
 	'models/fragment',
-	'text!../../../views/templates/fragment.html',
-	'text!../../../views/templates/featuredfragment.html'
+	'text!../../../views/templates/fragment.html'
 ],
-function(_, Backbone, masonry, Fragment, template, featuredTemplate) {
+function(_, Backbone, masonry, Fragment, template) {
 
 	var FragmentView = Backbone.View.extend({
 	    className: 'fragment',
 	    template: template,
 	    _fragmentsView: null,
 	    events: {
-	    	'mouseenter .insight-menu-icon': 'showInsightsMenu',
-	    	'click .fragment-delete': 'delete',
-	    	'click .fragment-feature': 'feature',
-	    	'click .fragment-unfeature': 'unfeature'
 	    },
 
-	    initialize: function(opts){
-	    	if(opts.template){
-	    		this.template = opts.template;
-	    	}
-	    	if(opts.tagName){
-	    		this.tagName = opts.tagName;
-	    	}
-	    	if(opts._fragmentsView){
-	    		this._fragmentsView = opts._fragmentsView;
-	    	}
-
-	    	_.bind(this, 'save');
-	    },
-
-	    saveFeatured: function(order){
-	    	console.log('saveFeatured() with order: '+order);
-
-	    	var selector = '#featured-' + this.model.get('_id');
-	    	var caption = $('.caption', selector).text().replace(/(\r\n|\n|\r)/gm,"").replace(/(\r\t|\t|\r)/gm,"");
-	    	
-	    	this.model.save({
-				caption: caption,
-				order: order
-	    	}, {
-	    		success: function(){
-	    			console.log('featured model saved');
-	    		},
-	    		error: function(){
-	    			console.log('ERROR: featured model NOT saved');
+	    initialize: function(vars){
+	    	if(vars){
+	    		if(vars.template){
+	    			this.template = vars.template;
 	    		}
-	    	});
-	    },
-
-	    feature: function(event){
-	    	console.log('this._fragmentsView:');
-	    	console.dir(this._fragmentsView);
-
-	    	var id = $(event.target).closest('.insight-container').attr('id');
-
-	    	var new_fragment = this.model.clone();
-	    	new_fragment.set({
-	    		featured: true,
-	    		order: 9999
-	    	});//add it to the end
-
-	    	var new_view = new FragmentView({
-	    		model: new_fragment,
-	    		template: featuredTemplate,
-	    		tagName: 'li',
-                el: '#'+id+' .featured',
-                _fragmentsView: this._fragmentsView
-	    	});
-
-	    	//call append instead of render so it adds, rather than replaces
-	    	new_view.append();
-
-	    	var async = this._fragmentsView.addFeatured(new_view);
-	    	this.unrender();
-	    	$('#'+id+' .sortable').sortable();
-	    	$('#'+id+' .sortable').disableSelection();
-	    },
-
-	    unfeature: function(event){
-	    	var that = this;
-	    	var id = $(event.target).closest('.insight-container').attr('id');
-
-	    	//save the model with featured = false, and then render it to the 
-	    	//fragments masonry attachment, then unrender the featured view
-	    	this.model.set({
-	    		featured: false,
-	    		caption: '',
-	    		order: -1
-	    	});
-	    	/*
-			
-			console.log('success! saved unfeatured');
-			
-			var new_fragment = that.model.clone();
-
-	    	var new_view = new FragmentView({
-	    		model: new_fragment,
-                el: '#'+id+' .fragment-el',
-                _fragmentsView: that._fragmentsView
-	    	});
-	    	var async = new_view.append({},'fragment');
-	    	//$(that.el).append(new_view.render().el);
-	    	*/
-	    	that.unrender();
-	    	/*
-	    	console.log('calling masonry on : '+ '#'+id+' .masonry-wrapper');
-	    	var $container = $('#'+id+' .masonry-wrapper');
-
-	    	setTimeout(function(){
-	    		$container.masonry({
-	                itemSelector: '.fragment',
-	                columnWidth: 250,
-	                gutterWidth:17
-	            });
-	    	}, 100);
-			*/     
-
-	    		
-	    		
+	    		if(vars._fragmentsView){
+		    		this._fragmentsView = vars._fragmentsView;
+		    	}
+	    	}
+		    	
+	    	_.bind(this, 'save');
 	    },
 
 	    delete: function(){

@@ -114,7 +114,7 @@ exports.post = function(req, res){
 			}
 			break;
 		default:
-			res.send(501, 'This IP does not serve post requests to '+req.url);//501 = not implemented
+			res.send(501, 'Post: This IP does not serve post requests to '+req.url);//501 = not implemented
 			break;
 
 	}	
@@ -189,23 +189,9 @@ exports.get = function(req, res){
 					case 'insight':
 						insights.get(req, res, url_array[4]);
 						break;
-					case 'fragments':
-						if(typeof url_array[4] == 'undefined'){
-							console.log('yes! trying to get all fragments');
-							fragments.get(req, res);
-						}else{
-							console.log('calling tumblr.getFragments() with : '+ url_array[4]);
-							fragments.get(req, res, url_array[4]);
-						}	
-						break;
 					case 'fragment':
-						if(typeof url_array[4] == 'undefined'){
-							console.log('yes! trying to get all fragments');
-							fragments.get(req, res);
-						}else{
-							console.log('calling tumblr.getFragments() with : '+ url_array[4]);
-							fragments.get(req, res, url_array[4]);
-						}	
+						console.log('calling tumblr.getFragments() with : '+ url_array[4]+ ' and '+ url_array[5]);
+						fragment.get(req, res, url_array[4], url_array[5]);
 						break;
 
 					//@todo!!!!!!!

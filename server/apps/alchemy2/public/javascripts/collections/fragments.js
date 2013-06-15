@@ -6,16 +6,13 @@ function(Backbone, Fragment) {
 
   var Fragments = Backbone.Collection.extend({
 	model: Fragment,
-	url: '/insights/air/api/fragments',
+	parent_type: null,
+	parent_id: null,
+	url: '/insights/api/fragment',
 	initialize: function(vars){
-		if(vars){
-			if(vars.tag){
-				this.url = "/insights/air/api/fragments/"+ vars.fragment +"/" + vars.tag;
-			}
-			if(vars.segment){
-				this.url = '/insights/air/api/fragments/' + vars.segment;
-			}
-		}
+		this.parent_type = vars.parent_type;
+		this.parent_id = vars.parent_id;
+		this.url = this.url + '/' + this.parent_type + '/' + this.parent_id;
 	}
   });
 

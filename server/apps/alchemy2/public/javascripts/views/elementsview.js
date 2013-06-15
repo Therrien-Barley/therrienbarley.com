@@ -2,9 +2,10 @@ define([
 	'backbone',
 	'views/elementview',
 	'text!../../../views/templates/elements.html',
-	'collections/elements'
+	'collections/elements',
+	'collections/fragments'
 ],
-function(Backbone, ElementView, template, Elements) {
+function(Backbone, ElementView, template, Elements, Fragments) {
 
 	var ElementsView = Backbone.View.extend({
 		tagName: 'div',
@@ -30,7 +31,7 @@ function(Backbone, ElementView, template, Elements) {
                     tagName: 'div',
                     _collectionView: that
                 }));
-            });
+            });	            
 
             this.collection.on('reset', this.render, this);
 		},
@@ -48,7 +49,7 @@ function(Backbone, ElementView, template, Elements) {
 		    	$(that._elementViewEl).append(elementView.render().el);
 		    });
 
-		    $('.element').each(function(){ $('.annotations', this).height($(this).height()) } );
+		    //$('.element').each(function(){ $('.annotations', this).height($(this).height()) } );
 		 
 		    return true;
 		}

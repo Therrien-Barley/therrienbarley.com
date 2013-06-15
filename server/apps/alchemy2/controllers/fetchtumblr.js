@@ -50,7 +50,7 @@ var MAX_BODY_PARAGRAPHS = 35;
 exports.getElements = function(req, res, _id){
 	Element
         .find({ collection_id: _id })
-        .limit(20)
+        .limit(10)
         .sort('-timestamp')
         .exec(function(err, elements){
             res.json(200, elements);

@@ -74,11 +74,11 @@ exports.Element = Element;
 
 var FragmentSchema = new Schema({
     type: String,
-    element: Number,
-    tags: [String],
+    element_id: Number,
     insight_ids: [Number],
     post_url: String,
     content: String,
+    annotation: String,
     caption: [String],
     order: Number,
     featured: [Boolean],

@@ -4,20 +4,33 @@ define([
 	'text!../../../views/templates/element.html',
 	'taxonomies',
 	'models/element',
+	'models/fragment',
+	'collections/fragments',
+	'views/fragmentsview',
 	'text!../../../views/templates/elementtumblr.html',
 	'jquery-ui'
 ],
-function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
+function(Backbone, GLOBAL, template, TAXONOMIES, Element, Fragment, Fragments, FragmentsView, templateTumblr) {
 
 	var ElementView = Backbone.View.extend({
 	    className: 'element',
 	    tagName: 'li',
 		template: template,
+		_fragmentsView: null,
+	    _fragments: null,
 		events: {
 	    	'click .editbutton': 'edit',
 	    	'click .save': 'save',
 	    	'click .cancel': 'cancel',
 	    	'click .delete': 'delete'
+	    },
+
+	    initialize: function(vars){
+        	this._fragments = new Fragments({
+            	_parent_type: 'element',
+            	_parent_id: this.model.get('_id')
+            });
+
 	    },
 
 	    //wraps iframes in div and adds icon-move for draggable onto .annotations drop target
@@ -92,7 +105,8 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
 
 	   	//initializes .annotations as a drop target for iframe, img, and selected text
 	   	initDroppable: function(){
-	   		var this_selector = '#element-'+this.model.get('_id');
+	   		var this_id = this.model.get('_id');
+	   		var this_selector = '#element-'+this_id;
 
 	   		function drop(e){
 	   			var data;
@@ -128,6 +142,25 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
 			    			if(dup == false){
 			    				//$('.highlighted-limbo', this_selector).addClass('highlighted').removeClass('highlighted-limbo');
 			    				$('.annotations', this_selector).append( $(this) );
+
+
+			    				var element = new Fragment({
+			    					type: 'quote',
+			    					content: $(this).html(),
+			    					element_id: this_id,
+			    					post_url: $('a.source-link', this_selector).attr('href'),
+			    					annotation: '',
+			    					order:0
+			    				});
+
+			    				element.save({
+			    					success: function(){
+			    						alert('saved quote fragment');
+			    					}
+			    				});
+
+
+
 			    			}
 			    			break;
 			    	}
@@ -253,6 +286,23 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
 
 	    },
 
+
+	    renderFragments: function(){
+	    	var element_id = this.model.get('_id');
+
+            this._fragments.fetch({
+            	success:function(collection){
+            		var fragments_view = new FragmentsView({
+            			collection: collection,
+            			el: '#'+ element_id + ' .annotations',
+            			_parent_type: 'element',
+            			_parent_id: element_id
+            		});
+            		fragments_view.render();
+            	}
+            });
+	    },
+
 		render: function(){
 			//use Underscore template, pass it the attributes from this model
 			/*
@@ -285,8 +335,8 @@ function(Backbone, GLOBAL, template, TAXONOMIES, Element, templateTumblr) {
 				that.initDroppable();
 			}, 100);
 
-			
-
+			this.renderFragments();
+	
 			// return ```this``` so calls can be chained.
 			return this;
 	    },
