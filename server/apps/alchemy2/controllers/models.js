@@ -59,7 +59,7 @@ var ElementSchema = new Schema({
     data: Schema.Types.Mixed,
     source_id: String,
     source_timestamp: String,
-    fetcher: String,//user who called fetch
+    fetcher: String,//user who called fetch or used bookmarlet
     fetched: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
 }, { 
