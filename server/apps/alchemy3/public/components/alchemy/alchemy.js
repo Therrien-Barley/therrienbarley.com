@@ -277,7 +277,7 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 
         initFeedNav: function(){
             $('#feed-nav .add').click(function(){
-                a
+                
             });
         },
 
