@@ -97,3 +97,12 @@ TAXONOMIES['colors']['women'] = '#aaaaaa';
 
 
 exports.TAXONOMIES = TAXONOMIES;
+
+
+
+var GLOBAL = {
+    db_uri: 'localhost/insights3-staging'
+
+};
+
+exports.GLOBAL = GLOBAL;

@@ -10,6 +10,69 @@ body{
 	font-family:"Apercu Bold", Calibri, sans-serif; font-size-adjust:0.508; font-weight:bold; font-style:normal;
 }
 
+.mono{
+	font-family:Monaco, monospace;
+	font-size:11px;
+}
+
+.mono .unselected{
+	color:deepskyblue;
+}
+.mono .selected{
+	color:blue;
+	border-bottom:1px solid;
+}
+
+.nav-choose .mono .unselected{
+	color:#aaa;
+}
+
+.nav-choose .mono .selected{
+	color:black;
+	border-bottom:1px solid;
+}
+
+.center{
+	text-align: center;
+	margin:auto;
+}
+
+#left .margin{
+	height:100%;
+	background-image: linear-gradient(left , rgb(245,245,245) 6%, rgb(245, 245, 245) 10%, rgb(255,255,0) 100%);
+	background-image: -o-linear-gradient(left , rgb(245,245,245) 6%, rgb(245, 245, 245) 10%, rgb(255,255,0) 100%);
+	background-image: -moz-linear-gradient(left , rgb(245,245,245) 6%, rgb(245, 245, 245) 10%, rgb(255,255,0) 100%);
+	background-image: -webkit-linear-gradient(left , rgb(245,245,245) 6%, rgb(245, 245, 245) 10%, rgb(255,255,0) 100%);
+	background-image: -ms-linear-gradient(left , rgb(245,245,245) 6%, rgb(245, 245, 245) 10%, rgb(255,255,0) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		right bottom,
+		color-stop(0.06, rgb(245,245,245)),
+		color-stop(0.1, rgb(245, 245, 245)),
+		color-stop(1, rgb(255, 255, 0))
+	);
+}
+
+#right .margin{
+	height:100%;
+	background-image: linear-gradient(left , rgb(255, 255, 0) 6%, rgb(245, 245, 245) 90%, rgb(245,245,245) 100%);
+	background-image: -o-linear-gradient(left , rgb(255, 255, 0) 6%, rgb(245, 245, 245) 90%, rgb(245,245,245) 100%);
+	background-image: -moz-linear-gradient(left , rgb(255, 255, 0) 6%, rgb(245, 245, 245) 90%, rgb(245,245,245) 100%);
+	background-image: -webkit-linear-gradient(left , rgb(255, 255, 0) 6%, rgb(245, 245, 245) 90%, rgb(245,245,245) 100%);
+	background-image: -ms-linear-gradient(left , rgb(255, 255, 0) 6%, rgb(245, 245, 245) 90%, rgb(245,245,245) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		right bottom,
+		color-stop(0.06, rgb(255, 255, 0)),
+		color-stop(0.9, rgb(245, 245, 245)),
+		color-stop(1, rgb(245,245,245))
+	);
+}
+
 a, a:hover{
 	color:blue;
 	text-decoration: none;
@@ -272,9 +335,15 @@ h1{
 	width:100%;
 	margin-bottom:100px;
 }
-
+	
 #nav{
-	margin:20px 0;
+	margin:0 0 0;
+	border-bottom:3px solid black;
+	padding:0 0 7px;
+}
+
+#nav form{
+	margin-bottom:0;
 }
 
 
@@ -282,50 +351,10 @@ h1{
 	position: relative;
 	font-size:18px;
 	line-height: 1em;
-}
-
-.menu{
-	width:80%;
-	padding:3%;
-	text-align: center;
-	z-index:2;
-	list-style: none;
-	color:black;
-}
-
-.menu:hover{
-	cursor: pointer;
-}
-
-.menu:hover li{
-	display: block;
-}
-
-.menu li{
-	display: none;
-	width:80%;
-}
-
-.menu.hover li,
-.menu li.menu-header,
-.menu li.selected{
-	display: block;
-}
-
-.menu a{
-	color:black;
-	text-decoration: none;
-}
-
-.menu a:hover{
-	color:red;
-}
-
-.nav i.icon-caret-down{
-	position: absolute;
-	right: 20%;
-	top: 35%;
-	color:black;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	overflow: hidden;
+	margin:7px 0 0;
 }
 
 
@@ -851,78 +880,78 @@ h1{
 	margin-top:5px;
 }
 
-.collection,
+.inquiry,
 #collection-new{
 	text-align: center;
 	margin-bottom:60px;
 }
 
-.collection .inner,
+.inquiry .inner,
 #collection-new{
 	position: relative;
 }
 
-.collection .opencollection{
+.inquiry .opencollection{
 	font-family: Monaco, monospace;
 	font-size:11px;
 }
 
-.collection .source-container .editable{
+.inquiry .source-container .editable{
 	text-align: left;
 	overflow: auto;
 }
 
-.collection .edit-mode .source-container .editable{
+.inquiry .edit-mode .source-container .editable{
 	padding: 5px;
 }
-.collection .sources,
-.collection .collaborators{
+.inquiry .sources,
+.inquiry .collaborators{
 	text-align: left;
 }
 
-.collection .source-container{
+.inquiry .source-container{
 	margin-bottom:0;
 }
 
-.collection .edit-mode .source-container{
+.inquiry .edit-mode .source-container{
 	margin-bottom:10px;
 }
 
-.collection .source-container .source-type-menu li{
+.inquiry .source-container .source-type-menu li{
 	padding: 1px 10%;
 	text-align: left;
 	line-height: 16px;
 }
 
-.collection .edit-mode .source-container .source-type-menu li{
+.inquiry .edit-mode .source-container .source-type-menu li{
 	padding: 3px 20%;
 	background-color: blue;
 }
 
-.collection .source-container .source-type-menu li i{
+.inquiry .source-container .source-type-menu li i{
 	font-size: 16px;
 	line-height: 21px;
 }
 
-.collection .edit-mode .source-container .source-type-menu li i{
+.inquiry .edit-mode .source-container .source-type-menu li i{
 	color: white;
 }
 
-.collection .description{
+.inquiry .description{
 	text-align: left;
 }
 
-.collection .addsource,
-.collection .addcollaborator{
+.inquiry .addsource,
+.inquiry .addcollaborator{
 	display: none;
 }
-.collection .edit-mode .addsource,
-.collection .edit-mode .addcollaborator{
+.inquiry .edit-mode .addsource,
+.inquiry .edit-mode .addcollaborator{
 	display: block;
 }
 
-.collection .sources-wrapper,
-.collection .collaborators-wrapper{
+.inquiry .sources-wrapper,
+.inquiry .collaborators-wrapper{
 	margin-top:20px;
 	color:black;
 }
@@ -1052,3 +1081,77 @@ img.highlighted,
 .highlighted i.icon-move{
 	display: none;
 }
+
+/* new NAV */
+.menu-controls{
+	display: none;
+}
+
+#nav-mode-choose{
+	margin-top:7px;
+}
+
+#nav select{
+	display: block;
+	float:left;
+}
+#feed-nav ul{
+	list-style: none;
+}
+
+#feed-nav ul li,
+#inquiries-nav ul li{
+	display: inline-block;
+}
+
+#feed-nav ul li i,
+#inquiries-nav ul li i{
+	margin-right:7px;
+	padding:6px 5px 3px;
+	color:#aaa;
+	vertical-align: middle;
+}
+
+#feed-nav ul li.active i{
+	color:black;
+}
+
+#feed-nav ul li.selected i{
+	padding:5px 4px 2px;
+	border:1px solid;
+}
+
+#feed-nav ul li i:hover{
+	cursor: pointer;
+	padding:5px 4px 2px;
+	border:1px dotted;
+}
+
+#feed-nav .ctrl,
+#inquiries-nav .ctrl{
+	padding:6px 5px 3px;
+	color:salmon;
+	vertical-align: middle;
+}
+
+#inquiries-nav .controls-toggle{
+	padding-top:2px;
+}
+
+#feed-nav .ctrl:hover,
+#inquiries-nav .ctrl:hover{
+	color:red !important;
+	border:none !important;
+	padding:6px 5px 3px !important;
+	cursor:pointer;
+}
+
+#feed-nav .feed-controls{
+	margin-top:14px;
+}
+
+.nav-choose{
+	margin-bottom:14px;
+}
+
+

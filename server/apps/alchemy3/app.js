@@ -12,30 +12,14 @@ var express = require('express')
   , passport = require('passport')
   , util = require('util')
   , LocalStrategy = require('passport-local').Strategy
-  , User = require(__dirname + '/models/models').User;;
-
-/////// SET UP DATABASE CONNECTION WITH MONGOOSE ///////
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/insights-staging2');
-var Schema = mongoose.Schema;
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-  console.log('opened insights-staging db with mongoose!');
-});
-
-
-/*
- var u = new User({
-  "name" : "Troy Conrad Therrien", "username" : "troy", "role" : "admin", "password" : "changeme", "email" : "troy@th-ey.co"
- });
-
- u.save();
-*/
+  , User = require(__dirname + '/models/models').User
+  , GLOBAL = require(__dirname + '/controllers/globals').GLOBAL;
 
 
 
+///////////////////////////////////////////////////////
+///////////// USER LOGIN HELPER FUNCTIONS /////////////
+///////////////////////////////////////////////////////
 
 function updateLastLogin(id, fn){
 
@@ -85,7 +69,11 @@ function findByUsername(username, fn) {
 
 }
 
-// Passport session setup.
+
+///////////////////////////////////////////////////////
+/////////////// PASSPORT SESSION SETUP ////////////////
+///////////////////////////////////////////////////////
+
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
 //   this will be as simple as storing the user ID when serializing, and finding
@@ -125,6 +113,46 @@ passport.use(new LocalStrategy(
 ));
 //end temp
 
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
+
+
+
+///////////////////////////////////////////////////////
+////////////// DATABASE HELPER FUNCTIONS //////////////
+///////////////////////////////////////////////////////
+
+//@todo: maybe migrate user db to Redis later?
+function initDbConnection(){
+  var mongoose = require('mongoose');
+  mongoose.connect('mongodb://'+ GLOBAL.db_uri);
+  var Schema = mongoose.Schema;
+
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function callback () {
+    console.log('opened insights-staging db with mongoose!');
+
+    /*
+    var u = new User({
+      "name" : "Troy Conrad Therrien", "username" : "troy", "role" : "admin", "password" : "changeme", "email" : "troy@th-ey.co"
+    });
+    u.save();
+    */
+  });
+}
+
+
+///////////////////////////////////////////////////////
+///////////////// EXPRESS APP CONFIG //////////////////
+///////////////////////////////////////////////////////
 
 var app = express();
 
@@ -140,6 +168,9 @@ app.configure(function(){
   app.use(express.cookieParser('barleytherrien'));
   app.use(express.session({ secret: 'bath' }));
   
+  //new 130624
+  app.set('env', 'development');
+
   app.use(require('less-middleware')({ src: __dirname + '/public' }));
   app.use(express.static(path.join(__dirname, 'public')));
   //set up serving of static files from project directory
@@ -154,18 +185,40 @@ app.configure(function(){
 
   app.use(app.router);
 
+  app.locals({
+    title: 'Therrien–Barley Research',
+    copyright: '© 2013 Therrien-Barley',
+    email: 'info@th-ey.co'
+  });
+
 });
 
+
+
+
+//config particular to development environment
 app.configure('development', function(){
+  console.log('configuring for development environment');
   app.use(express.errorHandler());
+  initDbConnection();
+});
+
+//config particular to production environment
+app.configure('production', function(){
+  console.log('configuring for production environment');
+  app.use(express.errorHandler());
+  initDbConnection();
 });
 
 
-//Login
+
+///////////////////////////////////////////////////////
+//////////////// EXPRESS APP ROUTING //////////////////
+///////////////////////////////////////////////////////
+
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('authentication/account', { user: req.user });
 });
-
 
 app.get('/login', function(req, res){
   res.render('login', { title: 'Login', user: req.user, message: req.session.messages });
@@ -181,39 +234,25 @@ app.post('/login',
       }
       res.redirect('/insights/inquiries');
     });
-
-    
   });
-
 
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
 
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed.  Otherwise, the user will be redirected to the
-//   login page.
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
-}
-
 
 
 //A.I.R. 2.0
 app.get('/', function(req, res){
-  res.render('home', { title: 'Therrien–Barley Research', user: req.user });
+  res.render('home', { user: req.user });
 });
 
 app.get('/insights*', ensureAuthenticated, routes.get);
 
-app.get('/insights*', routes.get);
-app.post('/insights*', routes.post);
-app.put('/insights*', routes.put);
-app.delete('/insights*', routes.delete);
+app.post('/insights*', ensureAuthenticated, routes.post);
+app.put('/insights*', ensureAuthenticated, routes.put);
+app.delete('/insights*', ensureAuthenticated, routes.delete);
 
 
 

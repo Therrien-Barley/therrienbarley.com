@@ -22,8 +22,8 @@ exports.put = function(req, res){
 					//console.log('/insights/api/user::update');
 					//users.update(req, res, url_array[4]);
 					break;
-				case 'collection':
-					console.log('/insights/api/collection::update');
+				case 'inquiry':
+					console.log('/insights/api/inquiry::update');
 					inquiry.update(req, res, url_array[4]);
 					break;
 				case 'insight':
@@ -54,8 +54,8 @@ exports.delete = function(req, res){
 	switch(url_array[2]){
 		case 'api':
 			switch(url_array[3]){
-				case 'collection':
-					console.log('/insights/api/collection::delete');
+				case 'inquiry':
+					console.log('/insights/api/inquiry::delete');
 					inquiry.delete(req, res, url_array[4]);
 					break;
 				case 'insight':
@@ -87,8 +87,8 @@ exports.post = function(req, res){
 	switch(url_array[2]){
 		case 'api':
 			switch(url_array[3]){
-				case 'collection':
-					console.log('router.js::create collection called');
+				case 'inquiry':
+					console.log('router.js::create inquiry called');
 					inquiry.create(req, res);
 					break;
 				case 'insight':
@@ -147,13 +147,13 @@ exports.get = function(req, res){
 					user: req.user
 				});
 				break;
-			case 'collection':
+			case 'inquiry':
 				switch(url_array[4]){
 					case 'content':
 						res.render('inquiry/content', { 
 							title: 'Therrien–Barley Insights',
 							user: req.user,
-							collection: url_array[3]
+							inquiry: url_array[3]
 						});
 						break;
 				}
@@ -178,7 +178,7 @@ exports.get = function(req, res){
 							inquiry.getElements(req, res);
 						}
 						break;
-					case 'collection':
+					case 'inquiry':
 						console.log('inquiry.get(req, res)');
 						inquiry.get(req, res);
 						break;

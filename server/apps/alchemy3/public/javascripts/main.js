@@ -21,7 +21,7 @@ require([
 function($, Alchemy, TAXONOMIES, init, _, Backbone) {
 
     console.log('main.js starting');
-    init();
+    init.init();
 
     Alchemy.init();
 
@@ -40,14 +40,15 @@ function($, Alchemy, TAXONOMIES, init, _, Backbone) {
     switch(url_array[1]){
         case 'insights':
             switch(url_array[2]){
-                case 'collections':
-                    Alchemy.renderCollections();
+                case 'inquiries':
+                    Alchemy.renderInquiries();
                     break;
                 case 'users':
                     Alchemy.renderUsers();
                     break;
-                case 'collection':
-                    Alchemy.renderCollectionContent(url_array[3]);
+                case 'inquiry':
+                    Alchemy.renderInquiryContent(url_array[3]);
+                    Alchemy.initFeedNav();
                     break;
             }
             break;

@@ -12,19 +12,18 @@ define([
     'views/insightview',
     'collections/insights',
     'views/insightsview',
-    'models/collection',
-    'views/collectionstreamview',
-    'collections/collections',
-    'views/collectionsview',
-    'models/collection',
-    'views/collectionview',
+    'models/inquiry',
+    'views/inquirystreamview',
+    'collections/inquiries',
+    'views/inquiriesview',
+    'views/inquiryview',
     'models/user',
     'collections/users',
     'views/usersview',
     'collections/elements',
     'views/elementsview'
 ],
-function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Collection, CollectionStreamView, Collections, CollectionsView, Collection, CollectionView, User, Users, UsersView, Elements, ElementsView) {
+function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, TumblrPostView, Insight, InsightView, Insights, InsightsView, Inquiry, InquiryStreamView, Inquiries, InquiriesView, InquiryView, User, Users, UsersView, Elements, ElementsView) {
 
     
     var Alchemy = {
@@ -40,6 +39,7 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
             this.getSelf();
 
             //@todo: later, do this with the insights collection (fetch at site load) and a new InsightsMenuView
+            /*
             $.ajax({
                 url: 'http://therrienbarley.com/insights/air/api/insight',
                 type: 'GET',
@@ -58,7 +58,7 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 
                     $('body').append($menu);
                 }
-            })
+            })*/
 
         },
 
@@ -160,44 +160,8 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
 
         },
 
-        renderFragments: function(fragmentType, tag){
-            console.log('renderFragments with type: '+ fragmentType+ ' and tag: '+ tag);
-            console.dir(tag);
 
-            var _this = this;
-            _this.data.fragments = new Fragments({ fragment: fragmentType, tag: tag });
-            _this.data.fragments.fetch({
-                success: function(collection, response, options){
-
-                    _this.data.fragments_view = new FragmentsView({
-                        collection: collection,
-                        el: '.fragments-el',
-                        _fragmentViewEl: '.fragment-el'
-                    });
-
-                    if(_this.data.fragments_view.render({ tag: tag})){
-                        $('html, body').animate({
-                            scrollTop: 0
-                        }, 500);
-
-                        var $container = $('.masonry-wrapper');
-
-                        $container.masonry({
-                            itemSelector: '.fragment',
-                            columnWidth: 250,
-                            gutterWidth:17
-                        });
-
-                        $container.imagesLoaded( function(){
-                            $container.masonry();
-                        });
-                    }
-                        
-                }
-            });
-        },
-
-        renderCollectionContent: function(_id){
+        renderInquiryContent: function(_id){
             console.log('Alchemy.js::renderCollectionContent()');
             var elements = new Elements();
             elements.fetch({
@@ -215,18 +179,18 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
             });
         },
 
-        renderCollections: function(){
-            console.log('Alchemy.js::renderCollections()');
-            var collections = new Collections();
-            collections.fetch({
+        renderInquiries: function(){
+            console.log('Alchemy.js::renderInquiries()');
+            var inquiries = new Inquiries();
+            inquiries.fetch({
                 success: function(collection, response, options){
-                    var collections_view = new CollectionsView({
+                    var inquiries_view = new InquiriesView({
                         collection: collection,
-                        el: '#collections-el',
-                        _collectionViewEl: '.collections-list-el'
+                        el: '#inquiries-el',
+                        _inquiryViewEl: '.inquiries-list-el'
                     });
 
-                    collections_view.render();
+                    inquiries_view.render();
                 }
             });
 
@@ -236,16 +200,16 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
                     console.log('clicked add');
                     $(this).addClass('disabled');
 
-                    var collection = new Collection();
+                    var inquiry = new Inquiry();
 
-                    var collection_view = new CollectionView({
-                        model: collection,
-                        el: '#new-collections-el'
+                    var inquiry_view = new InquiryView({
+                        model: inquiry,
+                        el: '#new-inquiries-el'
                     });
 
-                    if(typeof collection_view.render() !== 'undefined'){
-                        $('#new-collections-el #collection-new').addClass('edit-mode new');
-                        $('#new-collections-el #collection-new .editable').attr('contenteditable', 'true');
+                    if(typeof inquiry_view.render() !== 'undefined'){
+                        $('#new-inquiries-el #inquiry-new').addClass('edit-mode new');
+                        $('#new-inquiries-el #inquiry-new .editable').attr('contenteditable', 'true');
                     }
                 }
 
@@ -308,6 +272,12 @@ function($, _, Backbone, masonry, GLOBAL, Fragments, FragmentsView, TumblrPost, 
                 }
 
 
+            });
+        },
+
+        initFeedNav: function(){
+            $('#feed-nav .add').click(function(){
+                a
             });
         },
 

@@ -1,6 +1,14 @@
+GLOBAL = require('../controllers/globals').GLOBAL;
+
+  console.log('models.initDbConnection');
+console.dir(GLOBAL.db_uri);
+console.log('');
+console.log('');
+console.log('');
+
 /////// SET UP DATABASE CONNECTION WITH MONGOOSE ///////
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/insights-staging2');
+mongoose.connect('mongodb://'+ GLOBAL.db_uri);
 var Schema = mongoose.Schema;
 
 var db = mongoose.connection;

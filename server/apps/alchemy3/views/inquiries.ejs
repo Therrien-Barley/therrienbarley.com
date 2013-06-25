@@ -3,7 +3,20 @@
   <%- partial('partials/head', {title:title}) %>
 <body>
 	<%- partial('partials/header') %>
-	<%- partial('partials/nav', { user: user }) %>
+
+	
+	<%- partial('partials/usernav', { 
+			user: user
+		}) %>
+
+	<nav id="nav" class="row-fluid">
+	<%- partial('partials/feednav', { 
+			
+		}) %>
+	<%- partial('partials/inquiriesnav', { 
+			
+		}) %>
+	</nav>
 
 	<div class="wrapper row-fluid">	
 		<div id="main" class="span12 offset2">

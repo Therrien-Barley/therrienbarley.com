@@ -3,28 +3,41 @@
   <%- partial('../partials/head', {title:title}) %>
 <body>
 	<%- partial('../partials/header') %>
-	<%- partial('../partials/nav', { 
-			user: user,
-			inquiry: inquiry
-		}) %>
-	<div class="wrapper row-fluid">
-		<div id="main" class="span10 offset2">
 
-			<div id="views" class="row-fluid">
-				<div class="span4 offset6">
-					<select>
-						<option value="all">All</option>
-						<option value="titles">Titles</option>
-						<option value="media">Media</option>
-						<option value="images">Images</option>
-						<option value="video">Video</option>
-					</select>
+	<div id="nav-top">
+		<%- partial('../partials/usernav', { 
+				user: user
+			}) %>
+	</div>
+	<nav id="nav" class="row-fluid">
+		<%- partial('../partials/feednav', { }) %>
+		<%- partial('../partials/inquiriesnav', { }) %>
+	</nav>
+
+	<div class="wrapper row-fluid">
+		<div id="left" class="span8">
+			<div class="row-fluid">
+				<div class="main span12">
+					<div id="inquiry-el"></div>
+				</div><!-- /.main -->
+
+				<div class="margin span4">
 				</div>
 			</div>
+		</div>
 
-			<div id="inquiry-el"></div>
-			
-		</div><!-- /#main -->
+		<div id="right" class="span8">
+			<div class="row-fluid">
+				<div class="margin span4">
+				</div>
+				<div class="main span12">
+				</div><!-- /.main -->
+
+				
+			</div>
+		</div>
+
+		<div id="overlay"></div>
 		
 
 		<%- partial('../partials/footer') %>
